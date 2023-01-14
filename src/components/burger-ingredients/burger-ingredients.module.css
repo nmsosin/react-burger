@@ -1,0 +1,15 @@
+.ingredientTypesList {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  height: 70vh;
+  overflow: auto;
+}
+
+.ingredientItemsList {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}

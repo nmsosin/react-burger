@@ -1,0 +1,7 @@
+.orderModalContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  /*transform: translate(-50%, -50%);*/
+}

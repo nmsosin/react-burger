@@ -1,0 +1,25 @@
+.modal {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: absolute;
+  top: 50vh;
+  left: 50vw;
+  transform: translate(-50%, -50%);
+  background-color: rgba(28, 28, 33, 1);
+  border-radius: 40px;
+}
+
+
+.closeButton {
+  padding: 0;
+  border: none;
+  font: inherit;
+  color: inherit;
+  background-color: transparent;
+  cursor: pointer;
+  position: absolute;
+  top: 60px;
+  right: 40px;
+
+}

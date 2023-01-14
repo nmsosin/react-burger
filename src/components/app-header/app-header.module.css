@@ -1,0 +1,20 @@
+.header {
+  background-color: rgba(28, 28, 33, 1);
+}
+
+.navBar {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  justify-items: center;
+  justify-content: center;
+  align-content: space-between;
+  align-items: center;
+  margin: 0 auto;
+  max-width: 1240px;
+}
+
+.navWrapper {
+  display: flex;
+  gap: 8px;
+  justify-self: start;
+}

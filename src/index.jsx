@@ -1,23 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
 import reportWebVitals from './reportWebVitals';
-// import App from './components/App/App';
+import App from './components/App/App';
 
-import AppHeader from "./components/app-header/AppHeader";
-import BurgerIngredients from "./components/burger-ingredients/BurgerIngredients";
-import BurgerConstructor from "./components/burger-constructor/BurgerConstructor";
 
 const root = ReactDOM.createRoot(
   document.getElementById('root')
 );
+
 root.render(
   <React.StrictMode>
-    <AppHeader />
-    <main style={{ display: 'flex'}}>
-      <BurgerIngredients />
-      <BurgerConstructor />
-    </main>
+    <App />
   </React.StrictMode>
 );
 
