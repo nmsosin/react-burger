@@ -9,8 +9,13 @@
   align-items: center;
   justify-content: center;
   display: flex;
-  visibility: hidden;
-  opacity: 0;
+  /*visibility: hidden;*/
+  /*opacity: 0;*/
   transition: visibility 1s ease-in-out, opacity 1s ease-in-out;
   z-index: 0;
+}
+
+.open {
+  visibility: visible;
+  opacity: 1;
 }

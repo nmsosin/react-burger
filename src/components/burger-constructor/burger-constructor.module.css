@@ -45,3 +45,12 @@
 .top {
   margin-right: 100px;
 }
+
+.fixed {
+  align-self: flex-start;
+  max-width: 496px;
+}
+
+.dragIcon {
+  cursor: pointer;
+}

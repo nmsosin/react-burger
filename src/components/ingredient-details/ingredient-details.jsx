@@ -1,15 +1,13 @@
 import React from 'react';
 import ingredientDetailsStyles from "../ingredient-details/ingredient-details.module.css";
-import {CheckMarkIcon, CloseIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 
 const IngredientDetails = (props) => {
-
   return(
-    <div className={ingredientDetailsStyles.ingredienModal}>
+    <div>
 
-      <h2 className={`text text_type_main-large ${ingredientDetailsStyles.ingredientModalTitle}`}>Детали заказа</h2>
+      <h2 className={`text text_type_main-large ${ingredientDetailsStyles.ingredientModalTitle}`}>Детали ингредиента</h2>
       <div className={ingredientDetailsStyles.ingredientDetailsContainer}>
-        <img src="https://code.s3.yandex.net/react/code/meat-01.png" alt="Ингредиент космического бургера" className={`${ingredientDetailsStyles.ingredientImage}`} />
+        <img src="https://code.s3.yandex.net/react/code/meat-01.png" alt={"Ингредиент космического бургера"} className={`${ingredientDetailsStyles.ingredientImage}`} />
         <h3 className={`text text_type_main-small pt-4 pb-8 ${ingredientDetailsStyles.ingredientTitle}`}>Биокотлета из марсианской Магнолии</h3>
         <ul className={`${ingredientDetailsStyles.ingredientInfo}`}>
           <li className={`text text_type_main-default text_color_inactive ${ingredientDetailsStyles.ingredientMacros}`}>

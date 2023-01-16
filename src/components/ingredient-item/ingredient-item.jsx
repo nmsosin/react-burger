@@ -1,11 +1,17 @@
 import React from 'react';
-import {Counter, CurrencyIcon, Tab} from '@ya.praktikum/react-developer-burger-ui-components';
+import {Counter, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components';
 import ingredientItemStyles from './ingredient-item.module.css';
 // import { data } from '../../utils/data';
 
 const IngredientsItem= (props) => {
+  const { getIngredientId, openModal} = props;
+
+  const handleIngredientCardClick = () => {
+    openModal();
+  }
+
   return (
-      <li className={ingredientItemStyles.card}>
+      <li className={ingredientItemStyles.card} onClick={handleIngredientCardClick} iid={props.iid}>
         <Counter count={1} size="default" extraClass="m-1" />
         <img src={props.image} alt="Ингредиент космического бургера"/>
         <span className={`text text_type_digits-default pt-1 pb-1 ${ingredientItemStyles.price}`}>

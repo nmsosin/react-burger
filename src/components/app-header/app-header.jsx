@@ -4,7 +4,7 @@ import appHeaderStyles from './app-header.module.css';
 
 const AppHeader = () => {
   return (
-    <header className={`p-4 ${appHeaderStyles.header}`}>
+    <header className={`pt-4 pb-4 ${appHeaderStyles.header}`}>
       <nav className={appHeaderStyles.navBar}>
         <div className={appHeaderStyles.navWrapper}>
           <NavigationButton type={'constructor'} />
@@ -18,3 +18,4 @@ const AppHeader = () => {
 }
 
 export default AppHeader;
+
