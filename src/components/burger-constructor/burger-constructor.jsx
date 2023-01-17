@@ -4,8 +4,7 @@ import burgerConstructorStyles from './burger-constructor.module.css';
 import PropTypes from "prop-types";
 import checkPropTypes from "../../utils/prop-types";
 
-const BurgerConstructor = (props) => {
-  const { openModal } = props;
+const BurgerConstructor = ({ openModal }) => {
 
   const handleOrderButtonClick = (evt) => {
     console.log(evt.currentTarget);
@@ -106,5 +105,6 @@ const BurgerConstructor = (props) => {
 export default BurgerConstructor;
 
 BurgerConstructor.propTypes = {
-  content: PropTypes.arrayOf(checkPropTypes)
+  content: PropTypes.arrayOf(checkPropTypes),
+  openModal: PropTypes.func
 }

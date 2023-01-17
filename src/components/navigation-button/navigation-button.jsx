@@ -1,9 +1,10 @@
+import PropTypes from "prop-types";
 import navButtonStyles from './navigation-button.module.css';
 import {BurgerIcon, ListIcon, ProfileIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 
-const NavigationButton = (props) => {
-  let {type, text, icon} = props;
-  switch (props.type) {
+const NavigationButton = ({ type, text, icon }) => {
+
+  switch (type) {
     case 'constructor':
       icon = <BurgerIcon type={"primary"} />
       text = 'Конструктор'
@@ -27,3 +28,9 @@ const NavigationButton = (props) => {
 }
 
 export default NavigationButton;
+
+NavigationButton.propTypes = {
+  type: PropTypes.string.isRequired,
+  text: PropTypes.string,
+  icon: PropTypes.string
+}

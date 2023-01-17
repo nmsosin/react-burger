@@ -1,28 +1,32 @@
 import {React, useState,  useEffect } from 'react';
-import './App.module.css';
 import AppHeader from "../app-header/app-header";
 import generalStyles from "./App.module.css";
 import BurgerIngredients from "../burger-ingredients/burger-ingredients";
-import dataJS from "../../utils/data";
 import BurgerConstructor from "../burger-constructor/burger-constructor";
-import ModalOverlay from "../modal-overlay/modal-overlay";
+import Modal from "../modal/modal";
+import IngredientDetails from "../ingredient-details/ingredient-details";
+import OrderDetails from "../order-details/order-details";
 
 const dataUrl = 'https://norma.nomoreparties.space/api/ingredients';
 
 function App() {
-  const [item, setItem] = useState(null);
+  const [items, setItems] = useState(null);
   const [isOrderModalOpen, setIsOrderModalOpened] = useState(false);
   const [isIngredientModalOpen, setIsIngredientModalOpened] = useState(false);
   const [currentIngredientId, setCurrentIngredientId] = useState(null);
 
+  const checkResponse = (res) => {
+    return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
+  };
+
   const getIngredientData = async () => {
     try {
-      setItem();
+      setItems(null);
       const res = await fetch(dataUrl);
-      const result = await res.json();
-      setItem(result.data);
+      const result = await checkResponse(res);
+      setItems(result.data);
     } catch (err) {
-      console.log(`Ой! При запросе данных произошла ошибка: ${err}`);
+      alert(`Ой! При запросе данных произошла ошибка: ${err}`);
     }
   }
 
@@ -31,9 +35,9 @@ function App() {
   }, []);
 
 
-  const getCurrentIngredientId = (evt) => {
-    console.log(evt.currentTarget._id);
-    setCurrentIngredientId(evt.currentTarget._id)
+  const getCurrentIngredientId = (identifier) => {
+    console.log(identifier);
+    setCurrentIngredientId(identifier);
   };
 
   const openOrderModal = () => {
@@ -44,26 +48,37 @@ function App() {
     setIsIngredientModalOpened(true);
   }
 
-  const closeModal = (evt) => {
-    evt.preventDefault();
+  const closeModal = () => {
     setIsOrderModalOpened(false);
     setIsIngredientModalOpened(false);
   }
 
-  return (
+  const handleCloseButton = () => {
+    closeModal();
+  }
 
+  return (
     <>
       <AppHeader />
       <main className={generalStyles.content}>
         {
-          item &&
+          items &&
           <>
-            <BurgerIngredients content={item} openModal={openIngredientModal} closeModal={closeModal} isOpen={isIngredientModalOpen} getCurrentIngredientId={getCurrentIngredientId} />
-            <BurgerConstructor content={item} openModal={openOrderModal} closeModal={closeModal} isOpen={isIngredientModalOpen} />
+            <BurgerIngredients content={items} openModal={openIngredientModal} closeModal={closeModal} isOpen={isIngredientModalOpen} getCurrentIngredientId={getCurrentIngredientId} />
+            <BurgerConstructor content={items} openModal={openOrderModal} closeModal={closeModal} isOpen={isIngredientModalOpen} />
           </>
         }
       </main>
-      <ModalOverlay content={item} closeModal={closeModal} orderModalOpened={isOrderModalOpen} ingredientModalOpened={isIngredientModalOpen} currentIngredientId={currentIngredientId} />
+
+      {
+        isOrderModalOpen &&
+          <Modal children={<OrderDetails />} onClose={handleCloseButton} content={items} closeModal={closeModal} currentIngredientId={currentIngredientId}/>
+      }
+
+      {
+        isIngredientModalOpen &&
+          <Modal children={<IngredientDetails items={items} iid={currentIngredientId} />} onClose={handleCloseButton} content={items} closeModal={closeModal} />
+      }
     </>
   );
 }

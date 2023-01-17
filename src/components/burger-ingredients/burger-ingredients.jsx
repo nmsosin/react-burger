@@ -6,9 +6,8 @@ import BurgerIngredientsStyles from './burger-ingredients.module.css';
 import PropTypes from "prop-types";
 import checkPropTypes from "../../utils/prop-types";
 
-const BurgerIngredients = (props) => {
+const BurgerIngredients = ({ openModal, content, getCurrentIngredientId }) => {
   const [current, setCurrent] = React.useState('buns');
-  const { openModal } = props;
 
   return (
     <section>
@@ -28,21 +27,21 @@ const BurgerIngredients = (props) => {
         <li>
           <h2 id={"buns"} className={"text text_type_main-medium pt-10 pb-6"}>Булки</h2>
           <ul className={BurgerIngredientsStyles.ingredientItemsList}>
-            {props.content.filter(el => el.type === 'bun').map((el) => <IngredientItem key={el._id} iid={el._id} name={el.name} price={el.price} image={el.image} openModal={openModal} />)}
+            {content.filter(el => el.type === 'bun').map((el) => <IngredientItem key={el._id} iid={el._id} name={el.name} price={el.price} image={el.image} openModal={openModal} getCurrentIngredientId={getCurrentIngredientId} />)}
           </ul>
         </li>
 
         <li>
           <h2 id={"sauces"} className={"text text_type_main-medium pt-10 pb-6"}>Соусы</h2>
           <ul className={BurgerIngredientsStyles.ingredientItemsList}>
-            {props.content.filter(el => el.type === 'sauce').map((el) => <IngredientItem key={el._id} iid={el._id} name={el.name} price={el.price} image={el.image} openModal={openModal} />)}
+            {content.filter(el => el.type === 'sauce').map((el) => <IngredientItem key={el._id} iid={el._id} name={el.name} price={el.price} image={el.image} openModal={openModal} getCurrentIngredientId={getCurrentIngredientId} />)}
           </ul>
         </li>
 
         <li>
           <h2 id={"fillings"} className={"text text_type_main-medium pt-10 pb-6"}>Начинки</h2>
           <ul className={BurgerIngredientsStyles.ingredientItemsList}>
-            {props.content.filter(el => el.type === 'main').map((el) => <IngredientItem key={el._id} iid={el._id} name={el.name} price={el.price} image={el.image} openModal={openModal} />)}
+            {content.filter(el => el.type === 'main').map((el) => <IngredientItem key={el._id} iid={el._id} name={el.name} price={el.price} image={el.image} openModal={openModal} getCurrentIngredientId={getCurrentIngredientId} />)}
           </ul>
         </li>
       </ul>
@@ -53,5 +52,6 @@ const BurgerIngredients = (props) => {
 export default BurgerIngredients;
 
 BurgerIngredients.propTypes = {
-  content: PropTypes.arrayOf(checkPropTypes)
+  content: PropTypes.arrayOf(checkPropTypes),
+  openModal: PropTypes.func
 }
