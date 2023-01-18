@@ -1,5 +1,7 @@
 import React from 'react';
 import ingredientDetailsStyles from "../ingredient-details/ingredient-details.module.css";
+import PropTypes from "prop-types";
+import checkPropTypes from "../../utils/prop-types";
 
 const IngredientDetails = ({ items, iid }) => {
 
@@ -36,3 +38,8 @@ const IngredientDetails = ({ items, iid }) => {
 }
 
 export default IngredientDetails;
+
+IngredientDetails.propTypes = {
+  items: PropTypes.arrayOf(checkPropTypes).isRequired,
+  iid: PropTypes.string.isRequired
+}

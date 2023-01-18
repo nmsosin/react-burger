@@ -17,5 +17,5 @@ const ModalOverlay = ({ closeModal }) => {
 export default ModalOverlay;
 
 ModalOverlay.propTypes = {
-  content: PropTypes.arrayOf(checkPropTypes)
+  closeModal: PropTypes.func.isRequired
 }

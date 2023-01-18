@@ -105,6 +105,6 @@ const BurgerConstructor = ({ openModal }) => {
 export default BurgerConstructor;
 
 BurgerConstructor.propTypes = {
-  content: PropTypes.arrayOf(checkPropTypes),
-  openModal: PropTypes.func
+  content: PropTypes.arrayOf(checkPropTypes).isRequired,
+  openModal: PropTypes.func.isRequired
 }
