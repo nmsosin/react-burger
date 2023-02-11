@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import {Counter, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components';
 import ingredientItemStyles from './ingredient-item.module.css';
 
-const IngredientsItem= ({ openModal, image, price, name, iid, getCurrentIngredientId }) => {
+const IngredientItem= ({ openModal, image, price, name, iid, getCurrentIngredientId, count }) => {
     const handleIngredientCardClick = () => {
     getCurrentIngredientId(iid);
     openModal();
@@ -11,7 +11,7 @@ const IngredientsItem= ({ openModal, image, price, name, iid, getCurrentIngredie
 
   return (
       <li className={ingredientItemStyles.card} onClick={handleIngredientCardClick}>
-        <Counter count={1} size="default" extraClass="m-1" />
+        <Counter count={count} size="default" extraClass="m-1" />
         <img src={image} alt="Ингредиент космического бургера"/>
         <span className={`text text_type_digits-default pt-1 pb-1 ${ingredientItemStyles.price}`}>
           {price}
@@ -22,12 +22,13 @@ const IngredientsItem= ({ openModal, image, price, name, iid, getCurrentIngredie
   )
 }
 
-export default IngredientsItem;
+export default IngredientItem;
 
-IngredientsItem.propTypes = {
+IngredientItem.propTypes = {
   openModal: PropTypes.func.isRequired,
   image: PropTypes.string.isRequired,
   price: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,
-  iid: PropTypes.string.isRequired
+  iid: PropTypes.string.isRequired,
+  count: PropTypes.number.isRequired,
 }

@@ -41,5 +41,6 @@ export default IngredientDetails;
 
 IngredientDetails.propTypes = {
   items: PropTypes.arrayOf(checkPropTypes).isRequired,
-  iid: PropTypes.string.isRequired
+  iid: PropTypes.string.isRequired,
+  orderNumber: PropTypes.number.isRequired,
 }

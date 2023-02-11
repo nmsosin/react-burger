@@ -3,11 +3,11 @@ import { CheckMarkIcon } from "@ya.praktikum/react-developer-burger-ui-component
 import orderDetailsStyles from './order-details.module.css';
 
 
-const OrderDetails = () => {
+const OrderDetails = ( {orderNumber} ) => {
 
   return(
     <div className={orderDetailsStyles.orderModalContainer}>
-      <h2 className={`text text_type_digits-large pt-15 pb-8 pl-15 pr-15 `}>034536</h2>
+      <h2 className={`text text_type_digits-large pt-15 pb-8 pl-15 pr-15 `}>{orderNumber}</h2>
       <span className={`text text_type_main-small pb-15 ${orderDetailsStyles.oderIdSubtitle}`}>идентификатор заказа</span>
       <div className={`m-5 ${orderDetailsStyles.checkmarkIconBackground}`}>
         <CheckMarkIcon type="primary" />

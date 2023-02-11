@@ -6,6 +6,7 @@ import BurgerConstructor from "../burger-constructor/burger-constructor";
 import Modal from "../modal/modal";
 import IngredientDetails from "../ingredient-details/ingredient-details";
 import OrderDetails from "../order-details/order-details";
+import { IngredientContext, OrderTotalContext} from "../../utils/userContext";
 
 const dataUrl = 'https://norma.nomoreparties.space/api/ingredients';
 
@@ -14,6 +15,7 @@ function App() {
   const [isOrderModalOpen, setIsOrderModalOpened] = useState(false);
   const [isIngredientModalOpen, setIsIngredientModalOpened] = useState(false);
   const [currentIngredientId, setCurrentIngredientId] = useState(null);
+  const [order, setOrder] = useState(null);
 
   const checkResponse = (res) => {
     return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
@@ -42,6 +44,7 @@ function App() {
 
   const openOrderModal = () => {
     setIsOrderModalOpened(true);
+    setOrder(null);
   }
 
   const openIngredientModal = () => {
@@ -58,28 +61,30 @@ function App() {
   }
 
   return (
-    <>
+    <IngredientContext.Provider value={items}>
       <AppHeader />
       <main className={generalStyles.content}>
         {
           items &&
           <>
             <BurgerIngredients content={items} openModal={openIngredientModal} closeModal={closeModal} isOpen={isIngredientModalOpen} getCurrentIngredientId={getCurrentIngredientId} />
-            <BurgerConstructor content={items} openModal={openOrderModal} closeModal={closeModal} isOpen={isIngredientModalOpen} />
+            <OrderTotalContext.Provider value={0}>
+              <BurgerConstructor content={items} openModal={openOrderModal} closeModal={closeModal} isOpen={isIngredientModalOpen} setOrder={setOrder}/>
+            </OrderTotalContext.Provider>
           </>
         }
       </main>
 
       {
         isOrderModalOpen &&
-          <Modal children={<OrderDetails />} onClose={handleCloseButton} content={items} closeModal={closeModal} currentIngredientId={currentIngredientId}/>
+          <Modal children={<OrderDetails orderNumber={order} />} onClose={handleCloseButton} content={items} closeModal={closeModal} currentIngredientId={currentIngredientId} />
       }
 
       {
         isIngredientModalOpen &&
           <Modal children={<IngredientDetails items={items} iid={currentIngredientId} />} onClose={handleCloseButton} content={items} closeModal={closeModal} />
       }
-    </>
+    </IngredientContext.Provider>
   );
 }
 

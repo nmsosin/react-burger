@@ -27,21 +27,21 @@ const BurgerIngredients = ({ openModal, content, getCurrentIngredientId }) => {
         <li>
           <h2 id={"buns"} className={"text text_type_main-medium pt-10 pb-6"}>Булки</h2>
           <ul className={BurgerIngredientsStyles.ingredientItemsList}>
-            {content.filter(el => el.type === 'bun').map((el) => <IngredientItem key={el._id} iid={el._id} name={el.name} price={el.price} image={el.image} openModal={openModal} getCurrentIngredientId={getCurrentIngredientId} />)}
+            {content.filter(el => el.type === 'bun').map((el) => <IngredientItem key={el._id} iid={el._id} name={el.name} price={el.price} image={el.image} openModal={openModal} getCurrentIngredientId={getCurrentIngredientId} count={1} />)}
           </ul>
         </li>
 
         <li>
           <h2 id={"sauces"} className={"text text_type_main-medium pt-10 pb-6"}>Соусы</h2>
           <ul className={BurgerIngredientsStyles.ingredientItemsList}>
-            {content.filter(el => el.type === 'sauce').map((el) => <IngredientItem key={el._id} iid={el._id} name={el.name} price={el.price} image={el.image} openModal={openModal} getCurrentIngredientId={getCurrentIngredientId} />)}
+            {content.filter(el => el.type === 'sauce').map((el) => <IngredientItem key={el._id} iid={el._id} name={el.name} price={el.price} image={el.image} openModal={openModal} getCurrentIngredientId={getCurrentIngredientId} count={0} />)}
           </ul>
         </li>
 
         <li>
           <h2 id={"fillings"} className={"text text_type_main-medium pt-10 pb-6"}>Начинки</h2>
           <ul className={BurgerIngredientsStyles.ingredientItemsList}>
-            {content.filter(el => el.type === 'main').map((el) => <IngredientItem key={el._id} iid={el._id} name={el.name} price={el.price} image={el.image} openModal={openModal} getCurrentIngredientId={getCurrentIngredientId} />)}
+            {content.filter(el => el.type === 'main').map((el) => <IngredientItem key={el._id} iid={el._id} name={el.name} price={el.price} image={el.image} openModal={openModal} getCurrentIngredientId={getCurrentIngredientId} count={2} />)}
           </ul>
         </li>
       </ul>
