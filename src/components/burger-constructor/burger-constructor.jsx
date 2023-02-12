@@ -86,9 +86,6 @@ const BurgerConstructor = ({ openModal, setOrder }) => {
   }
 
 
-
-
-
   return (
     <section className="pt-25 pl-8 pr-4">
       <div  className={burgerConstructorStyles.constructorContainer} >

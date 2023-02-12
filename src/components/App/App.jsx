@@ -1,4 +1,4 @@
-import {React, useState,  useEffect } from 'react';
+import { useState,  useEffect } from 'react';
 import AppHeader from "../app-header/app-header";
 import generalStyles from "./App.module.css";
 import BurgerIngredients from "../burger-ingredients/burger-ingredients";
