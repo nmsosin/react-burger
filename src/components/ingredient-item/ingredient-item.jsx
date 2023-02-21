@@ -4,6 +4,8 @@ import {Counter, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-com
 import ingredientItemStyles from './ingredient-item.module.css';
 
 const IngredientItem= ({ openModal, image, price, name, iid, getCurrentIngredientId, count }) => {
+
+  
     const handleIngredientCardClick = () => {
     getCurrentIngredientId(iid);
     openModal();
@@ -24,11 +26,11 @@ const IngredientItem= ({ openModal, image, price, name, iid, getCurrentIngredien
 
 export default IngredientItem;
 
-IngredientItem.propTypes = {
-  openModal: PropTypes.func.isRequired,
-  image: PropTypes.string.isRequired,
-  price: PropTypes.number.isRequired,
-  name: PropTypes.string.isRequired,
-  iid: PropTypes.string.isRequired,
-  count: PropTypes.number.isRequired,
-}
+// IngredientItem.propTypes = {
+//   openModal: PropTypes.func.isRequired,
+//   image: PropTypes.string.isRequired,
+//   price: PropTypes.number.isRequired,
+//   name: PropTypes.string.isRequired,
+//   iid: PropTypes.string.isRequired,
+//   count: PropTypes.number.isRequired,
+// }

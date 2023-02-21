@@ -1,9 +1,9 @@
 import { GET_INGREDIENTS_REQUEST, GET_INGREDIENTS_FAILED, GET_INGREDIENTS_SUCCESS} from "../actions/ingredientsList";
 
 const ingredientsListInitialState = {
-  ingredients: [],
   ingredientsRequest: false,
   ingredientsFailed: false,
+  ingredients: [],
 }
 
 export const ingredientsListReducer = (state = ingredientsListInitialState, action) => {

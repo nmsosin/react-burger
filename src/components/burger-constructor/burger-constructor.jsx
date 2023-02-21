@@ -4,23 +4,25 @@ import burgerConstructorStyles from './burger-constructor.module.css';
 import PropTypes from "prop-types";
 import checkPropTypes from "../../utils/prop-types";
 import {IngredientContext, OrderTotalContext} from "../../utils/userContext";
+import {getIngredientsData} from "../../services/actions/ingredientsList";
+import {useDispatch, useSelector} from "react-redux";
 
 
 
 
 const BurgerConstructor = ({ openModal, setOrder }) => {
-  const items = useContext(IngredientContext);
+  const ingredients = useSelector(store => store.ingredients.ingredients);
 
   //memoize burger details
 
   const buns = useMemo(
-    () => items.filter(item => item.type === 'bun'),
-    [items]
+    () => ingredients.filter(item => item.type === 'bun'),
+    [ingredients]
   );
 
   const additives = useMemo(
-    () => items.filter(item => item.type !== 'bun'),
-    [items]
+    () => ingredients.filter(item => item.type !== 'bun'),
+    [ingredients]
   );
 
   // specify chosen burger ingredients
@@ -93,6 +95,7 @@ const BurgerConstructor = ({ openModal, setOrder }) => {
           <ConstructorElement
             type="top"
             isLocked={true}
+            key={`${buns[randomIndex]._id}1`}
             text={`${buns[randomIndex].name} (верх)`}
             price={buns[randomIndex].price}
             thumbnail={buns[randomIndex].image}
@@ -107,6 +110,7 @@ const BurgerConstructor = ({ openModal, setOrder }) => {
                   <div className={burgerConstructorStyles.constructorElementContainer}>
                     <span className={`pr-2 ${burgerConstructorStyles.dragIcon}`}><DragIcon type="primary"/></span>
                     <ConstructorElement
+                      key={ingredient._id}
                       text={ingredient.name}
                       price={ingredient.price}
                       thumbnail={ingredient.image}
@@ -121,6 +125,7 @@ const BurgerConstructor = ({ openModal, setOrder }) => {
         <ConstructorElement
           type="bottom"
           isLocked={true}
+          key={`${buns[randomIndex]._id}2`}
           text={`${buns[randomIndex].name} (низ)`}
           price={buns[randomIndex].price}
           thumbnail={buns[randomIndex].image}
@@ -144,9 +149,9 @@ const BurgerConstructor = ({ openModal, setOrder }) => {
 }
 
 export default BurgerConstructor;
-
-BurgerConstructor.propTypes = {
-  content: PropTypes.arrayOf(checkPropTypes).isRequired,
-  openModal: PropTypes.func.isRequired,
-  setOrder: PropTypes.func.isRequired,
-}
+//
+// BurgerConstructor.propTypes = {
+//   content: PropTypes.arrayOf(checkPropTypes),
+//   openModal: PropTypes.func.isRequired,
+//   setOrder: PropTypes.func.isRequired,
+// }

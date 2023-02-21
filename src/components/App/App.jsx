@@ -7,84 +7,89 @@ import Modal from "../modal/modal";
 import IngredientDetails from "../ingredient-details/ingredient-details";
 import OrderDetails from "../order-details/order-details";
 import { IngredientContext, OrderTotalContext} from "../../utils/userContext";
+import { getIngredientsData } from "../../services/actions/ingredientsList";
+import {useDispatch, useSelector} from "react-redux";
 
 const dataUrl = 'https://norma.nomoreparties.space/api/ingredients';
 
 function App() {
-  const [items, setItems] = useState(null);
-  const [isOrderModalOpen, setIsOrderModalOpened] = useState(false);
-  const [isIngredientModalOpen, setIsIngredientModalOpened] = useState(false);
-  const [currentIngredientId, setCurrentIngredientId] = useState(null);
-  const [order, setOrder] = useState(null);
+  // const [items, setItems] = useState(null);
+  // const [isOrderModalOpen, setIsOrderModalOpened] = useState(false);
+  // const [isIngredientModalOpen, setIsIngredientModalOpened] = useState(false);
+  // const [currentIngredientId, setCurrentIngredientId] = useState(null);
+  // const [order, setOrder] = useState(null);
 
-  const checkResponse = (res) => {
-    return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
-  };
+  // const checkResponse = (res) => {
+  //   return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
+  // };
 
-  const getIngredientData = async () => {
-    try {
-      setItems(null);
-      const res = await fetch(dataUrl);
-      const result = await checkResponse(res);
-      setItems(result.data);
-    } catch (err) {
-      alert(`Ой! При запросе данных произошла ошибка: ${err}`);
-    }
-  }
+  // const getIngredientData = async () => {
+  //   try {
+  //     setItems(null);
+  //     const res = await fetch(dataUrl);
+  //     const result = await checkResponse(res);
+  //     setItems(result.data);
+  //   } catch (err) {
+  //     alert(`Ой! При запросе данных произошла ошибка: ${err}`);
+  //   }
+  // }
+
+  const ingredientsList = useSelector(store => store.ingredients.ingredients);
+  // const ingredientsList = true;
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
-     getIngredientData();
-  }, []);
+    console.log(ingredientsList)
+    dispatch(getIngredientsData(dataUrl))
+  }, [dispatch]);
 
-
-  const getCurrentIngredientId = (identifier) => {
-    console.log(identifier);
-    setCurrentIngredientId(identifier);
-  };
-
-  const openOrderModal = () => {
-    setIsOrderModalOpened(true);
-    setOrder(null);
-  }
-
-  const openIngredientModal = () => {
-    setIsIngredientModalOpened(true);
-  }
-
-  const closeModal = () => {
-    setIsOrderModalOpened(false);
-    setIsIngredientModalOpened(false);
-  }
-
-  const handleCloseButton = () => {
-    closeModal();
-  }
+  // TODO: move to actions
+  // const getCurrentIngredientId = (identifier) => {
+  //   console.log(identifier);
+  //   setCurrentIngredientId(identifier);
+  // };
+  //
+  // const openOrderModal = () => {
+  //   setIsOrderModalOpened(true);
+  //   setOrder(null);
+  // }
+  //
+  // const openIngredientModal = () => {
+  //   setIsIngredientModalOpened(true);
+  // }
+  //
+  // const closeModal = () => {
+  //   setIsOrderModalOpened(false);
+  //   setIsIngredientModalOpened(false);
+  // }
+  //
+  // const handleCloseButton = () => {
+  //   closeModal();
+  // }
 
   return (
-    <IngredientContext.Provider value={items}>
+    <>
       <AppHeader />
-      <main className={generalStyles.content}>
-        {
-          items &&
-          <>
-            <BurgerIngredients content={items} openModal={openIngredientModal} closeModal={closeModal} isOpen={isIngredientModalOpen} getCurrentIngredientId={getCurrentIngredientId} />
-            <OrderTotalContext.Provider value={0}>
-              <BurgerConstructor content={items} openModal={openOrderModal} closeModal={closeModal} isOpen={isIngredientModalOpen} setOrder={setOrder}/>
-            </OrderTotalContext.Provider>
-          </>
-        }
-      </main>
+      { ingredientsList && (
+        <main className={generalStyles.content}>
 
-      {
-        isOrderModalOpen &&
-          <Modal children={<OrderDetails orderNumber={order} />} onClose={handleCloseButton} content={items} closeModal={closeModal} currentIngredientId={currentIngredientId} />
+              <>
+                <BurgerIngredients  />
+                {/*<BurgerConstructor />*/}
+              </>
+        </main>)
       }
+      {/*{*/}
+      {/*  isOrderModalOpen &&*/}
+      {/*    <Modal children={<OrderDetails orderNumber={order} />} content={items} currentIngredientId={currentIngredientId} />*/}
+      {/*}*/}
 
-      {
-        isIngredientModalOpen &&
-          <Modal children={<IngredientDetails items={items} iid={currentIngredientId} />} onClose={handleCloseButton} content={items} closeModal={closeModal} />
-      }
-    </IngredientContext.Provider>
+      {/*{*/}
+      {/*  isIngredientModalOpen &&*/}
+      {/*    <Modal children={<IngredientDetails items={items} iid={currentIngredientId} />} content={items}  />*/}
+      {/*}*/}
+    </>
   );
 }
 

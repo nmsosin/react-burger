@@ -1,13 +1,30 @@
-import React from 'react';
+import {React, useEffect, useMemo, useState} from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import IngredientItem from "../ingredient-item/ingredient-item";
+import {useDispatch, useSelector} from "react-redux";
 
 import BurgerIngredientsStyles from './burger-ingredients.module.css';
 import PropTypes from "prop-types";
 import checkPropTypes from "../../utils/prop-types";
+import {getIngredientsData} from "../../services/actions/ingredientsList";
 
-const BurgerIngredients = ({ openModal, content, getCurrentIngredientId }) => {
-  const [current, setCurrent] = React.useState('buns');
+const BurgerIngredients = () => {
+  const [current, setCurrent] = useState('buns');
+  const ingredients = useSelector(store => store.ingredients.ingredients);
+
+  const buns = useMemo(
+    () => ingredients.filter(item => item['type'] === 'bun'),
+    [ingredients]
+  );
+
+  const additives = useMemo(
+    () => ingredients.filter(item => item['type'] !== 'bun'),
+    [ingredients]
+  );
+
+  useEffect(() => {
+    console.log(ingredients)
+  }, [])
 
   return (
     <section>
@@ -27,21 +44,21 @@ const BurgerIngredients = ({ openModal, content, getCurrentIngredientId }) => {
         <li>
           <h2 id={"buns"} className={"text text_type_main-medium pt-10 pb-6"}>Булки</h2>
           <ul className={BurgerIngredientsStyles.ingredientItemsList}>
-            {content.filter(el => el.type === 'bun').map((el) => <IngredientItem key={el._id} iid={el._id} name={el.name} price={el.price} image={el.image} openModal={openModal} getCurrentIngredientId={getCurrentIngredientId} count={1} />)}
+            {buns.map((el) => <IngredientItem key={el._id} iid={el._id} count={1} />)}
           </ul>
         </li>
 
         <li>
           <h2 id={"sauces"} className={"text text_type_main-medium pt-10 pb-6"}>Соусы</h2>
           <ul className={BurgerIngredientsStyles.ingredientItemsList}>
-            {content.filter(el => el.type === 'sauce').map((el) => <IngredientItem key={el._id} iid={el._id} name={el.name} price={el.price} image={el.image} openModal={openModal} getCurrentIngredientId={getCurrentIngredientId} count={0} />)}
+            {additives.filter(el => el.type === 'sauce').map((el) => <IngredientItem key={el._id} iid={el._id} count={0} />)}
           </ul>
         </li>
 
         <li>
           <h2 id={"fillings"} className={"text text_type_main-medium pt-10 pb-6"}>Начинки</h2>
           <ul className={BurgerIngredientsStyles.ingredientItemsList}>
-            {content.filter(el => el.type === 'main').map((el) => <IngredientItem key={el._id} iid={el._id} name={el.name} price={el.price} image={el.image} openModal={openModal} getCurrentIngredientId={getCurrentIngredientId} count={2} />)}
+            {additives.filter(el => el.type === 'main').map((el) => <IngredientItem key={el._id} iid={el._id} count={2} />)}
           </ul>
         </li>
       </ul>
@@ -51,7 +68,7 @@ const BurgerIngredients = ({ openModal, content, getCurrentIngredientId }) => {
 
 export default BurgerIngredients;
 
-BurgerIngredients.propTypes = {
-  content: PropTypes.arrayOf(checkPropTypes).isRequired,
-  openModal: PropTypes.func.isRequired
-}
+// BurgerIngredients.propTypes = {
+//   content: PropTypes.arrayOf(checkPropTypes),
+//   openModal: PropTypes.func.isRequired
+// }
