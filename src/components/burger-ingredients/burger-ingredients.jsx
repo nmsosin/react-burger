@@ -10,21 +10,27 @@ import {getIngredientsData} from "../../services/actions/ingredientsList";
 
 const BurgerIngredients = () => {
   const [current, setCurrent] = useState('buns');
-  const ingredients = useSelector(store => store.ingredients.ingredients);
+  const ingredients = useSelector(store => store.ingredientsList.ingredients);
+
+
+  useEffect(() => {
+    console.log(ingredients)
+  }, [])
 
   const buns = useMemo(
     () => ingredients.filter(item => item['type'] === 'bun'),
     [ingredients]
   );
 
-  const additives = useMemo(
-    () => ingredients.filter(item => item['type'] !== 'bun'),
+  const sauces = useMemo(
+    () => ingredients.filter(item => item['type'] === 'sauce'),
     [ingredients]
   );
 
-  useEffect(() => {
-    console.log(ingredients)
-  }, [])
+  const fillings = useMemo(
+    () => ingredients.filter(item => item['type'] === 'main'),
+    [ingredients]
+  );
 
   return (
     <section>
@@ -44,21 +50,21 @@ const BurgerIngredients = () => {
         <li>
           <h2 id={"buns"} className={"text text_type_main-medium pt-10 pb-6"}>Булки</h2>
           <ul className={BurgerIngredientsStyles.ingredientItemsList}>
-            {buns.map((el) => <IngredientItem key={el._id} iid={el._id} count={1} />)}
+            {buns.map((el) => <IngredientItem ingredient={el} key={el._id} iid={el._id} count={1} />)}
           </ul>
         </li>
 
         <li>
           <h2 id={"sauces"} className={"text text_type_main-medium pt-10 pb-6"}>Соусы</h2>
           <ul className={BurgerIngredientsStyles.ingredientItemsList}>
-            {additives.filter(el => el.type === 'sauce').map((el) => <IngredientItem key={el._id} iid={el._id} count={0} />)}
+            {sauces.map((el) => <IngredientItem ingredient={el} key={el._id} iid={el._id} count={0} />)}
           </ul>
         </li>
 
         <li>
           <h2 id={"fillings"} className={"text text_type_main-medium pt-10 pb-6"}>Начинки</h2>
           <ul className={BurgerIngredientsStyles.ingredientItemsList}>
-            {additives.filter(el => el.type === 'main').map((el) => <IngredientItem key={el._id} iid={el._id} count={2} />)}
+            {fillings.map((el) => <IngredientItem ingredient={el} key={el._id} iid={el._id} count={2} />)}
           </ul>
         </li>
       </ul>

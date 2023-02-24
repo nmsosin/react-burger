@@ -2,24 +2,25 @@ import React from 'react';
 import PropTypes from "prop-types";
 import {Counter, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components';
 import ingredientItemStyles from './ingredient-item.module.css';
+import {useSelector} from "react-redux";
 
-const IngredientItem= ({ openModal, image, price, name, iid, getCurrentIngredientId, count }) => {
+const IngredientItem= ({ ingredient, count }) => {
 
-  
-    const handleIngredientCardClick = () => {
-    getCurrentIngredientId(iid);
-    openModal();
-  }
+
+  //   const handleIngredientCardClick = () => {
+  //   getCurrentIngredientId(iid);
+  //   openModal();
+  // }
 
   return (
-      <li className={ingredientItemStyles.card} onClick={handleIngredientCardClick}>
+      <li className={ingredientItemStyles.card} >
         <Counter count={count} size="default" extraClass="m-1" />
-        <img src={image} alt="Ингредиент космического бургера"/>
+        <img src={ingredient.image} alt="Ингредиент космического бургера"/>
         <span className={`text text_type_digits-default pt-1 pb-1 ${ingredientItemStyles.price}`}>
-          {price}
+          {ingredient.price}
           <CurrencyIcon type={"primary"} />
         </span>
-        <p className={`${ingredientItemStyles.ingredientName}`}>{name}</p>
+        <p className={`${ingredientItemStyles.ingredientName}`}>{ingredient.name}</p>
       </li>
   )
 }

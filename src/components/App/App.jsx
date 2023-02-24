@@ -34,13 +34,11 @@ function App() {
   //   }
   // }
 
-  const ingredientsList = useSelector(store => store.ingredients.ingredients);
-  // const ingredientsList = true;
+  const ingredientsList = useSelector(store => store.ingredientsList.ingredients);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log(ingredientsList)
     dispatch(getIngredientsData(dataUrl))
   }, [dispatch]);
 
@@ -76,7 +74,7 @@ function App() {
 
               <>
                 <BurgerIngredients  />
-                {/*<BurgerConstructor />*/}
+                <BurgerConstructor />
               </>
         </main>)
       }

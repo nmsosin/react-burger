@@ -11,29 +11,37 @@ import {useDispatch, useSelector} from "react-redux";
 
 
 const BurgerConstructor = ({ openModal, setOrder }) => {
-  const ingredients = useSelector(store => store.ingredients.ingredients);
+  const constructorIngredients = useSelector(store => store.ingredientsList.ingredients);
+  // const dispatch = useDispatch();
 
+  useEffect(() => {
+    console.log(constructorIngredients)
+  }, [])
   //memoize burger details
 
   const buns = useMemo(
-    () => ingredients.filter(item => item.type === 'bun'),
-    [ingredients]
+    () => constructorIngredients.filter(item => item['type'] === 'bun'),
+    [constructorIngredients]
   );
 
+  const randomIndex = Math.floor(Math.random() * 2);
+
+  let randomBun = buns[randomIndex];
+
   const additives = useMemo(
-    () => ingredients.filter(item => item.type !== 'bun'),
-    [ingredients]
+    () => constructorIngredients.filter(item => item['type'] !== 'bun'),
+    [constructorIngredients]
   );
 
   // specify chosen burger ingredients
-  const randomIndex = Math.floor(Math.random() * 2);
+
 
   const chosenIngredients = [].concat(buns[randomIndex], additives, buns[randomIndex]);
-
 
   // calculate order sum
   let orderTotal = useMemo(
     () => {
+      console.log(chosenIngredients);
       let result = 0;
       chosenIngredients.map(item => result += item.price);
       return result;
@@ -62,6 +70,7 @@ const BurgerConstructor = ({ openModal, setOrder }) => {
   const checkResponse = (res) => {
     return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
   };
+
   const createOrder = async (url, options) => {
     try {
       const res = await fetch(orderUrl, {
@@ -95,10 +104,10 @@ const BurgerConstructor = ({ openModal, setOrder }) => {
           <ConstructorElement
             type="top"
             isLocked={true}
-            key={`${buns[randomIndex]._id}1`}
-            text={`${buns[randomIndex].name} (верх)`}
-            price={buns[randomIndex].price}
-            thumbnail={buns[randomIndex].image}
+            key={`${randomBun._id}1`}
+            text={`${randomBun.name} (верх)`}
+            price={randomBun.price}
+            thumbnail={randomBun.image}
             extraClass={`ml-8 mr-6 ${burgerConstructorStyles.fixed}`}
           />
 
@@ -125,10 +134,10 @@ const BurgerConstructor = ({ openModal, setOrder }) => {
         <ConstructorElement
           type="bottom"
           isLocked={true}
-          key={`${buns[randomIndex]._id}2`}
-          text={`${buns[randomIndex].name} (низ)`}
-          price={buns[randomIndex].price}
-          thumbnail={buns[randomIndex].image}
+          key={`${randomBun._id}2`}
+          text={`${randomBun.name} (низ)`}
+          price={randomBun.price}
+          thumbnail={randomBun.image}
           extraClass={`ml-8 mr-6 ${burgerConstructorStyles.fixed}`}
         />
 
