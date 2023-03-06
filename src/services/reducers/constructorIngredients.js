@@ -12,6 +12,7 @@ export const constructorIngredientsReducer = (state = initialConstructorState, a
         constructorIngredients: [
           ...state.constructorIngredients,
           {
+            //TODO: расписать детально пейлоад по наименованиям свойств каждого ингредиента
             constructorIngredientId: action.constructorIngredientId, ...action.payload
           }
         ]

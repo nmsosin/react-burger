@@ -9,6 +9,8 @@ import OrderDetails from "../order-details/order-details";
 import { IngredientContext, OrderTotalContext} from "../../utils/userContext";
 import { getIngredientsData } from "../../services/actions/ingredientsList";
 import {useDispatch, useSelector} from "react-redux";
+import {DndProvider} from "react-dnd";
+import {HTML5Backend} from "react-dnd-html5-backend";
 
 const dataUrl = 'https://norma.nomoreparties.space/api/ingredients';
 
@@ -69,13 +71,14 @@ function App() {
   return (
     <>
       <AppHeader />
-      { ingredientsList && (
+      { (ingredientsList.length !== 0) && (
         <main className={generalStyles.content}>
-
+          <DndProvider backend={HTML5Backend}>
               <>
                 <BurgerIngredients  />
                 <BurgerConstructor />
               </>
+          </DndProvider>
         </main>)
       }
       {/*{*/}
