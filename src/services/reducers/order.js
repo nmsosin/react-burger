@@ -1,10 +1,10 @@
 import { GET_ORDER_REQUEST, GET_ORDER_FAILED, GET_ORDER_SUCCESS, RESET_ORDER} from "../actions/order";
 
 const orderInitialState = {
+  orderNumber: 0,
+  isOrderModalOpen: false,
   orderRequest: false,
   orderFailed: false,
-  orderNumber: 0,
-  orderModalIsOpen: false,
 }
 
 export const orderReducer = ( state = orderInitialState, action ) => {
@@ -20,7 +20,7 @@ export const orderReducer = ( state = orderInitialState, action ) => {
         ...state,
         orderRequest: false,
         orderNumber: action.payload,
-        orderModalIsOpen: true,
+        isOrderModalOpen: true,
       }
     };
     case GET_ORDER_FAILED: {

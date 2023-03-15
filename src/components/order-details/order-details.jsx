@@ -4,7 +4,7 @@ import orderDetailsStyles from './order-details.module.css';
 
 
 const OrderDetails = ( {orderNumber} ) => {
-
+  console.log(orderNumber);
   return(
     <div className={orderDetailsStyles.orderModalContainer}>
       <h2 className={`text text_type_digits-large pt-15 pb-8 pl-15 pr-15 `}>{orderNumber}</h2>

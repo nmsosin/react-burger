@@ -2,10 +2,16 @@ import React from 'react';
 import ingredientDetailsStyles from "../ingredient-details/ingredient-details.module.css";
 import PropTypes from "prop-types";
 import checkPropTypes from "../../utils/prop-types";
+import {useSelector} from "react-redux";
 
-const IngredientDetails = ({ items, iid }) => {
+const IngredientDetails = () => {
 
-  const currentIngredient = items.find(i => i._id === iid);
+  // const currentIngredient = items.find(i => i._id === iid);
+  const { currentIngredient, isIngredientModalOpen } = useSelector((state) => ({
+    currentIngredient: state.currentIngredient.currentIngredient,
+    isIngredientModalOpen: state.currentIngredient.isIngredientModalOpen
+  }));
+  // console.log(currentIngredient);
 
   return(
     <div>
@@ -39,8 +45,8 @@ const IngredientDetails = ({ items, iid }) => {
 
 export default IngredientDetails;
 
-IngredientDetails.propTypes = {
-  items: PropTypes.arrayOf(checkPropTypes).isRequired,
-  iid: PropTypes.string.isRequired,
-  orderNumber: PropTypes.number.isRequired,
-}
+// IngredientDetails.propTypes = {
+//   items: PropTypes.arrayOf(checkPropTypes).isRequired,
+//   iid: PropTypes.string.isRequired,
+//   orderNumber: PropTypes.number.isRequired,
+// }

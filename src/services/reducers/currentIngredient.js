@@ -2,7 +2,7 @@ import { OPEN_CURRENT_INGREDIENT, CLOSE_CURRENT_INGREDIENT } from "../actions/cu
 
 const currentIngredientInitialState = {
   currentIngredient: null,
-  modalIsOpen: false
+  isIngredientModalOpen: false
 }
 
 export const currentIngredientReducer = ( state = currentIngredientInitialState, action ) => {
@@ -11,7 +11,7 @@ export const currentIngredientReducer = ( state = currentIngredientInitialState,
       return {
         ...state,
         currentIngredient: action.payload,
-        modalIsOpen: true,
+        isIngredientModalOpen: true,
       }
     };
     case CLOSE_CURRENT_INGREDIENT: {

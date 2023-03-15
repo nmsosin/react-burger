@@ -81,15 +81,6 @@ function App() {
           </DndProvider>
         </main>)
       }
-      {/*{*/}
-      {/*  isOrderModalOpen &&*/}
-      {/*    <Modal children={<OrderDetails orderNumber={order} />} content={items} currentIngredientId={currentIngredientId} />*/}
-      {/*}*/}
-
-      {/*{*/}
-      {/*  isIngredientModalOpen &&*/}
-      {/*    <Modal children={<IngredientDetails items={items} iid={currentIngredientId} />} content={items}  />*/}
-      {/*}*/}
     </>
   );
 }

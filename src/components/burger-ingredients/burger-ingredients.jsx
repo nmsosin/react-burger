@@ -31,9 +31,9 @@ const BurgerIngredients = () => {
 
 
   // Tab highlight feature for ingredients list scrolling
-  const [bunInViewRef, inViewBuns] = useInView({ treshold: 0 });
-  const [sauceInViewRef, inViewSauces] = useInView({ treshold: 0 });
-  const [fillingInViewRef, inViewFillings] = useInView({ treshold: 0 });
+  const [bunInViewRef, inViewBuns] = useInView();
+  const [sauceInViewRef, inViewSauces] = useInView();
+  const [fillingInViewRef, inViewFillings] = useInView();
 
   useEffect(() => {
       if (inViewBuns) {
