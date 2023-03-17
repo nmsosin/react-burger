@@ -6,20 +6,20 @@ import checkPropTypes from "../../utils/prop-types";
 import {IngredientContext, OrderTotalContext} from "../../utils/userContext";
 import {getIngredientsData} from "../../services/actions/ingredientsList";
 import {useDispatch, useSelector} from "react-redux";
-import {useDrop} from "react-dnd";
+import {useDrag, useDrop} from "react-dnd";
 import {ADD_INGREDIENT, REMOVE_INGREDIENT} from "../../services/actions/constructorIngredients";
 import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
 import {OPEN_CURRENT_INGREDIENT} from "../../services/actions/currentIngredient";
 import {createOrderId, GET_ORDER_SUCCESS} from "../../services/actions/order";
+import OptionalConstructorIngredients from "../optional-constructor-ingredients/optional-constructor-ingredients";
 
 
 
 
-const BurgerConstructor = ({ setOrder }) => {
+const BurgerConstructor = () => {
   const { constructorIngredients } = useSelector((store) => ({
     constructorIngredients: store.constructorIngredients.constructorIngredients,
-    // isOrderModalOpen: store.constructorIngredients.isOrderModalOpen
   }));
 
   const { orderNumber, isOrderModalOpen } = useSelector((store) => ({
@@ -40,19 +40,15 @@ const BurgerConstructor = ({ setOrder }) => {
     [constructorIngredients]
   );
 
-  // specify chosen burger ingredients
-
-  const chosenIngredients = buns.length === 0 ? [] : [].concat(buns[0], additives, buns[0]);
-
   // calculate order sum
   let orderTotal = useMemo(
     () => {
       let result = 0;
       constructorIngredients.map(item => {
-        if ((buns.length === 0 && item.type === 'bun') || item.type !== 'bun') {
-          result += item.price
+        if (item.type === 'bun') {
+          return result += item.price * 2;
         } else {
-          return result;
+          return result += item.price;
         }
       });
       return result;
@@ -64,7 +60,7 @@ const BurgerConstructor = ({ setOrder }) => {
 
   // accumulate chosen ingredients id for sending to API
   const chosenIngredientsId = () => {
-    return chosenIngredients.map(ingredient => ingredient._id)
+    return constructorIngredients.map(ingredient => ingredient._id)
   }
 
   // send order to API
@@ -92,13 +88,8 @@ const BurgerConstructor = ({ setOrder }) => {
   // }
 
   // order button handler
-  const handleOrderButtonClick = (evt) => {
-    dispatch({ type: GET_ORDER_SUCCESS, payload: orderNumber })
-    console.log(evt.currentTarget);
-    // openModal();
-    createOrderId(orderUrl, chosenIngredientsId());
-    console.log(isOrderModalOpen);
-    console.log(orderNumber);
+  const handleOrderButtonClick = () => {
+    dispatch(createOrderId(orderUrl, chosenIngredientsId()))
   }
 
   // Adding DnD feature
@@ -109,21 +100,12 @@ const BurgerConstructor = ({ setOrder }) => {
     })
   }
 
-  function handleDelete (ingredient) {
-    dispatch({
-      type: REMOVE_INGREDIENT,
-      payload: ingredient
-    })
-  }
-
-  const [{ isHover }, dropTarget] = useDrop({
+  const [{ isHover }, dropRef] = useDrop({
     accept: "ingredients",
     collect: (monitor) => ({
       isHover: monitor.isOver()
     }),
     drop(ingredient) {
-      console.log(ingredient)
-      console.log(constructorIngredients.filter(item => item.type === 'bun')[0])
       if (ingredient.type === "bun" && !constructorIngredients.some(item => item.type === "bun")) {
         handleDrop(ingredient);
       } else if (ingredient.type === "bun" && ingredient._id !== constructorIngredients.filter(item => item.type === 'bun')[0]._id) {
@@ -135,10 +117,28 @@ const BurgerConstructor = ({ setOrder }) => {
     }
   });
 
-  // console.log("isHover:" ,isHover);
+  const handleDelete = (ingredient) => {
+    console.log('ingredient:', ingredient);
+    dispatch({
+      type: REMOVE_INGREDIENT,
+      payload: ingredient
+    })
+  }
+
+  const [{ onSortHover}, dropSortRef] = useDrop({
+    accept: "optionalIngredient",
+    collect: (monitor) => ({
+      onSortHover: monitor.isOver()
+    }),
+    drop(optionalIngredient) {
+      console.log("optionalIngredient", optionalIngredient);
+    }
+  })
+
+  console.log("onSortHover:", onSortHover);
 
   return (<>
-    <section ref={dropTarget} style={{border: "3px solid red"}} className="pt-25 pl-8 pr-4">
+    <section ref={dropRef} className="pt-25 pl-8 pr-4">
       <div  className={burgerConstructorStyles.constructorContainer} >
 
         {buns[0] !== undefined ?
@@ -159,29 +159,17 @@ const BurgerConstructor = ({ setOrder }) => {
           />
         }
 
-        <div className={`pr-4 ${burgerConstructorStyles.optionalIngredientsContainer}`}>
+        <div  ref={dropSortRef} className={`pr-4 ${burgerConstructorStyles.optionalIngredientsContainer}`}>
 
           {
-            additives.map((ingredient) => {
-              return (
-                  <div className={burgerConstructorStyles.constructorElementContainer} key={`${ingredient._id}_${constructorIngredients.indexOf(ingredient)}`}>
-                    <span className={`pr-2 ${burgerConstructorStyles.dragIcon}`}><DragIcon type="primary"/></span>
-                    <ConstructorElement
-                      text={ingredient.name}
-                      price={ingredient.price}
-                      thumbnail={ingredient.image}
-                      handleClose={handleDelete}
-                    />
-                  </div>
-                )
-            })
+            additives.map((ingredient) => <OptionalConstructorIngredients ingredient={ingredient} ingredientIndex={constructorIngredients.indexOf(ingredient)} />)
           }
 
         </div>
 
         {buns[0] !== undefined ?
           <ConstructorElement
-            type="top"
+            type="bottom"
             isLocked={true}
             text={`${buns[0].name} (низ)`}
             price={buns[0].price}
@@ -189,7 +177,7 @@ const BurgerConstructor = ({ setOrder }) => {
             extraClass={`ml-8 mr-6 ${burgerConstructorStyles.fixed}`}
           />
           : <ConstructorElement
-            type="top"
+            type="bottom"
             isLocked={true}
             text={`Выберите космобулку`}
             price={0}
@@ -213,7 +201,7 @@ const BurgerConstructor = ({ setOrder }) => {
 
     {
       isOrderModalOpen &&
-      <Modal children={<OrderDetails />} />
+      <Modal children={<OrderDetails orderNumber={orderNumber} />} />
     }
     </>
   )

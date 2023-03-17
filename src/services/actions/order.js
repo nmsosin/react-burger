@@ -45,7 +45,7 @@ export const createOrderId = (orderUrl, options) => {
         if (res) {
           dispatch({
             type: GET_ORDER_SUCCESS,
-            order: res.order.number
+            payload: res.order.number
           })
         } else {
           dispatch({
