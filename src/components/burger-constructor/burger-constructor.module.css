@@ -23,6 +23,7 @@
   overflow: auto;
   justify-content: space-between;
   align-items: stretch;
+  padding-left: 0;
 }
 
 .optionalIngredientsContainer::-webkit-scrollbar {

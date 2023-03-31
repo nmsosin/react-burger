@@ -10,10 +10,15 @@ import {OPEN_CURRENT_INGREDIENT, CLOSE_CURRENT_INGREDIENT} from "../../services/
 
 const IngredientItem= ({ ingredient }) => {
   const { currentIngredient, isIngredientModalOpen } = useSelector(store => store.currentIngredient)
-  const constructorIngredientsStore = useSelector(store => store.constructorIngredients.constructorIngredients);
+  const { constructorIngredients, bun } = useSelector((store) => ({
+    constructorIngredients: store.constructorIngredients.optionalIngredients,
+    bun: store.constructorIngredients.bun
+  }));
+
   const dispatch = useDispatch();
 
-  const count = constructorIngredientsStore.reduce((accumulator, current) => {
+  const count = ingredient.type !== "bun"
+    ? constructorIngredients.reduce((accumulator, current) => {
     // console.log("prev:", accumulator, "current:", current);
 
     if (accumulator[current._id] !== undefined) {
@@ -23,10 +28,9 @@ const IngredientItem= ({ ingredient }) => {
     }
 
     return accumulator;
-  }, {});
+  }, {})
 
-
-
+  : bun ? { [bun._id]: 1 } : 0;
 
     // Adding DnD feature
   const [{ isDragging}, dragRef] = useDrag({
@@ -46,8 +50,7 @@ const IngredientItem= ({ ingredient }) => {
     // openModal();
   }
 
-    const handleCloseButton = (evt) => {
-      evt.stopPropagation();
+    const handleCloseButton = () => {
       dispatch({type: CLOSE_CURRENT_INGREDIENT})
     }
 
