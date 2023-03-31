@@ -16,7 +16,6 @@ export const orderReducer = ( state = orderInitialState, action ) => {
       }
     };
     case GET_ORDER_SUCCESS: {
-      console.log(action.payload);
       return {
         ...state,
         orderRequest: false,

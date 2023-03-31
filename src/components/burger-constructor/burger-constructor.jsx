@@ -55,7 +55,6 @@ const BurgerConstructor = () => {
 
   // Adding DnD feature
   function handleDrop (ingredient) {
-    console.log("ingredient", ingredient);
     dispatch({
       type: ADD_INGREDIENT,
       payload: ingredient,
@@ -92,13 +91,7 @@ const BurgerConstructor = () => {
           thumbnail={bun.image}
           extraClass={`ml-8 mr-6 ${burgerConstructorStyles.fixed}`}
         />
-          : <ConstructorElement
-            type="top"
-            isLocked={true}
-            text={`Выберите космобулку`}
-            price={0}
-            extraClass={`ml-8 mr-6 ${burgerConstructorStyles.fixed}`}
-          />
+          : null
         }
 
         <ul className={`pr-4 ${burgerConstructorStyles.optionalIngredientsContainer}`}>
@@ -118,13 +111,7 @@ const BurgerConstructor = () => {
             thumbnail={bun.image}
             extraClass={`ml-8 mr-6 ${burgerConstructorStyles.fixed}`}
           />
-          : <ConstructorElement
-            type="bottom"
-            isLocked={true}
-            text={`Выберите космобулку`}
-            price={0}
-            extraClass={`ml-8 mr-6 ${burgerConstructorStyles.fixed}`}
-          />
+          : null
         }
 
       </div>

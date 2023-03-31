@@ -14,7 +14,6 @@ const OptionalConstructorIngredients = ({ ingredient, ingredientIndex }) => {
   const ref = useRef(null);
 
   const handleDelete = (ingredient) => {
-    console.log('ingredient:', ingredient, ingredientIndex);
     dispatch({
       type: REMOVE_INGREDIENT,
       payload: ingredientIndex

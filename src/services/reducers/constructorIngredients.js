@@ -15,7 +15,6 @@ export const constructorIngredientsReducer = (state = initialConstructorState, a
         };
       };
 
-      console.log("action.payload", action.payload);
       return {
         ...state,
         optionalIngredients: [
