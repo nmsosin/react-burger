@@ -8,8 +8,7 @@ import Modal from "../modal/modal";
 import IngredientDetails from "../ingredient-details/ingredient-details";
 import {OPEN_CURRENT_INGREDIENT, CLOSE_CURRENT_INGREDIENT} from "../../services/actions/currentIngredient";
 
-const IngredientItem= ({ ingredient }) => {
-  const { currentIngredient, isIngredientModalOpen } = useSelector(store => store.currentIngredient)
+const IngredientItem= ({ ingredient, openModalHandler }) => {
   const { constructorIngredients, bun } = useSelector((store) => ({
     constructorIngredients: store.constructorIngredients.optionalIngredients,
     bun: store.constructorIngredients.bun
@@ -41,24 +40,12 @@ const IngredientItem= ({ ingredient }) => {
     })
   });
 
-  // console.log(isDragging);
-
-
-    const handleIngredientCardClick = () => {
-      dispatch({ type: OPEN_CURRENT_INGREDIENT, payload: ingredient })
-    // getCurrentIngredientId(iid);
-    // openModal();
-  }
-
-    const handleCloseButton = () => {
-      dispatch({type: CLOSE_CURRENT_INGREDIENT})
-    }
 
   return (
     <>
-      <li ref={dragRef} className={ingredientItemStyles.card} onClick={handleIngredientCardClick} >
+      <li ref={dragRef} className={ingredientItemStyles.card} onClick={openModalHandler} >
         <Counter count={count[ingredient._id]} size="default" extraClass="m-1" />
-        <img src={ingredient.image} alt="Ингредиент космического бургера"/>
+        <img src={ingredient.image} alt={ingredient.name}/>
         <span className={`text text_type_digits-default pt-1 pb-1 ${ingredientItemStyles.price}`}>
           {ingredient.price}
           <CurrencyIcon type={"primary"} />
@@ -67,10 +54,7 @@ const IngredientItem= ({ ingredient }) => {
       </li>
 
 
-    {
-      isIngredientModalOpen &&
-      <Modal children={<IngredientDetails />} onClose={handleCloseButton} />
-    }
+
   </>
   )
 }

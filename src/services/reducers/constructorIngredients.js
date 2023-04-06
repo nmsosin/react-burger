@@ -1,4 +1,4 @@
-import { ADD_INGREDIENT, REMOVE_INGREDIENT, SORT_INGREDIENT } from "../actions/constructorIngredients";
+import { ADD_INGREDIENT, REMOVE_INGREDIENT, SORT_INGREDIENT, RESET_INGREDIENT } from "../actions/constructorIngredients";
 
 const initialConstructorState = {
   bun: null,
@@ -20,8 +20,8 @@ export const constructorIngredientsReducer = (state = initialConstructorState, a
         optionalIngredients: [
           ...state.optionalIngredients,
           {
-            constructorIngredientId: action.payload.constructorIngredientId,
-            ...action.payload
+            constructorIngredientId: action.constructorIngredientId,
+            ...action.payload,
           }
         ]
       };
@@ -40,6 +40,11 @@ export const constructorIngredientsReducer = (state = initialConstructorState, a
       return {
         ...state,
         optionalIngredients: action.payload,
+      };
+
+    case RESET_INGREDIENT:
+      return {
+        ...initialConstructorState,
       };
 
     default: {

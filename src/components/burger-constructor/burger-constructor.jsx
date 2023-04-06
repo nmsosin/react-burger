@@ -7,15 +7,19 @@ import {IngredientContext, OrderTotalContext} from "../../utils/userContext";
 import {getIngredientsData} from "../../services/actions/ingredientsList";
 import {useDispatch, useSelector} from "react-redux";
 import {useDrag, useDrop} from "react-dnd";
-import {ADD_INGREDIENT, REMOVE_INGREDIENT, SORT_INGREDIENT} from "../../services/actions/constructorIngredients";
+import {
+  ADD_INGREDIENT,
+  REMOVE_INGREDIENT,
+  SORT_INGREDIENT,
+  RESET_INGREDIENT,
+  addConstructorIngredient
+} from "../../services/actions/constructorIngredients";
 import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
 import {CLOSE_CURRENT_INGREDIENT, OPEN_CURRENT_INGREDIENT} from "../../services/actions/currentIngredient";
 import {createOrderId, GET_ORDER_SUCCESS, RESET_ORDER} from "../../services/actions/order";
 import OptionalConstructorIngredients from "../optional-constructor-ingredients/optional-constructor-ingredients";
-
-
-
+import { v4 as uuidv4 } from 'uuid';
 
 const BurgerConstructor = () => {
   const { optionalIngredients, bun } = useSelector((store) => ({
@@ -46,20 +50,13 @@ const BurgerConstructor = () => {
   }
 
   // send order to API
-  const orderUrl = 'https://norma.nomoreparties.space/api/orders';
-
-  // order button handler
   const handleOrderButtonClick = () => {
-    dispatch(createOrderId(orderUrl, chosenIngredientsId()))
+    dispatch(createOrderId('orders', chosenIngredientsId()))
   }
 
   // Adding DnD feature
   function handleDrop (ingredient) {
-    dispatch({
-      type: ADD_INGREDIENT,
-      payload: ingredient,
-      constructorIngredientId: ingredient._id + optionalIngredients.indexOf(ingredient)
-    })
+    dispatch(addConstructorIngredient(ingredient, uuidv4()))
   }
 
 
@@ -76,6 +73,7 @@ const BurgerConstructor = () => {
 
   const handleCloseButton = () => {
     dispatch({type: RESET_ORDER})
+    dispatch({type: RESET_INGREDIENT})
   }
 
   return (<>
@@ -97,7 +95,7 @@ const BurgerConstructor = () => {
         <ul className={`pr-4 ${burgerConstructorStyles.optionalIngredientsContainer}`}>
 
           {
-            optionalIngredients.map((ingredient) => <OptionalConstructorIngredients key={`${ingredient._id}_${optionalIngredients.indexOf(ingredient)}`} ingredient={ingredient} ingredientIndex={optionalIngredients.indexOf(ingredient)} />)
+            optionalIngredients.map((ingredient) => <OptionalConstructorIngredients key={ingredient.constructorIngredientId} ingredient={ingredient} ingredientIndex={optionalIngredients.indexOf(ingredient)} />)
           }
 
         </ul>
@@ -122,9 +120,13 @@ const BurgerConstructor = () => {
           </p>
           <CurrencyIcon type="primary" />
         </div>
-        <Button htmlType="button" type="primary" size="large" onClick={handleOrderButtonClick} >
+        { bun
+          ? <Button htmlType="button" type="primary" size="large" onClick={handleOrderButtonClick}>
           Оформить заказ
         </Button>
+          : <Button htmlType="button" type="primary" size="large" onClick={handleOrderButtonClick} disabled>
+            Выберите космобулку
+          </Button>}
       </div>
     </section>
 

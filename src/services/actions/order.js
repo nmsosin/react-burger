@@ -1,13 +1,10 @@
 import {GET_INGREDIENTS_FAILED, GET_INGREDIENTS_SUCCESS} from "./ingredientsList";
+import request from "../../utils/api";
 
 export const GET_ORDER_REQUEST = "GET_ORDER_REQUEST";
 export const GET_ORDER_SUCCESS = "GET_ORDER_SUCCESS";
 export const GET_ORDER_FAILED = "GET_ORDER_FAILED";
 export const RESET_ORDER = "RESET_ORDER";
-
-const checkResponse = (res) => {
-  return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
-};
 
 // export const createOrder = async (url, options) => {
 //   try {
@@ -27,12 +24,12 @@ const checkResponse = (res) => {
 //   }
 // }
 
-export const createOrderId = (orderUrl, options) => {
+export const createOrderId = (orderUrlEndpoint, options) => {
   return function (dispatch) {
     dispatch({
       type: GET_ORDER_REQUEST,
     });
-    fetch(orderUrl, {
+    request(orderUrlEndpoint, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -40,8 +37,7 @@ export const createOrderId = (orderUrl, options) => {
       body: JSON.stringify({
         'ingredients': options,
       })
-    }).then(checkResponse)
-      .then( res  => {
+    }).then( res  => {
         if (res) {
           dispatch({
             type: GET_ORDER_SUCCESS,

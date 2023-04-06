@@ -8,8 +8,12 @@ import BurgerIngredientsStyles from './burger-ingredients.module.css';
 import PropTypes from "prop-types";
 import checkPropTypes from "../../utils/prop-types";
 import {getIngredientsData} from "../../services/actions/ingredientsList";
+import Modal from "../modal/modal";
+import IngredientDetails from "../ingredient-details/ingredient-details";
+import {CLOSE_CURRENT_INGREDIENT, OPEN_CURRENT_INGREDIENT} from "../../services/actions/currentIngredient";
 
 const BurgerIngredients = () => {
+  const { currentIngredient, isIngredientModalOpen } = useSelector(store => store.currentIngredient)
   const [current, setCurrent] = useState('buns');
 
   const ingredients = useSelector(store => store.ingredientsList.ingredients);
@@ -100,43 +104,60 @@ const BurgerIngredients = () => {
   }
 
 
+  const dispatch = useDispatch();
+
+  const handleIngredientCardClick = (ingredient) => {
+    dispatch({ type: OPEN_CURRENT_INGREDIENT, payload: ingredient })
+  }
+
+  const handleCloseButton = () => {
+    dispatch({type: CLOSE_CURRENT_INGREDIENT})
+  }
+
   return (
-    <section>
-      <h1 className="text text_type_main-large pt-10 pb-5">Соберите бургер</h1>
-      <div style={{ display: 'flex' }}>
-        <Tab value="buns" active={current === 'buns'} onClick={handleTabClick}>
-          Булки
-        </Tab>
-        <Tab value="sauces" active={current === 'sauces'} onClick={handleTabClick}>
-          Соусы
-        </Tab>
-        <Tab value="fillings" active={current === 'fillings'} onClick={handleTabClick}>
-          Начинки
-        </Tab>
-      </div>
-      <ul id={"ingredientsListSection"} className={BurgerIngredientsStyles.ingredientTypesList}>
-        <li>
-          <h2 id={"buns"} ref={setBunRefs} className={"text text_type_main-medium pt-10 pb-6"}>Булки</h2>
-          <ul className={BurgerIngredientsStyles.ingredientItemsList}>
-            {buns.map((el) => <IngredientItem ingredient={el} key={el._id} iid={el._id} />)}
-          </ul>
-        </li>
+    <>
+      <section>
+        <h1 className="text text_type_main-large pt-10 pb-5">Соберите бургер</h1>
+        <div style={{ display: 'flex' }}>
+          <Tab value="buns" active={current === 'buns'} onClick={handleTabClick}>
+            Булки
+          </Tab>
+          <Tab value="sauces" active={current === 'sauces'} onClick={handleTabClick}>
+            Соусы
+          </Tab>
+          <Tab value="fillings" active={current === 'fillings'} onClick={handleTabClick}>
+            Начинки
+          </Tab>
+        </div>
+        <ul id={"ingredientsListSection"} className={BurgerIngredientsStyles.ingredientTypesList}>
+          <li>
+            <h2 id={"buns"} ref={setBunRefs} className={"text text_type_main-medium pt-10 pb-6"}>Булки</h2>
+            <ul className={BurgerIngredientsStyles.ingredientItemsList}>
+              {buns.map((el) => <IngredientItem ingredient={el} key={el._id} iid={el._id} openModalHandler={() => handleIngredientCardClick(el)}  />)}
+            </ul>
+          </li>
 
-        <li>
-          <h2 id={"sauces"} ref={setSauceRefs} className={"text text_type_main-medium pt-10 pb-6"}>Соусы</h2>
-          <ul className={BurgerIngredientsStyles.ingredientItemsList}>
-            {sauces.map((el) => <IngredientItem ingredient={el} key={el._id} iid={el._id} />)}
-          </ul>
-        </li>
+          <li>
+            <h2 id={"sauces"} ref={setSauceRefs} className={"text text_type_main-medium pt-10 pb-6"}>Соусы</h2>
+            <ul className={BurgerIngredientsStyles.ingredientItemsList}>
+              {sauces.map((el) => <IngredientItem ingredient={el} key={el._id} iid={el._id} openModalHandler={() => handleIngredientCardClick(el)} />)}
+            </ul>
+          </li>
 
-        <li>
-          <h2 id={"fillings"} ref={setFillingRefs} className={"text text_type_main-medium pt-10 pb-6"}>Начинки</h2>
-          <ul className={BurgerIngredientsStyles.ingredientItemsList}>
-            {fillings.map((el) => <IngredientItem ingredient={el} key={el._id} iid={el._id} />)}
-          </ul>
-        </li>
-      </ul>
-    </section>
+          <li>
+            <h2 id={"fillings"} ref={setFillingRefs} className={"text text_type_main-medium pt-10 pb-6"}>Начинки</h2>
+            <ul className={BurgerIngredientsStyles.ingredientItemsList}>
+              {fillings.map((el) => <IngredientItem ingredient={el} key={el._id} iid={el._id} openModalHandler={() => handleIngredientCardClick(el)} />)}
+            </ul>
+          </li>
+        </ul>
+      </section>
+
+      {
+        isIngredientModalOpen &&
+        <Modal children={<IngredientDetails ingredient={currentIngredient} />} onClose={handleCloseButton} />
+      }
+    </>
   )
 }
 

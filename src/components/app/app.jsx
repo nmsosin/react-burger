@@ -1,6 +1,6 @@
 import { useState,  useEffect } from 'react';
 import AppHeader from "../app-header/app-header";
-import generalStyles from "./App.module.css";
+import generalStyles from "./app.module.css";
 import BurgerIngredients from "../burger-ingredients/burger-ingredients";
 import BurgerConstructor from "../burger-constructor/burger-constructor";
 import Modal from "../modal/modal";
@@ -74,10 +74,8 @@ function App() {
       { (ingredientsList.length !== 0) && (
         <main className={generalStyles.content}>
           <DndProvider backend={HTML5Backend}>
-              <>
                 <BurgerIngredients  />
                 <BurgerConstructor />
-              </>
           </DndProvider>
         </main>)
       }
