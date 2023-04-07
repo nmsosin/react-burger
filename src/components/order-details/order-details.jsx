@@ -1,13 +1,15 @@
 import React from 'react';
 import { CheckMarkIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import orderDetailsStyles from './order-details.module.css';
+import PropTypes from "prop-types";
+import ModalOverlay from "../modal-overlay/modal-overlay";
 
 
-const OrderDetails = () => {
-
+const OrderDetails = ( {orderNumber} ) => {
+  // console.log(orderNumber);
   return(
     <div className={orderDetailsStyles.orderModalContainer}>
-      <h2 className={`text text_type_digits-large pt-15 pb-8 pl-15 pr-15 `}>034536</h2>
+      <h2 className={`text text_type_digits-large pt-15 pb-8 pl-15 pr-15 `}>{orderNumber}</h2>
       <span className={`text text_type_main-small pb-15 ${orderDetailsStyles.oderIdSubtitle}`}>идентификатор заказа</span>
       <div className={`m-5 ${orderDetailsStyles.checkmarkIconBackground}`}>
         <CheckMarkIcon type="primary" />
@@ -19,3 +21,7 @@ const OrderDetails = () => {
 }
 
 export default OrderDetails;
+
+OrderDetails.propTypes = {
+  orderNumber: PropTypes.number.isRequired,
+}
