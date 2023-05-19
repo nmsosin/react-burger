@@ -20,10 +20,10 @@ const NavigationButton = ({ type, text, icon }) => {
   }
 
   return (
-    <a href={"#"} className={`text text_type_main-default text_color_inactive p-5 ${navButtonStyles.navLink}`}>
+    <div className={`text text_type_main-default text_color_inactive p-5 ${navButtonStyles.navLink}`}>
       {icon}
       <p className={`pl-2 ${navButtonStyles.text}`}>{text}</p>
-    </a>
+    </div>
   )
 }
 

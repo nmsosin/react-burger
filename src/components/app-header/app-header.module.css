@@ -18,3 +18,7 @@
   gap: 8px;
   justify-self: start;
 }
+
+.active {
+  color: white;
+}
