@@ -39,11 +39,7 @@ function App() {
         <AppHeader />
 
         <Routes>
-
-        { (ingredientsList.length !== 0) && ( <Route path="/" element={<MainPage />} /> ) }
-
-
-          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/" element={<MainPage />} />
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
           <Route path="/ingredient" element={<IngredientPage />} />
           <Route path="/login" element={<LoginPage />} />

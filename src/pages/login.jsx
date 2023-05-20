@@ -1,9 +1,10 @@
 import { useState, useRef } from 'react';
-import { Input } from '@ya.praktikum/react-developer-burger-ui-components';
+import {EmailInput, Input} from '@ya.praktikum/react-developer-burger-ui-components';
 import {NavLink} from "react-router-dom";
 
 export function LoginPage () {
-  const [value, setValue] = useState('value')
+  const [emailValue, setEmailValue] = useState('')
+  const [passwordValue, setPasswordValue] = useState('')
   const inputRef = useRef(null)
   const onIconClick = () => {
     setTimeout(() => inputRef.current.focus(), 0)
@@ -13,26 +14,18 @@ export function LoginPage () {
   return(
     <>
       <h1 className="text text_type_main-medium pt-10 pb-5">Вход</h1>
-      <Input
-        type={'text'}
-        placeholder={'placeholder'}
-        onChange={e => setValue(e.target.value)}
-        value={value}
-        name={'name'}
-        error={false}
-        ref={inputRef}
-        onIconClick={onIconClick}
-        errorText={'Ошибка'}
-        size={'default'}
-        extraClass="ml-1"
+      <EmailInput
+        value={emailValue}
+        name={'email'}
+        isIcon={false}
       />
 
       <Input
         type={'text'}
         placeholder={'placeholder'}
-        onChange={e => setValue(e.target.value)}
+        onChange={e => setPasswordValue(e.target.value)}
         icon={'ShowIcon'}
-        value={value}
+        value={passwordValue}
         name={'name'}
         error={false}
         ref={inputRef}

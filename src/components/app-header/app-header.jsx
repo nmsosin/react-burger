@@ -8,28 +8,28 @@ const AppHeader = () => {
     <header className={`pt-4 pb-4 ${appHeaderStyles.header}`}>
       <nav className={appHeaderStyles.navBar}>
         <div className={appHeaderStyles.navWrapper}>
-          <Link
-            to={{ pathname: `/` }}
+          <NavLink
+            to="/"
             // activeClassName={appHeaderStyles.active}
           >
             <NavigationButton type={'constructor'} />
-          </Link>
+          </NavLink>
 
-          <Link
-            to={{ pathname: `/register` }}
+          <NavLink
+            to="/register"
             // activeClassName={appHeaderStyles.active}
           >
             <NavigationButton type={'orders'} />
-          </Link>
+          </NavLink>
         </div>
         <Logo />
 
-        <Link
-          to={{ pathname: `/profile` }}
+        <NavLink
+          to="/profile"
           // activeClassName={appHeaderStyles.active}
         >
           <NavigationButton type={'login'} styles='justify-self: end' />
-        </Link>
+        </NavLink>
       </nav>
 
     </header>
