@@ -1,49 +1,76 @@
 import {Button, EmailInput, Input} from "@ya.praktikum/react-developer-burger-ui-components";
 import {useRef, useState} from "react";
 import {NavLink} from "react-router-dom";
+import {REGISTER_REQUEST} from "../services/actions/user";
+import {useDispatch} from "react-redux";
+import {register} from '../services/actions/user'
 
 export function RegisterPage () {
-  const [inputValue, setInputValue] = useState('value')
-  const inputRef = useRef(null)
+  const formRef = useRef(null);
   const onIconClick = () => {
-    setTimeout(() => inputRef.current.focus(), 0)
+    setTimeout(() => formRef.current.focus(), 0)
     alert('Icon Click Callback')
   }
 
-  const [emailValue, setEmailValue] = useState('bob@example.com')
+  const dispatch = useDispatch();
+
+  const [emailValue, setEmailValue] = useState('')
+  const [nameValue, setNameValue] = useState('')
+  const [passwordValue, setPasswordValue] = useState('')
   const onEmailChange = e => {
     setEmailValue(e.target.value)
   }
 
+  const handleRegisterSubmit = (evt) => {
+    evt.preventDefault();
+    // console.log(Object.fromEntries(new FormData(evt.target)))
+    dispatch(register( {nameValue, emailValue, passwordValue}));
+  }
+
   return(
     <>
-      <h1>Регистрация</h1>
+      <form onSubmit={handleRegisterSubmit} ref={formRef}>
+        <h1>Регистрация</h1>
 
-      <Input
-        type={'text'}
-        placeholder={'placeholder'}
-        onChange={e => setInputValue(e.target.value)}
-        icon={'CurrencyIcon'}
-        value={inputValue}
-        name={'name'}
-        error={false}
-        ref={inputRef}
-        onIconClick={onIconClick}
-        errorText={'Ошибка'}
-        size={'default'}
-        extraClass="ml-1"
-      />
+        <Input
+          type={'text'}
+          placeholder={'Имя'}
+          onChange={e => setNameValue(e.target.value)}
+          icon={'CurrencyIcon'}
+          value={nameValue}
+          name={'name'}
+          error={false}
+          onIconClick={onIconClick}
+          errorText={'Ошибка'}
+          size={'default'}
+          extraClass="ml-1"
+        />
 
-      <EmailInput
-        onChange={onEmailChange}
-        value={emailValue}
-        name={'email'}
-        isIcon={false}
-      />
+        <EmailInput
+          onChange={onEmailChange}
+          value={emailValue}
+          name={'email'}
+          isIcon={false}
+        />
 
-      <Button htmlType="button" type="primary" size="small" extraClass="ml-2">
-        Зарегистрироваться
-      </Button>
+        <Input
+          type={'text'}
+          placeholder={'Пароль'}
+          onChange={e => setPasswordValue(e.target.value)}
+          icon={'CurrencyIcon'}
+          value={passwordValue}
+          name={'password'}
+          error={false}
+          onIconClick={onIconClick}
+          errorText={'Ошибка'}
+          size={'default'}
+          extraClass="ml-1"
+        />
+
+        <Button htmlType="submit" type="primary" size="small" extraClass="ml-2">
+          Зарегистрироваться
+        </Button>
+      </form>
 
       <p>Уже зарегистрированы?</p>
       <NavLink
