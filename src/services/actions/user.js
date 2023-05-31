@@ -1,5 +1,5 @@
 import request from "../../utils/api";
-import {GET_INGREDIENTS_FAILED, GET_INGREDIENTS_SUCCESS} from "./ingredientsList";
+import { getCookie, setCookie, deleteCookie } from "../../utils/cookie";
 
 export const REGISTER_REQUEST = "REGISTER_REQUEST";
 export const REGISTER_SUCCESS = "REGISTER_SUCCESS";
@@ -21,6 +21,13 @@ export const LOGOUT_REQUEST = "LOGOUT_REQUEST";
 export const LOGOUT_SUCCESS = "LOGOUT_SUCCESS";
 export const LOGOUT_FAILED = "LOGOUT_FAILED";
 
+export const GET_USER_REQUEST = "GET_USER_REQUEST";
+export const GET_USER_SUCCESS = "GET_USER_SUCCESS";
+export const GET_USER_FAILED = "GET_USER_FAILED";
+
+export const UPDATE_USER_REQUEST = "UPDATE_USER_REQUEST";
+export const UPDATE_USER_SUCCESS = "UPDATE_USER_SUCCESS";
+export const UPDATE_USER_FAILED = "UPDATE_USER_FAILED";
 
 export const forgotPassword = (data) => {
   return function (dispatch) {
@@ -109,7 +116,10 @@ export const register = (data) => {
       .then( res  => {
         if (res) {
           dispatch({
-            type: REGISTER_SUCCESS
+            type: REGISTER_SUCCESS,
+            user: res.user,
+            accessToken: res.accessToken,
+            refreshToken: res.refreshToken,
           })
         } else {
           dispatch({
@@ -142,7 +152,10 @@ export const login = (data) => {
       .then( res => {
         if (res) {
           dispatch({
-            type: LOGIN_SUCCESS
+            type: LOGIN_SUCCESS,
+            user: res.user,
+            accessToken: res.accessToken,
+            refreshToken: res.refreshToken,
           })
         } else {
           dispatch({
@@ -154,6 +167,108 @@ export const login = (data) => {
       .catch( err => {
         dispatch({
           type: LOGIN_FAILED
+        })
+        console.log(err);
+      })
+  }
+}
+
+// export const logout = (data) => {
+//   return function (dispatch) {
+//     dispatch({
+//       type: LOGOUT_REQUEST
+//     });
+//     request("auth/logout", {
+//       method: "POST",
+//       headers: {
+//         "Content-Type": "application/json"
+//       },
+//       body: JSON.stringify({token: data.refreshToken})
+//     })
+//       .then( res => {
+//         if (res) {
+//           dispatch({
+//             type: LOGOUT_SUCCESS
+//           })
+//         } else {
+//           dispatch({
+//             type: LOGOUT_FAILED
+//           })
+//         }
+//         console.log(res)
+//       })
+//       .catch( err => {
+//         dispatch({
+//           type: LOGOUT_FAILED
+//         })
+//         console.log(err);
+//       })
+//   }
+// }
+
+export const getUserInfo = (data) => {
+  return (dispatch) => {
+    dispatch({
+      type: GET_USER_REQUEST,
+    })
+    request("auth/user", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer" + getCookie("accessToken")
+      }
+    })
+      .then( res => {
+        if (res) {
+          dispatch({
+            type: GET_USER_SUCCESS,
+            user: res.user
+          })
+        } else {
+          dispatch({
+            type: GET_USER_FAILED
+          })
+        }
+        console.log(res)
+      })
+      .catch( err => {
+        dispatch({
+          type: GET_USER_FAILED
+        })
+        console.log(err);
+      })
+  }
+}
+
+export const updateUserInfo = (data) => {
+  return (dispatch) => {
+    dispatch({
+      type: UPDATE_USER_REQUEST,
+    })
+    request("auth/user", {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer" + getCookie("accessToken")
+      },
+      body: JSON.stringify({ email: data.email, password: data.password, name: data.name })
+    })
+      .then( res => {
+        if (res) {
+          dispatch({
+            type: UPDATE_USER_SUCCESS,
+            user: res.user
+          })
+        } else {
+          dispatch({
+            type: UPDATE_USER_FAILED
+          })
+        }
+        console.log(res)
+      })
+      .catch( err => {
+        dispatch({
+          type: UPDATE_USER_FAILED
         })
         console.log(err);
       })
