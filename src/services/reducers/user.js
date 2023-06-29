@@ -20,7 +20,8 @@ import {
 const userInitialState = {
   user: {
     email: "",
-    name: ""
+    name: "",
+    isAuthChecked: false,
   },
   password: "",
 
@@ -138,7 +139,9 @@ export const userReducer = ( state = userInitialState, action ) => {
         resetPasswordFailed: true
       };
     };
-
+    default: {
+      return userInitialState;
+    }
 
 
   }

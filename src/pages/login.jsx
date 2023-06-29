@@ -3,12 +3,14 @@ import {Button, EmailInput, Input} from '@ya.praktikum/react-developer-burger-ui
 import {NavLink} from "react-router-dom";
 import {useDispatch} from "react-redux";
 import {login} from "../services/actions/user";
+import {useAuth} from "../utils/auth";
 
 export function LoginPage () {
   const [emailValue, setEmailValue] = useState('')
   const [passwordValue, setPasswordValue] = useState('')
   const formRef = useRef(null);
   const dispatch = useDispatch();
+  let auth = useAuth();
 
   const onIconClick = () => {
     setTimeout(() => formRef.current.focus(), 0)
@@ -24,6 +26,11 @@ export function LoginPage () {
     // console.log(Object.fromEntries(new FormData(evt.target)))
     dispatch(login(emailValue, passwordValue))
   }
+
+  if (auth.user) {
+
+  }
+
 
   return(
     <>

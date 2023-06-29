@@ -20,6 +20,7 @@ import {IngredientPage} from "../../pages/ingredient";
 import {RegisterPage} from "../../pages/register";
 import {ResetPasswordPage} from "../../pages/reset-password";
 import {OrdersHistoryPage} from "../../pages/orders-history";
+import {OnlyAuth, OnlyUnAuth} from "../protected-route/protected-route";
 
 const dataUrl = 'https://norma.nomoreparties.space/api/ingredients';
 
@@ -41,13 +42,13 @@ function App() {
 
         <Routes>
           <Route path="/" element={<MainPage />} />
-          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+          <Route path="/forgot-password" element={<OnlyUnAuth component={<ForgotPasswordPage />} />} />
           <Route path="/ingredient" element={<IngredientPage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/profile" element={<ProfilePage />} />
-          <Route path="/profile/orders" element={<OrdersHistoryPage />} />
+          <Route path="/login" element={<OnlyUnAuth component={<LoginPage />} />} />
+          <Route path="/profile" element={<OnlyAuth component={<ProfilePage />} />} />
+          <Route path="/profile/orders" element={<OnlyAuth component={<OrdersHistoryPage />} />} />
           <Route path="/register" element={<RegisterPage />} />
-          <Route path="/reset-password" element={<ResetPasswordPage />} />
+          <Route path="/reset-password" element={<OnlyUnAuth component={<ResetPasswordPage />} />} />
         </Routes>
       </Router>
     </>
