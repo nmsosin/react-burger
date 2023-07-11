@@ -13,7 +13,7 @@ const fakeAuth = {
   }
 };
 
-const AuthContext = createContext(undefined);
+const AuthContext = createContext(null);
 
 export function ProvideAuth({ children }) {
   const auth = useProvideAuth();

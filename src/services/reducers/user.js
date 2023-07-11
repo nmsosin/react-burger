@@ -21,8 +21,9 @@ const userInitialState = {
   user: {
     email: "",
     name: "",
-    isAuthChecked: false,
   },
+
+  isAuthChecked: false,
   password: "",
 
   registerRequest: false,
@@ -77,7 +78,26 @@ export const userReducer = ( state = userInitialState, action ) => {
     case LOGIN_REQUEST: {
       return {
         ...state,
-        //user:
+        loginRequest: true,
+        isAuthChecked: true
+      };
+    };
+    case LOGIN_SUCCESS: {
+      return {
+        ...state,
+        loginRequest: false,
+        loginSuccess: true,
+        loginFailed: false,
+        user: action.user,
+        isAuthChecked: true
+      };
+    };
+    case LOGIN_FAILED: {
+      return {
+        ...state,
+        loginRequest: false,
+        loginSuccess: false,
+        loginFailed: true,
       };
     };
 

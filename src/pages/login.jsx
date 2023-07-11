@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react';
 import {Button, EmailInput, Input} from '@ya.praktikum/react-developer-burger-ui-components';
-import {NavLink} from "react-router-dom";
-import {useDispatch} from "react-redux";
+import {NavLink, useNavigate} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
 import {login} from "../services/actions/user";
 import {useAuth} from "../utils/auth";
 
@@ -11,25 +11,31 @@ export function LoginPage () {
   const formRef = useRef(null);
   const dispatch = useDispatch();
   let auth = useAuth();
+  const navigate = useNavigate();
+
+  const user = useSelector((store) => store.user.user)
 
   const onIconClick = () => {
     setTimeout(() => formRef.current.focus(), 0)
     alert('Icon Click Callback')
   }
 
-  const onEmailChange = e => {
-    setEmailValue(e.target.value)
-  }
+  // const onEmailChange = e => {
+  //   setEmailValue(e.target.value)
+  //   console.log(emailValue, passwordValue)
+  // }
 
   const handleLoginSubmit = (evt) => {
     evt.preventDefault();
     // console.log(Object.fromEntries(new FormData(evt.target)))
-    dispatch(login(emailValue, passwordValue))
+    dispatch(login({emailValue, passwordValue}))
+    console.log(user)
+    navigate('/');
   }
 
-  if (auth.user) {
-
-  }
+  // if (auth.user) {
+  //
+  // }
 
 
   return(
@@ -37,7 +43,7 @@ export function LoginPage () {
       <form onSubmit={handleLoginSubmit} ref={formRef}>
         <h1 className="text text_type_main-medium pt-10 pb-5">Вход</h1>
         <EmailInput
-          onChange={onEmailChange}
+          onChange={e => setEmailValue(e.target.value)}
           value={emailValue}
           name={'email'}
           isIcon={false}

@@ -121,6 +121,9 @@ export const register = (data) => {
             accessToken: res.accessToken,
             refreshToken: res.refreshToken,
           })
+          console.log('token save done', res.accessToken, res.refreshToken)
+          setCookie('accessToken', res.accessToken)
+          localStorage.setItem('refreshToken', res.refreshToken)
         } else {
           dispatch({
             type: REGISTER_FAILED
@@ -140,7 +143,8 @@ export const register = (data) => {
 export const login = (data) => {
   return function (dispatch) {
     dispatch({
-      type: LOGIN_REQUEST
+      type: LOGIN_REQUEST,
+      isAuthChecked: true,
     });
     request("auth/login", {
       method: "POST",
@@ -150,19 +154,22 @@ export const login = (data) => {
       body: JSON.stringify({email: data.emailValue, password: data.passwordValue})
     })
       .then( res => {
+        console.log(res.user);
         if (res) {
           dispatch({
             type: LOGIN_SUCCESS,
             user: res.user,
             accessToken: res.accessToken,
             refreshToken: res.refreshToken,
-          })
+          });
+          setCookie('accessToken', res.accessToken);
+          localStorage.setItem('refreshToken', res.refreshToken);
         } else {
           dispatch({
             type: LOGIN_FAILED
           })
         }
-        console.log(res)
+        // console.log(res)
       })
       .catch( err => {
         dispatch({

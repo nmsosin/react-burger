@@ -9,12 +9,16 @@ export const ProtectedRouteElement = ({onlyUnAuth = false, component}) => {
   // if (!isAuthChecked) {
   //   //TODO: return preloader instead of null
   //   console.log(user);
+  //   console.log(isAuthChecked);
   //
   //   return <h1>Logging in preloader... Please, wait</h1>;
   // }
 
   //TODO: figure out with routes & redirections
-  if (onlyUnAuth && user) {
+  if (onlyUnAuth && user && user.name) {
+    console.log(user);
+    console.log(isAuthChecked);
+
     const { from } = location.state || { from: { pathname: "/" } };
     return <Navigate to={from}/>
   }
