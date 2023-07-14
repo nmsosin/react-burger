@@ -229,38 +229,42 @@ export const login = (data) => {
   }
 }
 
-// export const logout = (data) => {
-//   return function (dispatch) {
-//     dispatch({
-//       type: LOGOUT_REQUEST
-//     });
-//     request("auth/logout", {
-//       method: "POST",
-//       headers: {
-//         "Content-Type": "application/json"
-//       },
-//       body: JSON.stringify({token: data.refreshToken})
-//     })
-//       .then( res => {
-//         if (res) {
-//           dispatch({
-//             type: LOGOUT_SUCCESS
-//           })
-//         } else {
-//           dispatch({
-//             type: LOGOUT_FAILED
-//           })
-//         }
-//         console.log(res)
-//       })
-//       .catch( err => {
-//         dispatch({
-//           type: LOGOUT_FAILED
-//         })
-//         console.log(err);
-//       })
-//   }
-// }
+export const logout = (data) => {
+  return function (dispatch) {
+    dispatch({
+      type: LOGOUT_REQUEST
+    });
+    request("auth/logout", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({token: localStorage.getItem('refreshToken')})
+    })
+      .then( res => {
+        if (res) {
+          dispatch({
+            type: LOGOUT_SUCCESS,
+            user: {},
+            isAuthChecked: false,
+          })
+          deleteCookie('accessToken');
+          localStorage.removeItem('refreshToken')
+        } else {
+          dispatch({
+            type: LOGOUT_FAILED
+          })
+        }
+        console.log(res)
+      })
+      .catch( err => {
+        dispatch({
+          type: LOGOUT_FAILED
+        })
+        console.log(err);
+      })
+  }
+}
 
 export const getUserInfo = (data) => {
   return (dispatch) => {

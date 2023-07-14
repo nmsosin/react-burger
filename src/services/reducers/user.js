@@ -113,7 +113,24 @@ export const userReducer = ( state = userInitialState, action ) => {
       case LOGOUT_REQUEST: {
         return {
           ...state,
-          //user:
+          logoutRequest: true
+        };
+      };
+    case LOGOUT_SUCCESS: {
+      return {
+        ...state,
+        logoutRequest: true,
+        logoutSuccess: true,
+        logoutFailed: false,
+        user: {},
+      };
+    };
+    case LOGOUT_FAILED: {
+        return {
+          ...state,
+          logoutRequest: false,
+          logoutSuccess: false,
+          logoutFailed: true
         };
       };
 

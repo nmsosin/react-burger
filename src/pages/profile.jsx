@@ -1,6 +1,8 @@
 import {EmailInput, Input, Tab} from "@ya.praktikum/react-developer-burger-ui-components";
-import {NavLink} from "react-router-dom";
+import {NavLink, useNavigate} from "react-router-dom";
 import {useRef, useState} from "react";
+import {useDispatch} from "react-redux";
+import {logout} from "../services/actions/user";
 
 export function ProfilePage () {
   const [current, setCurrent] = useState('profile')
@@ -8,9 +10,17 @@ export function ProfilePage () {
   const [emailValue, setEmailValue] = useState('')
   const [passwordValue, setPasswordValue] = useState('')
   const inputRef = useRef(null)
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const onIconClick = () => {
     setTimeout(() => inputRef.current.focus(), 0)
     alert('Icon Click Callback')
+  }
+
+  const onLogout = () => {
+    dispatch(logout());
+    navigate('/login')
   }
 
   return(
@@ -35,7 +45,7 @@ export function ProfilePage () {
         <NavLink
           to="/"
         >
-          <Tab value="exit" active={current === 'exit'} onClick={setCurrent}>
+          <Tab value="exit" active={current === 'exit'} onClick={onLogout}>
             Выход
           </Tab>
         </NavLink>
