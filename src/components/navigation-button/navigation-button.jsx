@@ -32,5 +32,5 @@ export default NavigationButton;
 NavigationButton.propTypes = {
   type: PropTypes.string.isRequired,
   text: PropTypes.string,
-  icon: PropTypes.string
+  icon: PropTypes.object
 }

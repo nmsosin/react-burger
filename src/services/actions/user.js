@@ -1,4 +1,4 @@
-import request from "../../utils/api";
+import request, {fetchWithRefresh} from "../../utils/api";
 import { getCookie, setCookie, deleteCookie } from "../../utils/cookie";
 
 export const REGISTER_REQUEST = "REGISTER_REQUEST";
@@ -28,6 +28,53 @@ export const GET_USER_FAILED = "GET_USER_FAILED";
 export const UPDATE_USER_REQUEST = "UPDATE_USER_REQUEST";
 export const UPDATE_USER_SUCCESS = "UPDATE_USER_SUCCESS";
 export const UPDATE_USER_FAILED = "UPDATE_USER_FAILED";
+
+export const SET_AUTH_CHECKED = "SET_AUTH_CHECKED";
+
+export const setAuthChecked = (value) => ({
+  type: SET_AUTH_CHECKED,
+  payload: value,
+});
+
+// export const SET_USER = "SET_USER";
+//
+// export const setUserTest = (user) => ({
+//   type: SET_USER,
+//   payload: user,
+// });
+//
+// const getUser = () =>
+//   new Promise((resolve, reject) => {
+//     setTimeout(() => {
+//       resolve({
+//         user: {},
+//       });
+//     }, 1000);
+//   });
+// export const getUserTest = () => {
+//   return (dispatch) => {
+//     return getUser().then((res) => {
+//       dispatch(setUserTest(res.user));
+//     });
+//   };
+// };
+//
+// export const checkUserAuth = () => {
+//   return (dispatch) => {
+//     if (document.cookie) {
+//       console.log('cookie', document.cookie)
+//       dispatch(getUserTest())
+//         .catch(() => {
+//           deleteCookie("accessToken");
+//           localStorage.removeItem("refreshToken");
+//           dispatch(setUserTest(null));
+//         })
+//         .finally(() => dispatch(setAuthChecked(true)));
+//     } else {
+//       dispatch(setAuthChecked(true));
+//     }
+//   };
+// };
 
 export const forgotPassword = (data) => {
   return function (dispatch) {
@@ -106,7 +153,7 @@ export const register = (data) => {
     dispatch({
       type: REGISTER_REQUEST
     });
-    request("auth/register", {
+    fetchWithRefresh("auth/register", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -124,6 +171,7 @@ export const register = (data) => {
           console.log('token save done', res.accessToken, res.refreshToken)
           setCookie('accessToken', res.accessToken)
           localStorage.setItem('refreshToken', res.refreshToken)
+          dispatch(setAuthChecked(true));
         } else {
           dispatch({
             type: REGISTER_FAILED
@@ -144,9 +192,9 @@ export const login = (data) => {
   return function (dispatch) {
     dispatch({
       type: LOGIN_REQUEST,
-      isAuthChecked: true,
+      // isAuthChecked: true,
     });
-    request("auth/login", {
+    fetchWithRefresh("auth/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -162,6 +210,7 @@ export const login = (data) => {
             accessToken: res.accessToken,
             refreshToken: res.refreshToken,
           });
+          console.log('login successful', res.accessToken, res.refreshToken)
           setCookie('accessToken', res.accessToken);
           localStorage.setItem('refreshToken', res.refreshToken);
         } else {

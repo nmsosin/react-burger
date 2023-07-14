@@ -13,7 +13,7 @@ import {
   FORGOT_PASSWORD_SUCCESS,
   RESET_PASSWORD_FAILED,
   RESET_PASSWORD_REQUEST,
-  RESET_PASSWORD_SUCCESS,
+  RESET_PASSWORD_SUCCESS, SET_AUTH_CHECKED,
 
 } from "../actions/user";
 
@@ -50,6 +50,14 @@ const userInitialState = {
 
 export const userReducer = ( state = userInitialState, action ) => {
   switch (action.type) {
+    //authorization check
+    case SET_AUTH_CHECKED: {
+      return {
+        ...state,
+        isAuthChecked: action.payload
+      }
+    }
+
     //registration
     case REGISTER_REQUEST: {
       return {
@@ -160,7 +168,7 @@ export const userReducer = ( state = userInitialState, action ) => {
       };
     };
     default: {
-      return userInitialState;
+      return state;
     }
 
 
