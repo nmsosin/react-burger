@@ -1,0 +1,7 @@
+.sideNavButton {
+  height: 64px;
+  padding-top: 17px;
+  padding-bottom: 17px;
+  text-decoration: none;
+  color: var(--text-inactive-color);
+}

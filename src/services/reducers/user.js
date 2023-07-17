@@ -8,12 +8,19 @@ import {
   LOGOUT_REQUEST,
   LOGOUT_SUCCESS,
   LOGOUT_FAILED,
+  GET_USER_REQUEST,
+  GET_USER_SUCCESS,
+  GET_USER_FAILED,
+  UPDATE_USER_REQUEST,
+  UPDATE_USER_FAILED,
+  UPDATE_USER_SUCCESS,
   FORGOT_PASSWORD_FAILED,
   FORGOT_PASSWORD_REQUEST,
   FORGOT_PASSWORD_SUCCESS,
   RESET_PASSWORD_FAILED,
   RESET_PASSWORD_REQUEST,
-  RESET_PASSWORD_SUCCESS, SET_AUTH_CHECKED,
+  RESET_PASSWORD_SUCCESS,
+  SET_AUTH_CHECKED,
 
 } from "../actions/user";
 
@@ -37,6 +44,14 @@ const userInitialState = {
   logoutRequest: false,
   logoutSuccess: false,
   logoutFailed: false,
+
+  getUserRequest: false,
+  getUserSuccess: false,
+  getUserFailed: false,
+
+  updateUserRequest: false,
+  updateUserSuccess: false,
+  updateUserFailed: false,
 
   forgotPasswordRequest: false,
   forgotPasswordSuccess: false,
@@ -133,6 +148,57 @@ export const userReducer = ( state = userInitialState, action ) => {
           logoutFailed: true
         };
       };
+
+    // get user data
+    case GET_USER_REQUEST: {
+      return {
+        ...state,
+        getUserRequest: true,
+      };
+    };
+    case GET_USER_REQUEST: {
+      return {
+        ...state,
+        getUserRequest: false,
+        getUserSuccess: true,
+        getUserFailed: false,
+        user: action.payload
+      };
+    };
+    case GET_USER_FAILED: {
+      return {
+        ...state,
+        getUserRequest: false,
+        getUserSuccess: false,
+        getUserFailed: true,
+      };
+    };
+
+
+    // update user data
+    case UPDATE_USER_REQUEST: {
+      return {
+        ...state,
+        updateUserRequest: true,
+      };
+    };
+    case UPDATE_USER_REQUEST: {
+      return {
+        ...state,
+        updateUserRequest: false,
+        updateUserSuccess: true,
+        updateUserFailed: false,
+        user: action.payload
+      };
+    };
+    case UPDATE_USER_FAILED: {
+      return {
+        ...state,
+        updateUserRequest: false,
+        updateUserSuccess: false,
+        updateUserFailed: true,
+      };
+    };
 
     //forgot password
     case FORGOT_PASSWORD_REQUEST: {

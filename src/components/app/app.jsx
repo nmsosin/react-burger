@@ -14,7 +14,7 @@ import {HTML5Backend} from "react-dnd-html5-backend";
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import {MainPage} from "../../pages/main";
 import {LoginPage} from "../../pages/login/login";
-import {ProfilePage} from "../../pages/profile";
+import {ProfilePage} from "../../pages/profile/profile";
 import {ForgotPasswordPage} from "../../pages/forgot-password";
 import {IngredientPage} from "../../pages/ingredient";
 import {RegisterPage} from "../../pages/register/register";

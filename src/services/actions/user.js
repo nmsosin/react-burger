@@ -229,7 +229,7 @@ export const login = (data) => {
   }
 }
 
-export const logout = (data) => {
+export const logout = (callback) => {
   return function (dispatch) {
     dispatch({
       type: LOGOUT_REQUEST
@@ -250,6 +250,7 @@ export const logout = (data) => {
           })
           deleteCookie('accessToken');
           localStorage.removeItem('refreshToken')
+          callback();
         } else {
           dispatch({
             type: LOGOUT_FAILED
