@@ -81,27 +81,25 @@ export const forgotPassword = (data) => {
     dispatch({
       type: FORGOT_PASSWORD_REQUEST
     });
-
-    const forgotPasswordOptions = {
+    request("password-reset", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({ email: data.email})
-    };
-
-    request("password-reset", forgotPasswordOptions)
+    })
       .then( res  => {
         if (res) {
+          console.log('data', data)
           dispatch({
-            type: FORGOT_PASSWORD_SUCCESS
+            type: FORGOT_PASSWORD_SUCCESS,
           })
         } else {
           dispatch({
             type: FORGOT_PASSWORD_FAILED
           })
         }
-        console.log(res)
+        console.log('res', res)
       })
       .catch( err => {
         dispatch({
@@ -117,16 +115,13 @@ export const resetPassword = (data) => {
     dispatch({
       type: RESET_PASSWORD_REQUEST
     });
-
-    const resetPasswordOptions = {
+    request("password-reset/reset", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({ password: data.password, token: data.token})
-    };
-
-    request("password-reset/reset", resetPasswordOptions)
+    })
       .then( res  => {
         if (res) {
           dispatch({
@@ -137,7 +132,7 @@ export const resetPassword = (data) => {
             type: FORGOT_PASSWORD_FAILED
           })
         }
-        console.log(res)
+        console.log('res', res)
       })
       .catch( err => {
         dispatch({

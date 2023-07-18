@@ -60,7 +60,6 @@ const userInitialState = {
   resetPasswordRequest: false,
   resetPasswordSuccess: false,
   resetPasswordFailed: false,
-  resetPasswordDone: false,
 }
 
 export const userReducer = ( state = userInitialState, action ) => {
@@ -214,8 +213,7 @@ export const userReducer = ( state = userInitialState, action ) => {
         ...state,
         forgotPasswordRequest: false,
         forgotPasswordSuccess: true,
-        forgotPasswordFailed: false,
-        resetPasswordDone: true
+        forgotPasswordFailed: false
       };
     };
     case FORGOT_PASSWORD_FAILED: {
@@ -223,8 +221,7 @@ export const userReducer = ( state = userInitialState, action ) => {
         ...state,
         forgotPasswordRequest: false,
         forgotPasswordSuccess: false,
-        forgotPasswordFailed: true,
-        resetPasswordDone: false
+        forgotPasswordFailed: true
       };
     };
 
@@ -254,7 +251,5 @@ export const userReducer = ( state = userInitialState, action ) => {
     default: {
       return state;
     }
-
-
   }
 }

@@ -1,27 +1,33 @@
 import {Button, EmailInput, Input} from "@ya.praktikum/react-developer-burger-ui-components";
-import {NavLink} from "react-router-dom";
+import {NavLink, useNavigate} from "react-router-dom";
 import {useRef, useState} from "react";
 import resetPasswordPageStyles from "../reset-password/reset-password.module.css";
 import forgotPasswordPageStyles from "../forgot-password/forgot-password.module.css";
+import {useDispatch} from "react-redux";
+import {resetPassword} from "../../services/actions/user";
 
 export function ResetPasswordPage () {
   const [passwordValue, setPasswordValue] = useState('')
   const [codeValue, setCodeValue] = useState('')
 
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const inputRef = useRef(null)
   const onIconClick = () => {
-    setTimeout(() => inputRef.current.focus(), 0)
-    alert('Icon Click Callback')
+    inputRef.current.focus();
   }
 
-  const handleFormSubmit = (evt) => {
+  const handleResetFormSubmit = (evt) => {
     evt.preventDefault();
+    dispatch(resetPassword({password: passwordValue, token: codeValue}))
+    navigate('/login');
   }
 
   return(
     <section className={resetPasswordPageStyles.formWrapper}>
 
-      <form onSubmit={handleFormSubmit} className={resetPasswordPageStyles.container}>
+      <form onSubmit={handleResetFormSubmit} className={resetPasswordPageStyles.container}>
         <h2 className='text text_type_main-medium'>Восстановление пароля</h2>
 
         <Input
@@ -52,7 +58,7 @@ export function ResetPasswordPage () {
           extraClass="ml-1"
         />
 
-        <Button htmlType="button" type="primary" size="medium" extraClass="ml-2">
+        <Button htmlType="submit" type="primary" size="medium" extraClass="ml-2">
           Сохранить
         </Button>
       </form>
