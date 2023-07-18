@@ -61,20 +61,20 @@ export function LoginPage () {
             extraClass="ml-1"
           />
 
-          <Button htmlType="submit" type="primary" size="medium" extraClass="ml-2">
+          <Button htmlType="submit" type="primary" size="medium">
             Войти
           </Button>
         </form>
 
         <div className={loginPageStyles.navLinkWrapper}>
           <div className={loginPageStyles.questionWrapper}>
-            <p className='text text_type_main-small text-color-inactive'>Вы — новый пользователь?</p>
+            <p className='text text_type_main-small text_color_inactive'>Вы — новый пользователь?</p>
             <NavLink to={"/register"}>
               <Button htmlType="button" type="secondary" size="small">Зарегистрироваться</Button>
             </NavLink>
           </div>
           <div className={loginPageStyles.questionWrapper}>
-            <p className='text text_type_main-small text-color-inactive'>Забыли пароль?</p>
+            <p className='text text_type_main-small text_color_inactive'>Забыли пароль?</p>
             <NavLink to={"/forgot-password"}>
               <Button htmlType="button" type="secondary" size="small">Восстановить пароль</Button>
             </NavLink>

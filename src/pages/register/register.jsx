@@ -75,13 +75,13 @@ export function RegisterPage () {
             extraClass="ml-1"
           />
 
-          <Button htmlType="submit" type="primary" size="medium" extraClass="ml-2">
+          <Button htmlType="submit" type="primary" size="medium">
             Зарегистрироваться
           </Button>
         </form>
 
         <div className={registerPageStyles.navLinkWrapper}>
-          <p className='text text_type_main-small text-color-inactive'>Уже зарегистрированы?</p>
+          <p className='text text_type_main-small text_color_inactive'>Уже зарегистрированы?</p>
           <NavLink
             to="/login">
             <Button htmlType="button" type="secondary" size="small" >
