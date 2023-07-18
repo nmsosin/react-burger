@@ -33,7 +33,7 @@ const AppHeader = () => {
           to="/profile"
           // activeClassName={appHeaderStyles.active}
         >
-          <NavigationButton type={'login'} text={isAuthChecked && user ? user.name : 'Личный кабинет'} styles='justify-self: end' icon = <ProfileIcon type={"secondary"} /> />
+          <NavigationButton type={'login'} text={isAuthChecked && user && user.name ? user.name : 'Личный кабинет'} styles='justify-self: end' icon = <ProfileIcon type={"secondary"} /> />
         </NavLink>
       </nav>
 

@@ -157,7 +157,6 @@ export const userReducer = ( state = userInitialState, action ) => {
       };
     };
     case GET_USER_SUCCESS: {
-      console.log('state', state);
       return {
         ...state,
         getUserRequest: false,

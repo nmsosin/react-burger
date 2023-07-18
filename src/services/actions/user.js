@@ -281,7 +281,6 @@ export const getUserInfo = () => {
     })
       .then( res => {
         if (res) {
-          console.log('res.user from getUserInfo', res);
           dispatch({
             type: GET_USER_SUCCESS,
             user: res.user
@@ -291,7 +290,6 @@ export const getUserInfo = () => {
             type: GET_USER_FAILED
           })
         }
-        console.log(res)
       })
       .catch( err => {
         dispatch({

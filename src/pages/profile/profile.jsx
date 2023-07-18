@@ -10,9 +10,6 @@ export function ProfilePage () {
   const user = useSelector((store) => store.user.user);
   const [current, setCurrent] = useState('profile')
 
-  const [emailValue, setEmailValue] = useState('')
-  const [nameValue, setNameValue] = useState('')
-  const [passwordValue, setPasswordValue] = useState('')
   const inputRef = useRef(null)
 
   const dispatch = useDispatch();
@@ -20,7 +17,6 @@ export function ProfilePage () {
 
   useEffect(() => {
     if (user) {
-      console.log('password', user.password)
       setFormValues({email: user.email, name: user.name, password: 'Введите новый пароль'})
     }
   }, [])
@@ -36,15 +32,18 @@ export function ProfilePage () {
   const [formValues, setFormValues] = useState( { email: '', name: '', password: ''})
 
   const handleInputChange = (evt) => {
-    console.log('evt.target', evt.target)
     const { name, value  } = evt.target;
     setFormValues({ ...formValues, [name]: value})
   }
 
   const handleUpdateUserInfo = (evt) => {
     evt.preventDefault();
-    console.log('formValues', formValues)
     dispatch(updateUserInfo(formValues))
+  }
+
+  const handleCancelChangeUserInfo = (evt) => {
+    evt.preventDefault();
+    setFormValues({email: user.email, name: user.name, password: 'Введите новый пароль'});
   }
 
   return(
@@ -113,7 +112,7 @@ export function ProfilePage () {
           />
 
           <div className={profilePageStyles.actionButtonsWrapper}>
-            <Button htmlType="button" type="secondary" size="medium">
+            <Button htmlType="button" type="secondary" size="medium" onClick={handleCancelChangeUserInfo}>
               Отмена
             </Button>
 

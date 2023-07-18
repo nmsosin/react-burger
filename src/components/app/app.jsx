@@ -41,15 +41,10 @@ function App() {
   }, [dispatch]);
 
   useEffect(() => {
-    // dispatch(checkUserAuth());
     if (accessToken) {
       dispatch(getUserInfo())
-      console.log('isAuthChecked', isAuthChecked);
-      console.log('user', user)
     }
-    // console.log('document.cookie', document.cookie)
-    // console.log('isAuthChecked', isAuthChecked);
-    // console.log('user', user)
+
   }, [isAuthChecked, accessToken]);
 
   return (

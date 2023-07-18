@@ -1,10 +1,8 @@
-import {React, useContext, useReducer, useState, useEffect, useMemo} from 'react';
+import { useMemo } from 'react';
 import { ConstructorElement, Button, CurrencyIcon, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import burgerConstructorStyles from './burger-constructor.module.css';
 import PropTypes from "prop-types";
 import checkPropTypes from "../../utils/prop-types";
-import {IngredientContext, OrderTotalContext} from "../../utils/userContext";
-import {getIngredientsData} from "../../services/actions/ingredientsList";
 import {useDispatch, useSelector} from "react-redux";
 import {useDrag, useDrop} from "react-dnd";
 import {
@@ -16,10 +14,10 @@ import {
 } from "../../services/actions/constructorIngredients";
 import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
-import {CLOSE_CURRENT_INGREDIENT, OPEN_CURRENT_INGREDIENT} from "../../services/actions/currentIngredient";
-import {createOrderId, GET_ORDER_SUCCESS, RESET_ORDER} from "../../services/actions/order";
+import {createOrderId, RESET_ORDER} from "../../services/actions/order";
 import OptionalConstructorIngredients from "../optional-constructor-ingredients/optional-constructor-ingredients";
 import { v4 as uuidv4 } from 'uuid';
+import {useNavigate} from "react-router-dom";
 
 const BurgerConstructor = () => {
   const { optionalIngredients, bun } = useSelector((store) => ({
@@ -32,7 +30,10 @@ const BurgerConstructor = () => {
     isOrderModalOpen: store.order.isOrderModalOpen
   }));
 
+  const user = useSelector((store) => store.user.user)
+
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   // calculate order sum
   let orderTotal = useMemo(
@@ -51,7 +52,12 @@ const BurgerConstructor = () => {
 
   // send order to API
   const handleOrderButtonClick = () => {
-    dispatch(createOrderId('orders', chosenIngredientsId()))
+    if (user && user.name) {
+      dispatch(createOrderId('orders', chosenIngredientsId()))
+    } else {
+      navigate("/login");
+    }
+
   }
 
   // Adding DnD feature
