@@ -202,7 +202,7 @@ export const login = (data) => {
       body: JSON.stringify({email: data.emailValue, password: data.passwordValue})
     })
       .then( res => {
-        console.log(res.user);
+        console.log('res', res);
         if (res) {
           dispatch({
             type: LOGIN_SUCCESS,
@@ -267,7 +267,7 @@ export const logout = (callback) => {
   }
 }
 
-export const getUserInfo = (data) => {
+export const getUserInfo = () => {
   return (dispatch) => {
     dispatch({
       type: GET_USER_REQUEST,
@@ -281,6 +281,7 @@ export const getUserInfo = (data) => {
     })
       .then( res => {
         if (res) {
+          console.log('res.user from getUserInfo', res);
           dispatch({
             type: GET_USER_SUCCESS,
             user: res.user
@@ -316,6 +317,7 @@ export const updateUserInfo = (data) => {
     })
       .then( res => {
         if (res) {
+          console.log('update user info res', res)
           dispatch({
             type: UPDATE_USER_SUCCESS,
             user: res.user

@@ -16,18 +16,18 @@ export const ProtectedRouteElement = ({onlyUnAuth = false, component}) => {
 
   //TODO: figure out with routes & redirections
   if (onlyUnAuth && user && user.name) {
-    console.log('Этот компонент - только для НЕавторизованных пользователей, а пользователь авторизован!')
-    console.log(user);
-    console.log(isAuthChecked);
+    // console.log('Этот компонент - только для НЕавторизованных пользователей, а пользователь авторизован!')
+    // console.log(user);
+    // console.log(isAuthChecked);
 
     const { from } = location.state || { from: { pathname: "/" } };
     return <Navigate to={from}/>
   }
 
   if (!onlyUnAuth && !user.name) {
-    console.log('Этот компонент - только для авторизованных пользователей, а пользователь НЕ авторизован!')
-    console.log(user);
-    console.log(isAuthChecked);
+    // console.log('Этот компонент - только для авторизованных пользователей, а пользователь НЕ авторизован!')
+    // console.log(user);
+    // console.log(isAuthChecked);
     return <Navigate to="/login" state={{ from: location } } />;
   }
 

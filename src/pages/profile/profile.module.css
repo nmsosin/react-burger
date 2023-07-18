@@ -32,5 +32,11 @@
 .inputContainer {
   display: flex;
   flex-direction: column;
+  align-self: flex-start;
   gap: 24px;
+}
+
+.actionButtonsWrapper {
+  display: flex;
+  justify-content: flex-end;
 }

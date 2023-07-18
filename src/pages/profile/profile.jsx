@@ -1,12 +1,13 @@
-import {EmailInput, Input, Tab} from "@ya.praktikum/react-developer-burger-ui-components";
+import {Button, EmailInput, Input, PasswordInput, Tab} from "@ya.praktikum/react-developer-burger-ui-components";
 import {NavLink, useNavigate} from "react-router-dom";
-import {useRef, useState} from "react";
-import {useDispatch} from "react-redux";
-import {logout} from "../../services/actions/user";
+import {useEffect, useRef, useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {logout, updateUserInfo} from "../../services/actions/user";
 import profilePageStyles from './profile.module.css'
 import {SideTab} from "../../components/side-tab/side-tab";
 
 export function ProfilePage () {
+  const user = useSelector((store) => store.user.user);
   const [current, setCurrent] = useState('profile')
 
   const [emailValue, setEmailValue] = useState('')
@@ -16,13 +17,34 @@ export function ProfilePage () {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user) {
+      console.log('password', user.password)
+      setFormValues({email: user.email, name: user.name, password: 'Введите новый пароль'})
+    }
+  }, [])
+
   const onIconClick = () => {
-    setTimeout(() => inputRef.current.focus(), 0)
-    alert('Icon Click Callback')
+     inputRef.current.focus();
   }
 
   const onLogout = () => {
     dispatch(logout(() => navigate('/login')));
+  }
+
+  const [formValues, setFormValues] = useState( { email: '', name: '', password: ''})
+
+  const handleInputChange = (evt) => {
+    console.log('evt.target', evt.target)
+    const { name, value  } = evt.target;
+    setFormValues({ ...formValues, [name]: value})
+  }
+
+  const handleUpdateUserInfo = (evt) => {
+    evt.preventDefault();
+    console.log('formValues', formValues)
+    dispatch(updateUserInfo(formValues))
   }
 
   return(
@@ -56,22 +78,17 @@ export function ProfilePage () {
             </NavLink>
           </div>
 
-          <p className={'text text_type_main-small text_color_inactive pt-20'}>В этом разделе вы можете изменить свои персональные данные</p>
+          <p className={'text text_type_main-default text_color_inactive pt-20'} style={ { opacity: .4 } }>В этом разделе вы можете изменить&nbsp;свои персональные данные</p>
         </div>
 
-        <div className={profilePageStyles.inputContainer}>
-          <EmailInput
-            value={emailValue}
-            name={'Логин'}
-            isIcon={true}
-          />
+        <form className={profilePageStyles.inputContainer} onSubmit={handleUpdateUserInfo}>
 
           <Input
             type={'text'}
             placeholder={'Имя'}
-            onChange={e => setNameValue(e.target.value)}
+            onChange={handleInputChange}
             icon={'EditIcon'}
-            value={nameValue}
+            value={formValues.name}
             name={'name'}
             error={false}
             ref={inputRef}
@@ -81,21 +98,31 @@ export function ProfilePage () {
             extraClass="ml-1"
           />
 
-          <Input
-            type={'text'}
-            placeholder={'Пароль'}
-            onChange={e => setPasswordValue(e.target.value)}
-            icon={'EditIcon'}
-            value={passwordValue}
-            name={'name'}
-            error={false}
-            ref={inputRef}
-            onIconClick={onIconClick}
-            errorText={'Ошибка'}
-            size={'default'}
-            extraClass="ml-1"
+          <EmailInput
+            value={formValues.email}
+            name={'email'}
+            isIcon={true}
+            onChange={handleInputChange}
           />
-        </div>
+
+          <PasswordInput
+            onChange={handleInputChange}
+            value={formValues.password}
+            name={'password'}
+            icon={'EditIcon'}
+          />
+
+          <div className={profilePageStyles.actionButtonsWrapper}>
+            <Button htmlType="button" type="secondary" size="medium">
+              Отмена
+            </Button>
+
+            <Button htmlType="submit" type="primary" size="medium" extraClass="ml-2">
+              Сохранить
+            </Button>
+          </div>
+
+        </form>
       </div>
     </>
   )

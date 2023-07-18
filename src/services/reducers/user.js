@@ -156,13 +156,15 @@ export const userReducer = ( state = userInitialState, action ) => {
         getUserRequest: true,
       };
     };
-    case GET_USER_REQUEST: {
+    case GET_USER_SUCCESS: {
+      console.log('state', state);
       return {
         ...state,
         getUserRequest: false,
         getUserSuccess: true,
         getUserFailed: false,
-        user: action.payload
+        user: action.user,
+        isAuthChecked: true
       };
     };
     case GET_USER_FAILED: {
@@ -182,13 +184,13 @@ export const userReducer = ( state = userInitialState, action ) => {
         updateUserRequest: true,
       };
     };
-    case UPDATE_USER_REQUEST: {
+    case UPDATE_USER_SUCCESS: {
       return {
         ...state,
         updateUserRequest: false,
         updateUserSuccess: true,
         updateUserFailed: false,
-        user: action.payload
+        user: action.user
       };
     };
     case UPDATE_USER_FAILED: {

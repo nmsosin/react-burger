@@ -21,7 +21,7 @@ const AppHeader = () => {
           </NavLink>
 
           <NavLink
-            to="/register"
+            to="/profile/orders/:id"
             // activeClassName={appHeaderStyles.active}
           >
             <NavigationButton type={'orders'} text='Лента заказов' icon = <ListIcon type={"secondary"} /> />
