@@ -197,7 +197,6 @@ export const login = (data) => {
       body: JSON.stringify({email: data.emailValue, password: data.passwordValue})
     })
       .then( res => {
-        console.log('res', res);
         if (res) {
           dispatch({
             type: LOGIN_SUCCESS,
@@ -205,7 +204,6 @@ export const login = (data) => {
             accessToken: res.accessToken,
             refreshToken: res.refreshToken,
           });
-          console.log('login successful', res.accessToken, res.refreshToken)
           setCookie('accessToken', res.accessToken);
           localStorage.setItem('refreshToken', res.refreshToken);
         } else {
@@ -251,7 +249,7 @@ export const logout = (callback) => {
             type: LOGOUT_FAILED
           })
         }
-        console.log(res)
+        // console.log(res)
       })
       .catch( err => {
         dispatch({
