@@ -5,6 +5,8 @@ import {useDispatch, useSelector} from "react-redux";
 import {logout, updateUserInfo} from "../../services/actions/user";
 import profilePageStyles from './profile.module.css'
 import {SideTab} from "../../components/side-tab/side-tab";
+import {LOGIN_PAGE_ROUTE, MAIN_PAGE_ROUTE, ORDERS_HISTORY_PAGE_ROUTE, PROFILE_PAGE_ROUTE} from "../../utils/routes";
+import {useForm} from "../../services/hooks/useForm";
 
 export function ProfilePage () {
   const user = useSelector((store) => store.user.user);
@@ -15,9 +17,11 @@ export function ProfilePage () {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const {values, handleChange, setValues} = useForm({email: user.email, name: user.name, password: ''});
+
   useEffect(() => {
     if (user) {
-      setFormValues({email: user.email, name: user.name, password: 'Введите новый пароль'})
+      setValues({email: user.email, name: user.name, password: ''})
     }
   }, [])
 
@@ -26,24 +30,17 @@ export function ProfilePage () {
   }
 
   const onLogout = () => {
-    dispatch(logout(() => navigate('/login')));
-  }
-
-  const [formValues, setFormValues] = useState( { email: '', name: '', password: ''})
-
-  const handleInputChange = (evt) => {
-    const { name, value  } = evt.target;
-    setFormValues({ ...formValues, [name]: value})
+    dispatch(logout(() => navigate(LOGIN_PAGE_ROUTE)));
   }
 
   const handleUpdateUserInfo = (evt) => {
     evt.preventDefault();
-    dispatch(updateUserInfo(formValues))
+    dispatch(updateUserInfo(values))
   }
 
   const handleCancelChangeUserInfo = (evt) => {
     evt.preventDefault();
-    setFormValues({email: user.email, name: user.name, password: 'Введите новый пароль'});
+    setValues({email: user.email, name: user.name, password: ''});
   }
 
   return(
@@ -53,7 +50,7 @@ export function ProfilePage () {
            <div style={{ display: 'inline-block' }}>
             <NavLink
               className={`text text_type_main-medium text_color_inactive ${profilePageStyles.navLink}`}
-              to="/profile"
+              to={PROFILE_PAGE_ROUTE}
             >
               <SideTab value="Профиль" active={current === 'profile'} onClick={setCurrent} >
                 Профиль
@@ -61,7 +58,7 @@ export function ProfilePage () {
             </NavLink>
             <NavLink
               className={`text text_type_main-medium text_color_inactive ${profilePageStyles.navLink}`}
-              to="/profile/orders"
+              to={ORDERS_HISTORY_PAGE_ROUTE}
             >
               <SideTab value="История заказов" active={current === 'orders-history'} onClick={setCurrent}>
                 История заказов
@@ -69,7 +66,7 @@ export function ProfilePage () {
             </NavLink>
             <NavLink
               className={`text text_type_main-medium text_color_inactive ${profilePageStyles.navLink}`}
-              to="/"
+              to={MAIN_PAGE_ROUTE}
             >
               <SideTab value="Выход" active={current === 'exit'} onClick={onLogout}>
                 Выход
@@ -85,9 +82,9 @@ export function ProfilePage () {
           <Input
             type={'text'}
             placeholder={'Имя'}
-            onChange={handleInputChange}
+            onChange={handleChange}
             icon={'EditIcon'}
-            value={formValues.name}
+            value={values.name}
             name={'name'}
             error={false}
             ref={inputRef}
@@ -98,15 +95,15 @@ export function ProfilePage () {
           />
 
           <EmailInput
-            value={formValues.email}
+            value={values.email}
             name={'email'}
             isIcon={true}
-            onChange={handleInputChange}
+            onChange={handleChange}
           />
 
           <PasswordInput
-            onChange={handleInputChange}
-            value={formValues.password}
+            onChange={handleChange}
+            value={values.password}
             name={'password'}
             icon={'EditIcon'}
           />

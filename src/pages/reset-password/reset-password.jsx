@@ -1,27 +1,21 @@
-import {Button, EmailInput, Input} from "@ya.praktikum/react-developer-burger-ui-components";
+import {Button, EmailInput, Input, PasswordInput} from "@ya.praktikum/react-developer-burger-ui-components";
 import {NavLink, useNavigate} from "react-router-dom";
-import {useRef, useState} from "react";
 import resetPasswordPageStyles from "../reset-password/reset-password.module.css";
-import forgotPasswordPageStyles from "../forgot-password/forgot-password.module.css";
 import {useDispatch} from "react-redux";
 import {resetPassword} from "../../services/actions/user";
+import {LOGIN_PAGE_ROUTE} from "../../utils/routes";
+import {useForm} from "../../services/hooks/useForm";
 
 export function ResetPasswordPage () {
-  const [passwordValue, setPasswordValue] = useState('')
-  const [codeValue, setCodeValue] = useState('')
+  const {values, handleChange} = useForm({ password: '', token: ''});
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const inputRef = useRef(null)
-  const onIconClick = () => {
-    inputRef.current.focus();
-  }
-
   const handleResetFormSubmit = (evt) => {
     evt.preventDefault();
-    dispatch(resetPassword({password: passwordValue, token: codeValue}))
-    navigate('/login');
+    dispatch(resetPassword(values))
+    navigate(LOGIN_PAGE_ROUTE);
   }
 
   return(
@@ -30,29 +24,20 @@ export function ResetPasswordPage () {
       <form onSubmit={handleResetFormSubmit} className={resetPasswordPageStyles.container}>
         <h2 className='text text_type_main-medium'>Восстановление пароля</h2>
 
-        <Input
-          type={'text'}
-          placeholder={'Введите новый пароль'}
-          onChange={e => setPasswordValue(e.target.value)}
-          icon={'ShowIcon'}
-          value={passwordValue}
+        <PasswordInput
+          value={values.password}
           name={'password'}
-          error={false}
-          ref={inputRef}
-          onIconClick={onIconClick}
-          errorText={'Ошибка'}
-          size={'default'}
-          extraClass="ml-1"
+          placeholder={'Введите новый пароль'}
+          onChange={handleChange}
         />
 
         <Input
           type={'text'}
           placeholder={'Введите код из письма'}
-          onChange={e => setCodeValue(e.target.value)}
-          value={codeValue}
-          name={'code'}
+          onChange={handleChange}
+          value={values.token}
+          name={'token'}
           error={false}
-          ref={inputRef}
           errorText={'Ошибка'}
           size={'default'}
           extraClass="ml-1"

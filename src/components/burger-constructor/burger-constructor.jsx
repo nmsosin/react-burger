@@ -18,19 +18,15 @@ import {createOrderId, RESET_ORDER} from "../../services/actions/order";
 import OptionalConstructorIngredients from "../optional-constructor-ingredients/optional-constructor-ingredients";
 import { v4 as uuidv4 } from 'uuid';
 import {useNavigate} from "react-router-dom";
+import {getConstructorIngredients, getOrderDetails, getUserInfo} from "../../utils/constants";
+import {LOGIN_PAGE_ROUTE} from "../../utils/routes";
 
 const BurgerConstructor = () => {
-  const { optionalIngredients, bun } = useSelector((store) => ({
-    optionalIngredients: store.constructorIngredients.optionalIngredients,
-    bun: store.constructorIngredients.bun
-  }));
+  const { optionalIngredients, bun } = useSelector(getConstructorIngredients);
 
-  const { orderNumber, isOrderModalOpen } = useSelector((store) => ({
-    orderNumber: store.order.orderNumber,
-    isOrderModalOpen: store.order.isOrderModalOpen
-  }));
+  const { orderNumber, isOrderModalOpen } = useSelector(getOrderDetails);
 
-  const user = useSelector((store) => store.user.user)
+  const user = useSelector(getUserInfo)
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -55,7 +51,7 @@ const BurgerConstructor = () => {
     if (user && user.name) {
       dispatch(createOrderId('orders', chosenIngredientsId()))
     } else {
-      navigate("/login");
+      navigate(LOGIN_PAGE_ROUTE);
     }
 
   }

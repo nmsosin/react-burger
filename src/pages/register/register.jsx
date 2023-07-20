@@ -1,39 +1,30 @@
 import {Button, EmailInput, Input} from "@ya.praktikum/react-developer-burger-ui-components";
 import {useRef, useState} from "react";
 import {NavLink, useNavigate} from "react-router-dom";
-import {REGISTER_REQUEST} from "../../services/actions/user";
 import {useDispatch, useSelector} from "react-redux";
 import {register} from '../../services/actions/user'
 import registerPageStyles from './register.module.css';
+import {LOGIN_PAGE_ROUTE} from "../../utils/routes";
+import {useForm} from "../../services/hooks/useForm";
 
 export function RegisterPage () {
   const formRef = useRef(null);
   const onIconClick = () => {
-    setTimeout(() => formRef.current.focus(), 0)
-    alert('Icon Click Callback')
+    formRef.current.focus()
   }
-
-  const user = useSelector(state => state.user)
 
   const dispatch = useDispatch();
 
-  const [emailValue, setEmailValue] = useState('')
-  const [nameValue, setNameValue] = useState('')
-  const [passwordValue, setPasswordValue] = useState('')
+  const {values, handleChange} = useForm({name: '', email: '', password: ''});
 
   const navigate = useNavigate();
 
-  // const onEmailChange = e => {
-  //   setEmailValue(e.target.value)
-  //   console.log(user)
-  // }
 
   const handleRegisterSubmit = (evt) => {
     evt.preventDefault();
     // console.log(Object.fromEntries(new FormData(evt.target)))
-    dispatch(register( {nameValue, emailValue, passwordValue}));
-    navigate('/login')
-    console.log(user)
+    dispatch(register( values));
+    navigate(LOGIN_PAGE_ROUTE)
   }
 
   return(
@@ -45,8 +36,8 @@ export function RegisterPage () {
           <Input
             type={'text'}
             placeholder={'Имя'}
-            onChange={e => setNameValue(e.target.value)}
-            value={nameValue}
+            onChange={handleChange}
+            value={values.name}
             name={'name'}
             error={false}
             errorText={'Ошибка'}
@@ -55,8 +46,8 @@ export function RegisterPage () {
           />
 
           <EmailInput
-            onChange={e => setEmailValue(e.target.value)}
-            value={emailValue}
+            onChange={handleChange}
+            value={values.email}
             name={'email'}
             isIcon={false}
           />
@@ -64,9 +55,9 @@ export function RegisterPage () {
           <Input
             type={'text'}
             placeholder={'Пароль'}
-            onChange={e => setPasswordValue(e.target.value)}
+            onChange={handleChange}
             icon={'ShowIcon'}
-            value={passwordValue}
+            value={values.password}
             name={'password'}
             error={false}
             onIconClick={onIconClick}

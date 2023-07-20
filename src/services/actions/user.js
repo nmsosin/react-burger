@@ -36,46 +36,6 @@ export const setAuthChecked = (value) => ({
   payload: value,
 });
 
-// export const SET_USER = "SET_USER";
-//
-// export const setUserTest = (user) => ({
-//   type: SET_USER,
-//   payload: user,
-// });
-//
-// const getUser = () =>
-//   new Promise((resolve, reject) => {
-//     setTimeout(() => {
-//       resolve({
-//         user: {},
-//       });
-//     }, 1000);
-//   });
-// export const getUserTest = () => {
-//   return (dispatch) => {
-//     return getUser().then((res) => {
-//       dispatch(setUserTest(res.user));
-//     });
-//   };
-// };
-//
-// export const checkUserAuth = () => {
-//   return (dispatch) => {
-//     if (document.cookie) {
-//       console.log('cookie', document.cookie)
-//       dispatch(getUserTest())
-//         .catch(() => {
-//           deleteCookie("accessToken");
-//           localStorage.removeItem("refreshToken");
-//           dispatch(setUserTest(null));
-//         })
-//         .finally(() => dispatch(setAuthChecked(true)));
-//     } else {
-//       dispatch(setAuthChecked(true));
-//     }
-//   };
-// };
-
 export const forgotPassword = (data) => {
   return function (dispatch) {
     dispatch({
@@ -152,7 +112,7 @@ export const register = (data) => {
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({name: data.nameValue, email: data.emailValue, password: data.passwordValue})
+      body: JSON.stringify({name: data.name, email: data.email, password: data.password})
     })
       .then( res  => {
         if (res) {
@@ -185,14 +145,13 @@ export const login = (data) => {
   return function (dispatch) {
     dispatch({
       type: LOGIN_REQUEST,
-      // isAuthChecked: true,
     });
     fetchWithRefresh("auth/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({email: data.emailValue, password: data.passwordValue})
+      body: JSON.stringify({email: data.email, password: data.password})
     })
       .then( res => {
         if (res) {

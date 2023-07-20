@@ -3,10 +3,11 @@ import ingredientDetailsStyles from "../ingredient-details/ingredient-details.mo
 import PropTypes from "prop-types";
 import {useDispatch, useSelector} from "react-redux";
 import {useParams} from "react-router-dom";
+import {getIngredientsList} from "../../utils/constants";
 
 const IngredientDetails = ({isSeparateTab}) => {
   const { id } = useParams()
-  const ingredients = useSelector(store => store.ingredientsList.ingredients);
+  const ingredients = useSelector(getIngredientsList);
   const currentIngredient = ingredients.find((ingredient) => ingredient._id === id);
 
   return currentIngredient && (

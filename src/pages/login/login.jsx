@@ -4,22 +4,20 @@ import {NavLink} from "react-router-dom";
 import {useDispatch} from "react-redux";
 import {login} from "../../services/actions/user";
 import loginPageStyles from './login.module.css';
+import {useForm} from "../../services/hooks/useForm";
 
 export function LoginPage () {
-  const [emailValue, setEmailValue] = useState('')
-  const [passwordValue, setPasswordValue] = useState('')
+  const {values, handleChange} = useForm({email: '', password: ''});
   const formRef = useRef(null);
   const dispatch = useDispatch();
 
   const onIconClick = () => {
-    setTimeout(() => formRef.current.focus(), 0)
-    alert('Icon Click Callback')
+    formRef.current.focus()
   }
 
   const handleLoginSubmit = (evt) => {
     evt.preventDefault();
-    dispatch(login({emailValue, passwordValue}))
-
+    dispatch(login(values))
   }
 
 
@@ -29,8 +27,8 @@ export function LoginPage () {
         <form onSubmit={handleLoginSubmit} ref={formRef} className={loginPageStyles.container}>
           <h2 className='text text_type_main-medium'>Вход</h2>
           <EmailInput
-            onChange={e => setEmailValue(e.target.value)}
-            value={emailValue}
+            onChange={handleChange}
+            value={values.email}
             name={'email'}
             isIcon={false}
           />
@@ -38,9 +36,9 @@ export function LoginPage () {
           <Input
             type={'text'}
             placeholder={'Password'}
-            onChange={e => setPasswordValue(e.target.value)}
+            onChange={handleChange}
             icon={'ShowIcon'}
-            value={passwordValue}
+            value={values.password}
             name={'password'}
             error={false}
             onIconClick={onIconClick}

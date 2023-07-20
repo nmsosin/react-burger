@@ -5,17 +5,15 @@ import ingredientItemStyles from './ingredient-item.module.css';
 import { useSelector} from "react-redux";
 import {useDrag} from "react-dnd";
 import {NavLink, useLocation} from "react-router-dom";
+import {getConstructorIngredients} from "../../utils/constants";
 
 const IngredientItem= ({ ingredient, openModalHandler }) => {
-  const { constructorIngredients, bun } = useSelector((store) => ({
-    constructorIngredients: store.constructorIngredients.optionalIngredients,
-    bun: store.constructorIngredients.bun
-  }));
+  const { optionalIngredients, bun } = useSelector(getConstructorIngredients);
 
   const location = useLocation();
 
   const count = ingredient.type !== "bun"
-    ? constructorIngredients.reduce((accumulator, current) => {
+    ? optionalIngredients.reduce((accumulator, current) => {
     if (accumulator[current._id] !== undefined) {
       accumulator[current._id] += 1;
     } else {

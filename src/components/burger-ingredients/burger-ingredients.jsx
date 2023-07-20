@@ -6,11 +6,12 @@ import { useInView } from 'react-intersection-observer';
 
 import BurgerIngredientsStyles from './burger-ingredients.module.css';
 import { OPEN_CURRENT_INGREDIENT} from "../../services/actions/currentIngredient";
+import {getIngredientsList} from "../../utils/constants";
 
 const BurgerIngredients = () => {
   const [current, setCurrent] = useState('buns');
 
-  const ingredients = useSelector(store => store.ingredientsList.ingredients);
+  const ingredients = useSelector(getIngredientsList);
 
   const buns = useMemo(
     () => ingredients.filter(item => item['type'] === 'bun'),
