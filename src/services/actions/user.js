@@ -99,13 +99,12 @@ export const forgotPassword = (data) => {
             type: FORGOT_PASSWORD_FAILED
           })
         }
-        console.log('res', res)
       })
       .catch( err => {
         dispatch({
           type: FORGOT_PASSWORD_FAILED
         })
-        console.log(err);
+        console.log('Ошибка запроса на восстановление пароля:', err);
       })
   }
 }
@@ -125,20 +124,20 @@ export const resetPassword = (data) => {
       .then( res  => {
         if (res) {
           dispatch({
-            type: FORGOT_PASSWORD_SUCCESS
+            type: RESET_PASSWORD_SUCCESS
           })
         } else {
           dispatch({
-            type: FORGOT_PASSWORD_FAILED
+            type: RESET_PASSWORD_FAILED
           })
         }
         console.log('res', res)
       })
       .catch( err => {
         dispatch({
-          type: FORGOT_PASSWORD_FAILED
+          type: RESET_PASSWORD_FAILED
         })
-        console.log(err);
+        console.log('Ошибка восстановления пароля:', err);
       })
   }
 }
@@ -163,7 +162,6 @@ export const register = (data) => {
             accessToken: res.accessToken,
             refreshToken: res.refreshToken,
           })
-          console.log('token save done', res.accessToken, res.refreshToken)
           setCookie('accessToken', res.accessToken)
           localStorage.setItem('refreshToken', res.refreshToken)
           dispatch(setAuthChecked(true));
@@ -178,7 +176,7 @@ export const register = (data) => {
         dispatch({
           type: REGISTER_FAILED
         })
-        console.log(err);
+        console.log('Ошибка регистрации:', err);
       })
   }
 }
@@ -217,7 +215,7 @@ export const login = (data) => {
         dispatch({
           type: LOGIN_FAILED
         })
-        console.log(err);
+        console.log('Ошибка авторизации:', err);
       })
   }
 }
@@ -255,7 +253,7 @@ export const logout = (callback) => {
         dispatch({
           type: LOGOUT_FAILED
         })
-        console.log(err);
+        console.log('Ошибка выхода из профиля:', err);
       })
   }
 }
@@ -285,10 +283,16 @@ export const getUserInfo = () => {
         }
       })
       .catch( err => {
-        dispatch({
-          type: GET_USER_FAILED
-        })
-        console.log(err);
+        if (err.message === 'jwt expired') {
+          refreshUserToken();
+          // console.log(err)
+        } else {
+          dispatch({
+            type: GET_USER_FAILED
+          })
+          console.log('Ошибка получения данных пользователя:', err);
+        }
+
       })
   }
 }
@@ -308,7 +312,6 @@ export const updateUserInfo = (data) => {
     })
       .then( res => {
         if (res) {
-          console.log('update user info res', res)
           dispatch({
             type: UPDATE_USER_SUCCESS,
             user: res.user
@@ -324,8 +327,26 @@ export const updateUserInfo = (data) => {
         dispatch({
           type: UPDATE_USER_FAILED
         })
-        console.log(err);
+        console.log('Ошибка обновления данных пользователя:', err);
       })
   }
 }
 
+export const refreshUserToken = () => {
+  request('auth/token', {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ token: localStorage.getItem('refreshToken') })
+  })
+    .then((res) => {
+      if (res) {
+        setCookie('accessToken', res.accessToken);
+        localStorage.setItem('refreshToken', res.refreshToken);
+      }
+    })
+    .catch( err => {
+      console.log('Ошибка обновления токена:', err);
+    })
+}

@@ -1,9 +1,8 @@
 import { useState, useRef } from 'react';
 import {Button, EmailInput, Input} from '@ya.praktikum/react-developer-burger-ui-components';
-import {NavLink, useNavigate} from "react-router-dom";
-import {useDispatch, useSelector} from "react-redux";
+import {NavLink} from "react-router-dom";
+import {useDispatch} from "react-redux";
 import {login} from "../../services/actions/user";
-import {useAuth} from "../../utils/auth";
 import loginPageStyles from './login.module.css';
 
 export function LoginPage () {
@@ -11,27 +10,16 @@ export function LoginPage () {
   const [passwordValue, setPasswordValue] = useState('')
   const formRef = useRef(null);
   const dispatch = useDispatch();
-  let auth = useAuth();
-  const navigate = useNavigate();
-
-  const user = useSelector((store) => store.user.user)
 
   const onIconClick = () => {
     setTimeout(() => formRef.current.focus(), 0)
     alert('Icon Click Callback')
   }
 
-  // const onEmailChange = e => {
-  //   setEmailValue(e.target.value)
-  //   console.log(emailValue, passwordValue)
-  // }
-
   const handleLoginSubmit = (evt) => {
     evt.preventDefault();
-    // console.log(Object.fromEntries(new FormData(evt.target)))
     dispatch(login({emailValue, passwordValue}))
-    // console.log(user)
-    // navigate('/');
+
   }
 
 
