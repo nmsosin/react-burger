@@ -4,11 +4,10 @@ import {useDrag, useDrop} from "react-dnd";
 import burgerConstructorStyles from "../burger-constructor/burger-constructor.module.css";
 import { ConstructorElement, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import {REMOVE_INGREDIENT, SORT_INGREDIENT, sortIngredients} from "../../services/actions/constructorIngredients";
+import {getConstructorIngredients} from "../../utils/constants";
 
 const OptionalConstructorIngredients = ({ ingredient, ingredientIndex }) => {
-  const { optionalIngredients } = useSelector((store) => ({
-    optionalIngredients: store.constructorIngredients.optionalIngredients,
-  }));
+  const { optionalIngredients } = useSelector(getConstructorIngredients);
   const dispatch = useDispatch();
 
   const ref = useRef(null);

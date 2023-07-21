@@ -18,3 +18,11 @@
   gap: 8px;
   justify-self: start;
 }
+
+.navLink {
+  text-decoration: none;
+}
+
+.active {
+  color: white;
+}

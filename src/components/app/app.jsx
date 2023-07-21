@@ -1,84 +1,98 @@
-import { useState,  useEffect } from 'react';
+import { useEffect } from 'react';
 import AppHeader from "../app-header/app-header";
-import generalStyles from "./app.module.css";
-import BurgerIngredients from "../burger-ingredients/burger-ingredients";
-import BurgerConstructor from "../burger-constructor/burger-constructor";
 import Modal from "../modal/modal";
 import IngredientDetails from "../ingredient-details/ingredient-details";
-import OrderDetails from "../order-details/order-details";
-import { IngredientContext, OrderTotalContext} from "../../utils/userContext";
 import { getIngredientsData } from "../../services/actions/ingredientsList";
 import {useDispatch, useSelector} from "react-redux";
-import {DndProvider} from "react-dnd";
-import {HTML5Backend} from "react-dnd-html5-backend";
+import {Routes, Route, useLocation, useNavigate} from 'react-router-dom';
+import {MainPage} from "../../pages/main";
+import {LoginPage} from "../../pages/login/login";
+import {ProfilePage} from "../../pages/profile/profile";
+import {ForgotPasswordPage} from "../../pages/forgot-password/forgot-password";
+import {IngredientPage} from "../../pages/ingredient";
+import {RegisterPage} from "../../pages/register/register";
+import {ResetPasswordPage} from "../../pages/reset-password/reset-password";
+import {OrdersHistoryPage} from "../../pages/orders-history";
+import {OnlyAuth, OnlyUnAuth} from "../protected-route/protected-route";
+import {getUserInfo, refreshUserToken, updateUserInfo} from "../../services/actions/user";
+import {getCookie} from "../../utils/cookie";
+import {OrdersFeedPage} from "../../pages/orders-feed/orders-feed";
+import {NotFound404} from "../../pages/not-found-404/not-found-404";
+import {CLOSE_CURRENT_INGREDIENT, OPEN_CURRENT_INGREDIENT} from "../../services/actions/currentIngredient";
+import {getCurrentIngredient, getUserAuth} from "../../utils/constants";
+import {
+  GENERAL_ROUTE,
+  MAIN_PAGE_ROUTE,
+  INGREDIENT_PAGE_ROUTE,
+  INGREDIENT_DETAILS_ROUTE,
+  REGISTER_PAGE_ROUTE,
+  LOGIN_PAGE_ROUTE,
+  PROFILE_PAGE_ROUTE,
+  ORDERS_FEED_PAGE_ROUTE,
+  ORDERS_HISTORY_PAGE_ROUTE,
+  FORGOT_PASSWORD_PAGE_ROUTE,
+  RESET_PASSWORD_PAGE_ROUTE
+} from "../../utils/routes";
 
 const dataUrl = 'https://norma.nomoreparties.space/api/ingredients';
 
 function App() {
-  // const [items, setItems] = useState(null);
-  // const [isOrderModalOpen, setIsOrderModalOpened] = useState(false);
-  // const [isIngredientModalOpen, setIsIngredientModalOpened] = useState(false);
-  // const [currentIngredientId, setCurrentIngredientId] = useState(null);
-  // const [order, setOrder] = useState(null);
-
-  // const checkResponse = (res) => {
-  //   return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
-  // };
-
-  // const getIngredientData = async () => {
-  //   try {
-  //     setItems(null);
-  //     const res = await fetch(dataUrl);
-  //     const result = await checkResponse(res);
-  //     setItems(result.data);
-  //   } catch (err) {
-  //     alert(`Ой! При запросе данных произошла ошибка: ${err}`);
-  //   }
-  // }
-
-  const ingredientsList = useSelector(store => store.ingredientsList.ingredients);
-
+  const location = useLocation();
+  const background = location.state?.background;
+  const navigate = useNavigate();
+  const isAuthChecked = useSelector(getUserAuth);
+  const { currentIngredient, isIngredientModalOpen } = useSelector(getCurrentIngredient)
+  const accessToken = getCookie('accessToken')
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getIngredientsData(dataUrl))
   }, [dispatch]);
 
-  // TODO: move to actions
-  // const getCurrentIngredientId = (identifier) => {
-  //   console.log(identifier);
-  //   setCurrentIngredientId(identifier);
-  // };
-  //
-  // const openOrderModal = () => {
-  //   setIsOrderModalOpened(true);
-  //   setOrder(null);
-  // }
-  //
-  // const openIngredientModal = () => {
-  //   setIsIngredientModalOpened(true);
-  // }
-  //
-  // const closeModal = () => {
-  //   setIsOrderModalOpened(false);
-  //   setIsIngredientModalOpened(false);
-  // }
-  //
-  // const handleCloseButton = () => {
-  //   closeModal();
-  // }
+  useEffect(() => {
+    if (accessToken) {
+      dispatch(getUserInfo())
+    } else {
+      refreshUserToken();
+    }
+  }, [isAuthChecked, accessToken]);
+
+  useEffect(() => {
+    dispatch({ type: OPEN_CURRENT_INGREDIENT, payload: currentIngredient })
+  }, [])
+
+  const handleCloseButton = () => {
+    dispatch({type: CLOSE_CURRENT_INGREDIENT})
+    navigate(-1)
+  }
 
   return (
     <>
       <AppHeader />
-      { (ingredientsList.length !== 0) && (
-        <main className={generalStyles.content}>
-          <DndProvider backend={HTML5Backend}>
-                <BurgerIngredients  />
-                <BurgerConstructor />
-          </DndProvider>
-        </main>)
-      }
+
+      <Routes location={ background || location }>
+        <Route path={MAIN_PAGE_ROUTE} element={<MainPage />} />
+        <Route path={FORGOT_PASSWORD_PAGE_ROUTE} element={<OnlyUnAuth component={<ForgotPasswordPage />} />} />
+        <Route path={INGREDIENT_PAGE_ROUTE} element={<IngredientPage />} />
+        <Route path={LOGIN_PAGE_ROUTE} element={<OnlyUnAuth component={<LoginPage />} />} />
+        <Route path={PROFILE_PAGE_ROUTE} element={<OnlyAuth component={<ProfilePage />} />} />
+        <Route path={ORDERS_HISTORY_PAGE_ROUTE} element={<OnlyAuth component={<OrdersHistoryPage />} />} />
+        <Route path={ORDERS_FEED_PAGE_ROUTE} element={<OnlyAuth component={<OrdersFeedPage />} />} />
+        <Route path={INGREDIENT_DETAILS_ROUTE} element={
+            <IngredientDetails ingredient={currentIngredient} isSeparateTab={true} />
+        } />
+        <Route path={REGISTER_PAGE_ROUTE} element={<OnlyUnAuth component={<RegisterPage />} />} />
+        <Route path={RESET_PASSWORD_PAGE_ROUTE} element={<OnlyUnAuth component={<ResetPasswordPage />} />} />
+        <Route path={GENERAL_ROUTE} element={<NotFound404 />} />
+      </Routes>
+
+      { background && (
+        <Routes>
+          <Route path={INGREDIENT_DETAILS_ROUTE} element={
+            isIngredientModalOpen && <Modal children={<IngredientDetails isSeparateTab={false} />} onClose={handleCloseButton} />
+          } />
+        </Routes>
+      )}
     </>
   );
 }

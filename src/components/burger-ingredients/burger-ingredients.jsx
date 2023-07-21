@@ -1,22 +1,17 @@
-import {React, useCallback, useEffect, useMemo, useRef, useState} from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import IngredientItem from "../ingredient-item/ingredient-item";
 import {useDispatch, useSelector} from "react-redux";
 import { useInView } from 'react-intersection-observer';
 
 import BurgerIngredientsStyles from './burger-ingredients.module.css';
-import PropTypes from "prop-types";
-import checkPropTypes from "../../utils/prop-types";
-import {getIngredientsData} from "../../services/actions/ingredientsList";
-import Modal from "../modal/modal";
-import IngredientDetails from "../ingredient-details/ingredient-details";
-import {CLOSE_CURRENT_INGREDIENT, OPEN_CURRENT_INGREDIENT} from "../../services/actions/currentIngredient";
+import { OPEN_CURRENT_INGREDIENT} from "../../services/actions/currentIngredient";
+import {getIngredientsList} from "../../utils/constants";
 
 const BurgerIngredients = () => {
-  const { currentIngredient, isIngredientModalOpen } = useSelector(store => store.currentIngredient)
   const [current, setCurrent] = useState('buns');
 
-  const ingredients = useSelector(store => store.ingredientsList.ingredients);
+  const ingredients = useSelector(getIngredientsList);
 
   const buns = useMemo(
     () => ingredients.filter(item => item['type'] === 'bun'),
@@ -100,18 +95,12 @@ const BurgerIngredients = () => {
         })
         break;
     }
-
   }
-
 
   const dispatch = useDispatch();
 
   const handleIngredientCardClick = (ingredient) => {
     dispatch({ type: OPEN_CURRENT_INGREDIENT, payload: ingredient })
-  }
-
-  const handleCloseButton = () => {
-    dispatch({type: CLOSE_CURRENT_INGREDIENT})
   }
 
   return (
@@ -152,18 +141,8 @@ const BurgerIngredients = () => {
           </li>
         </ul>
       </section>
-
-      {
-        isIngredientModalOpen &&
-        <Modal children={<IngredientDetails ingredient={currentIngredient} />} onClose={handleCloseButton} />
-      }
     </>
   )
 }
 
 export default BurgerIngredients;
-
-// BurgerIngredients.propTypes = {
-//   content: PropTypes.arrayOf(checkPropTypes),
-//   openModal: PropTypes.func.isRequired
-// }

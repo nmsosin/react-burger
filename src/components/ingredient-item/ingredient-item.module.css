@@ -1,6 +1,9 @@
-.card {
+.navLink {
+  text-decoration: none;
+  color: white;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
   position: relative;
   cursor: pointer;
@@ -13,5 +16,6 @@
 }
 
 .ingredientName {
-  margin: 0;
+  margin: 0 auto;
+  text-align: center;
 }
