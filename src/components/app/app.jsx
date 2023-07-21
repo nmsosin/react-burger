@@ -12,7 +12,7 @@ import {ForgotPasswordPage} from "../../pages/forgot-password/forgot-password";
 import {IngredientPage} from "../../pages/ingredient";
 import {RegisterPage} from "../../pages/register/register";
 import {ResetPasswordPage} from "../../pages/reset-password/reset-password";
-import {OrdersHistoryPage} from "../../pages/orders-history";
+import {OrdersHistoryPage} from "../../pages/orders-history/orders-history";
 import {OnlyAuth, OnlyUnAuth} from "../protected-route/protected-route";
 import {getUserInfo, refreshUserToken, updateUserInfo} from "../../services/actions/user";
 import {getCookie} from "../../utils/cookie";
@@ -31,8 +31,10 @@ import {
   ORDERS_FEED_PAGE_ROUTE,
   ORDERS_HISTORY_PAGE_ROUTE,
   FORGOT_PASSWORD_PAGE_ROUTE,
-  RESET_PASSWORD_PAGE_ROUTE
+  RESET_PASSWORD_PAGE_ROUTE, ORDERS_HISTORY_DETAILS_PAGE_ROUTE, ORDERS_FEED_DETAILS_PAGE_ROUTE
 } from "../../utils/routes";
+import {OrdersHistoryDetailsPage} from "../../pages/orders-history-details/orders-history-details";
+import {OrdersFeedDetailsPage} from "../../pages/orders-feed-details/orders-feed-details";
 
 const dataUrl = 'https://norma.nomoreparties.space/api/ingredients';
 
@@ -77,7 +79,9 @@ function App() {
         <Route path={LOGIN_PAGE_ROUTE} element={<OnlyUnAuth component={<LoginPage />} />} />
         <Route path={PROFILE_PAGE_ROUTE} element={<OnlyAuth component={<ProfilePage />} />} />
         <Route path={ORDERS_HISTORY_PAGE_ROUTE} element={<OnlyAuth component={<OrdersHistoryPage />} />} />
-        <Route path={ORDERS_FEED_PAGE_ROUTE} element={<OnlyAuth component={<OrdersFeedPage />} />} />
+        <Route path={ORDERS_HISTORY_DETAILS_PAGE_ROUTE} element={<OnlyAuth component={<OrdersHistoryDetailsPage />} />} />
+        <Route path={ORDERS_FEED_PAGE_ROUTE} element={<OrdersFeedPage />} />
+        <Route path={ORDERS_FEED_DETAILS_PAGE_ROUTE} element={<OrdersFeedDetailsPage />} />
         <Route path={INGREDIENT_DETAILS_ROUTE} element={
             <IngredientDetails ingredient={currentIngredient} isSeparateTab={true} />
         } />
