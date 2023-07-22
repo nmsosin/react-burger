@@ -3,7 +3,7 @@ import {
   WS_CONNECTION_SUCCESS,
   WS_CONNECTION_FAILED,
   WS_CONNECTION_CLOSED,
-  WS_GET_DATA,
+  WS_GET_ORDERS,
 } from '../actions/websocket';
 
 const wsInitialState = {
@@ -43,7 +43,7 @@ export const wsReducer = (state = wsInitialState, action) => {
         error: undefined
       };
 
-    case WS_GET_DATA:
+    case WS_GET_ORDERS:
       return {
         ...state,
         orders: [...state.orders, action.payload ]

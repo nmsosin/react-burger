@@ -13,4 +13,6 @@ export const getOrderDetails = (store) => ({
 
 export const getIngredientsList = (store) => store.ingredientsList.ingredients;
 
+export const getWsOrders = (store) => store.wsOrdersFeed;
+
 

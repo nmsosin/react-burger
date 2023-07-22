@@ -7,6 +7,10 @@ import { Provider } from 'react-redux';
 import {BrowserRouter as Router} from "react-router-dom";
 import thunk from 'redux-thunk';
 import { rootReducer } from './services/reducers/index'
+import {socketMiddleware} from "./services/middleware/socketMiddleware";
+import {wsActions} from "./services/actions/websocket";
+
+const socketUrl = 'wss://norma.nomoreparties.space/orders/all';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root')
@@ -17,7 +21,7 @@ const composeEnhancers =
     ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({})
     : compose;
 
-const enhancer = composeEnhancers(applyMiddleware(thunk));
+const enhancer = composeEnhancers(applyMiddleware(thunk, socketMiddleware(socketUrl, wsActions)));
 
 const store = createStore(rootReducer, enhancer);
 
