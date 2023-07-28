@@ -1,3 +1,9 @@
+.section {
+  width: 1248px;
+  margin: 0 auto;
+}
+
 .content {
   display: flex;
+  gap: 60px;
 }

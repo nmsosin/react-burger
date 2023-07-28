@@ -16,13 +16,8 @@ const wsInitialState = {
 
 export const wsReducer = (state = wsInitialState, action) => {
   switch (action.type) {
-    case WS_CONNECTION_START:
-      return {
-        ...state,
-        wsConnected: true
-      };
-
     case WS_CONNECTION_SUCCESS:
+      console.log("WS CONNECTION SUCCESS")
       return {
         ...state,
         wsConnected: true,
@@ -30,6 +25,7 @@ export const wsReducer = (state = wsInitialState, action) => {
       };
 
     case WS_CONNECTION_FAILED:
+      console.log("!!!WS orders connection failed", action.payload)
       return {
         ...state,
         wsConnected: false,
@@ -37,6 +33,7 @@ export const wsReducer = (state = wsInitialState, action) => {
       };
 
     case WS_CONNECTION_CLOSED:
+      console.log("WS orders connection closed")
       return {
         ...state,
         wsConnected: false,
@@ -44,9 +41,12 @@ export const wsReducer = (state = wsInitialState, action) => {
       };
 
     case WS_GET_ORDERS:
+      console.log("WS orders connected", action.payload)
       return {
         ...state,
-        orders: [...state.orders, action.payload ]
+        orders: action.payload.orders,
+        ordersDoneTotal: action.payload.ordersDoneTotal,
+        ordersDoneToday: action.payload.ordersDoneToday,
       };
 
     default:
