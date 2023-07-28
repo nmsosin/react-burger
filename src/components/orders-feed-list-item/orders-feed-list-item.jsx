@@ -1,65 +1,99 @@
 import {CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import ordersFeedListItem from "../orders-feed-list-item/orders-feed-list-item.module.css"
+import {useSelector} from "react-redux";
+import {getConstructorIngredients, getIngredientsList} from "../../utils/constants";
+import {useMemo} from "react";
+import { v4 as uuidv4 } from 'uuid';
 
-export function OrdersFeedListItem() {
+export function OrdersFeedListItem({order}) {
+  const { createdAt, ingredients, name, number, status, updatedAt, _id} = order;
+  const ingredientsList = useSelector(getIngredientsList);
+
+  const orderIngredients = useMemo(() => {
+    const uniqueOrderIngredients = order.ingredients.reduce((acc, item) => {
+      if (acc.includes(item)) {
+        return acc;
+      }
+      return [...acc, item]
+    }, [])
+
+    return uniqueOrderIngredients.map((ingredientId) => {
+      return ingredientsList.find((item) => {
+        return item._id === ingredientId;
+      })
+    })
+  }, [ingredients])
+
+  const orderPrice = useMemo(() => {
+    let result = 0;
+    orderIngredients.map(item => {
+      return item.type === 'bun' ? result += item.price * 2 : item.price;
+    });
+    return result;
+  }, [orderIngredients])
+
+  const orderTime = useMemo(() => {
+    const currentDate = new Date().getDate();
+      return createdAt.slice(8, 10) == currentDate ? `Сегодня, ${createdAt.slice(11, 16)} i-GMT+3` : `${createdAt.slice(0, 10)}, ${createdAt.slice(11, 16)} i-GMT+3`;
+      //TODO: refactor with switch case
+      }, [orderIngredients])
 
   return (
     <div className={ordersFeedListItem.orderListItem}>
       <div className={ordersFeedListItem.orderDescription}>
-        <p className="text text_type_digits-default">#034535</p>
-        <p className="text text_type_main-default text_color_inactive"> Сегодня, 16:20 i-GMT+3</p>
+        <p className="text text_type_digits-default">#{number}</p>
+        <p className="text text_type_main-default text_color_inactive">{orderTime}</p>
       </div>
-      <h2 className="text text_type_main-medium">Death Star Starship Main Burger</h2>
+      <h2 className="text text_type_main-medium">{name}</h2>
 
       <div className={ordersFeedListItem.orderDetails}>
+
         <ul className={ordersFeedListItem.ingredientsList}>
-          <li className={ordersFeedListItem.imageWrapper} style={{zIndex: "5"}} >
-            <div className={ordersFeedListItem.imageBackground}>
-              <img src="https://code.s3.yandex.net/react/code/bun-01.png" alt="ingredient"
-                   className={ordersFeedListItem.image}
-              />
-            </div>
-          </li>
-          <li className={ordersFeedListItem.imageWrapper} style={{zIndex: "4"}} >
-            <div className={ordersFeedListItem.imageBackground}>
-              <img src="https://code.s3.yandex.net/react/code/cheese-large.png" alt="ingredient"
-                   className={ordersFeedListItem.image}
-              />
-            </div>
-          </li>
-          <li className={ordersFeedListItem.imageWrapper} style={{zIndex: "3"}} >
-            <div className={ordersFeedListItem.imageBackground}>
-              <img src="https://code.s3.yandex.net/react/code/salad-large.png" alt="ingredient"
-                   className={ordersFeedListItem.image}
-              />
-            </div>
-          </li>
-          <li className={ordersFeedListItem.imageWrapper} style={{zIndex: "2"}} >
-            <div className={ordersFeedListItem.imageBackground}>
-              <img src="https://code.s3.yandex.net/react/code/meat-01.png" alt="ingredient"
-                   className={ordersFeedListItem.image}
-              />
-            </div>
-          </li>
-          <li className={ordersFeedListItem.imageWrapper} style={{zIndex: "1"}} >
-            <div className={ordersFeedListItem.imageBackground}>
-              <img src="https://code.s3.yandex.net/react/code/meat-03-large.png"
-                   className={ordersFeedListItem.image}
-              />
-            </div>
-          </li>
-          <li className={ordersFeedListItem.imageWrapper} style={{zIndex: "0"}} >
-            <div className={ordersFeedListItem.imageBackground}>
-              <img src="https://code.s3.yandex.net/react/code/sauce-01-large.png" alt="ingredient"
-                   className={ordersFeedListItem.image}
-              />
-            </div>
-          </li>
+          {orderIngredients && orderIngredients.length < 6
+            ? orderIngredients.slice(0, 6).map((ingredient) => {
+            return (
+              <li className={ordersFeedListItem.imageWrapper} key={uuidv4()} >
+                <div className={ordersFeedListItem.imageBackground}>
+                  <img src={ingredient.image} alt={ingredient.name}
+                       className={ordersFeedListItem.image}
+                  />
+                </div>
+              </li>
+            )
+          })
+          : orderIngredients.slice(0, 5).map((ingredient) => {
+              return (
+                <li className={ordersFeedListItem.imageWrapper} key={uuidv4()} >
+                  <div className={ordersFeedListItem.imageBackground}>
+                    <img src={ingredient.image} alt={ingredient.name}
+                         className={ordersFeedListItem.image}
+                    />
+                  </div>
+                </li>
+              )
+            }
+          )}
+          {orderIngredients && orderIngredients.length >= 6 &&
+            orderIngredients.slice(5, 6).map((ingredient) => {
+              return (
+                <li className={ordersFeedListItem.imageWrapper} key={uuidv4()} >
+                  <div className={ordersFeedListItem.lastIngredientOverlay}>
+                    <p className={`text text_type_digits-default ${ordersFeedListItem.lastIngredientCounter}`}>+{orderIngredients.length-5}</p>
+                  </div>
+                  <div className={ordersFeedListItem.imageBackground}>
+                    <img src={ingredient.image} alt={ingredient.name}
+                         className={ordersFeedListItem.image}
+                    />
+                  </div>
+                </li>
+              )
+            })
+          }
 
         </ul>
 
         <div className={ordersFeedListItem.priceWrapper}>
-          <p className="text text_type_digits-default pr-2">460</p>
+          <p className="text text_type_digits-default pr-2">{orderPrice}</p>
           <CurrencyIcon type={'primary'}/>
         </div>
       </div>

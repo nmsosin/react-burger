@@ -12,9 +12,14 @@
 }
 
 .ordersList {
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
   width: 272px;
-  max-height: 152px;
-  display: flex;flex-direction: column;
+  max-height: 160px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 8px;
   flex-wrap: wrap;
 }
 

@@ -9,6 +9,7 @@ import {
 const wsInitialState = {
   wsConnected: false,
   orders: [],
+  ordersData: {},
   ordersDoneTotal: 0,
   ordersDoneToday: 0,
   error: undefined
@@ -17,7 +18,7 @@ const wsInitialState = {
 export const wsReducer = (state = wsInitialState, action) => {
   switch (action.type) {
     case WS_CONNECTION_SUCCESS:
-      console.log("WS CONNECTION SUCCESS")
+      // console.log("WS CONNECTION SUCCESS")
       return {
         ...state,
         wsConnected: true,
@@ -25,7 +26,7 @@ export const wsReducer = (state = wsInitialState, action) => {
       };
 
     case WS_CONNECTION_FAILED:
-      console.log("!!!WS orders connection failed", action.payload)
+      // console.log("!!!WS orders connection failed", action.payload)
       return {
         ...state,
         wsConnected: false,
@@ -33,7 +34,7 @@ export const wsReducer = (state = wsInitialState, action) => {
       };
 
     case WS_CONNECTION_CLOSED:
-      console.log("WS orders connection closed")
+      // console.log("WS orders connection closed")
       return {
         ...state,
         wsConnected: false,
@@ -41,12 +42,15 @@ export const wsReducer = (state = wsInitialState, action) => {
       };
 
     case WS_GET_ORDERS:
-      console.log("WS orders connected", action.payload)
+      // console.log("WS orders connected", action.payload)
       return {
         ...state,
         orders: action.payload.orders,
-        ordersDoneTotal: action.payload.ordersDoneTotal,
-        ordersDoneToday: action.payload.ordersDoneToday,
+        ordersData: {
+          ...state.ordersData,
+          ordersDoneTotal: action.payload.total,
+          ordersDoneToday: action.payload.totalToday,
+        }
       };
 
     default:

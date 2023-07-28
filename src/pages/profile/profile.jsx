@@ -7,15 +7,14 @@ import profilePageStyles from './profile.module.css'
 import {SideTab} from "../../components/side-tab/side-tab";
 import {LOGIN_PAGE_ROUTE, MAIN_PAGE_ROUTE, ORDERS_HISTORY_PAGE_ROUTE, PROFILE_PAGE_ROUTE} from "../../utils/routes";
 import {useForm} from "../../services/hooks/useForm";
+import {ProfileNavPanel} from "../../components/profile-nav-panel/profile-nav.panel";
 
 export function ProfilePage () {
   const user = useSelector((store) => store.user.user);
-  const [current, setCurrent] = useState('profile')
 
   const inputRef = useRef(null)
 
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const {values, handleChange, setValues} = useForm({email: user.email, name: user.name, password: ''});
 
@@ -27,10 +26,6 @@ export function ProfilePage () {
 
   const onIconClick = () => {
      inputRef.current.focus();
-  }
-
-  const onLogout = () => {
-    dispatch(logout(() => navigate(LOGIN_PAGE_ROUTE)));
   }
 
   const handleUpdateUserInfo = (evt) => {
@@ -45,37 +40,8 @@ export function ProfilePage () {
 
   return(
     <>
-      <div className={profilePageStyles.profilePageWrapper}>
-        <div className={profilePageStyles.navPanel}>
-           <div style={{ display: 'inline-block' }}>
-            <NavLink
-              className={`text text_type_main-medium text_color_inactive ${profilePageStyles.navLink}`}
-              to={PROFILE_PAGE_ROUTE}
-            >
-              <SideTab value="Профиль" active={current === 'profile'} onClick={setCurrent} >
-                Профиль
-              </SideTab>
-            </NavLink>
-            <NavLink
-              className={`text text_type_main-medium text_color_inactive ${profilePageStyles.navLink}`}
-              to={ORDERS_HISTORY_PAGE_ROUTE}
-            >
-              <SideTab value="История заказов" active={current === 'orders-history'} onClick={setCurrent}>
-                История заказов
-              </SideTab>
-            </NavLink>
-            <NavLink
-              className={`text text_type_main-medium text_color_inactive ${profilePageStyles.navLink}`}
-              to={MAIN_PAGE_ROUTE}
-            >
-              <SideTab value="Выход" active={current === 'exit'} onClick={onLogout}>
-                Выход
-              </SideTab>
-            </NavLink>
-          </div>
-
-          <p className={'text text_type_main-default text_color_inactive pt-20'} style={ { opacity: .4 } }>В этом разделе вы можете изменить&nbsp;свои персональные данные</p>
-        </div>
+      <section className={profilePageStyles.profilePageWrapper}>
+        <ProfileNavPanel />
 
         <form className={profilePageStyles.inputContainer} onSubmit={handleUpdateUserInfo}>
 
@@ -119,7 +85,7 @@ export function ProfilePage () {
           </div>
 
         </form>
-      </div>
+      </section>
     </>
   )
 }

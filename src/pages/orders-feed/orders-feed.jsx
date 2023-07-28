@@ -9,11 +9,7 @@ const socketUrl = 'wss://norma.nomoreparties.space/orders/all';
 
 export function OrdersFeedPage () {
   const dispatch = useDispatch();
-  const { orders, ordersDoneToday, ordersDoneTotal } = useSelector(getWsOrders);
-
-  useEffect(() => {
-    console.log(orders, ordersDoneToday, ordersDoneTotal)
-  },[])
+  const { orders } = useSelector(getWsOrders);
 
   useEffect(() => {
     dispatch({
@@ -31,8 +27,8 @@ export function OrdersFeedPage () {
     <section className={ordersFeedStyles.section}>
       <h1 className="text text_type_main-large pb-5 pt-10">Лента заказов</h1>
       <div className={ordersFeedStyles.content}>
-        <OrdersFeedList />
-        <OrderStats/>
+        <OrdersFeedList orders={orders} />
+        <OrderStats />
       </div>
     </section>
   )

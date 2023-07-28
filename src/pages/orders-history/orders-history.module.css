@@ -12,6 +12,24 @@
   margin: 0 auto;
 }
 
+.navPanel {
+  display: flex;
+  flex-direction: column;
+  width: 320px;
+}
+
+.navLink:hover {
+  color: var(--text-primary-color);
+  transition: color .5s ease-in-out;
+}
+
+.navLink {
+  text-decoration: none;
+  height: 64px;
+  display: flex;
+  align-items: center;
+}
+
 .inputContainer {
   display: flex;
   flex-direction: column;
