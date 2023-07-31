@@ -11,7 +11,7 @@ import {getCookie} from "../../utils/cookie";
 import {logout} from "../../services/actions/user";
 import {ProfileNavPanel} from "../../components/profile-nav-panel/profile-nav.panel";
 
-const socketUrl = 'wss://norma.nomoreparties.space/orders/all';
+const socketUrl = 'wss://norma.nomoreparties.space/orders';
 
 export function OrdersHistoryPage () {
   const dispatch = useDispatch();

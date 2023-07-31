@@ -12,7 +12,7 @@ const wsInitialState = {
   ordersData: {},
   ordersDoneTotal: 0,
   ordersDoneToday: 0,
-  error: undefined
+  error: undefined,
 };
 
 export const wsReducer = (state = wsInitialState, action) => {

@@ -2,9 +2,15 @@ import React from 'react';
 import { CheckMarkIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import orderDetailsStyles from './order-details.module.css';
 import PropTypes from "prop-types";
+import {getOrdersList} from "../../utils/constants";
+import {useSelector} from "react-redux";
 
 
-const OrderDetails = ( {orderNumber} ) => {
+const OrderDetails = ({orderNumber}) => {
+  const getOrders = useSelector(getOrdersList);
+  console.log('getOrders', getOrders)
+
+
   return(
     <div className={orderDetailsStyles.orderModalContainer}>
       <h2 className={`text text_type_digits-large pt-15 pb-8 pl-15 pr-15 `}>{orderNumber}</h2>
