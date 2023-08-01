@@ -1,3 +1,12 @@
+.separateTabWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 auto;
+  padding-top: 120px;
+  width: 720px;
+}
+
 .orderItem {
   display: flex;
   flex-direction: column;

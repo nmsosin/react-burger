@@ -4,7 +4,6 @@
   left: 0;
   transition: visibility 1s ease-in-out, opacity 1s ease-in-out;
 }
-
 .modal {
   display: flex;
   flex-direction: column;
@@ -17,6 +16,7 @@
   border-radius: 40px;
   min-width: 720px;
 }
+
 
 
 .closeButton {

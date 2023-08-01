@@ -10,7 +10,7 @@ import {WS_CONNECTION_END, WS_CONNECTION_START} from "../../services/actions/web
 import {OrderFeedDetailsLayout} from "../orders-feed-details-layout/order-feed-details-layout";
 import {getCookie} from "../../utils/cookie";
 
-export function OrdersFeedDetails() {
+export function OrdersFeedDetails({isSeparateTab}) {
   const location = useLocation();
   const dispatch = useDispatch();
 
@@ -37,7 +37,7 @@ export function OrdersFeedDetails() {
   const {orders} = useSelector(getWsOrders)
 
 
-  return (
-    <OrderFeedDetailsLayout orders={orders} />
+  return orders.length > 0 && (
+    <OrderFeedDetailsLayout orders={orders} isSeparateTab={isSeparateTab}/>
   )
 }

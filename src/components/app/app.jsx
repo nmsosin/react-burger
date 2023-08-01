@@ -92,8 +92,8 @@ function App() {
         <Route path={ORDERS_HISTORY_PAGE_ROUTE} element={<OnlyAuth component={<OrdersHistoryPage />} />} />
         {/*<Route path={ORDERS_HISTORY_DETAILS_PAGE_ROUTE} element={<OrdersFeedDetails order={currentOrder} />} />*/}
         <Route path={ORDERS_FEED_PAGE_ROUTE} element={<OrdersFeedPage />} />
-        <Route path={ORDERS_FEED_DETAILS_PAGE_ROUTE} element={<OrdersFeedDetails />} />
-        <Route path={ORDERS_HISTORY_DETAILS_PAGE_ROUTE} element={<OrdersFeedDetails />} />
+        <Route path={ORDERS_FEED_DETAILS_PAGE_ROUTE} element={<OrdersFeedDetails isSeparateTab={true} />} />
+        <Route path={ORDERS_HISTORY_DETAILS_PAGE_ROUTE} element={<OrdersFeedDetails isSeparateTab={true} />} />
         <Route path={INGREDIENT_DETAILS_ROUTE} element={
             <IngredientDetails isSeparateTab={true} />
         } />
@@ -113,7 +113,7 @@ function App() {
       { background && (
         <Routes>
           <Route path={ORDERS_FEED_DETAILS_PAGE_ROUTE} element={
-            isOrderModalOpen && <Modal children={<OrdersFeedDetails />} onClose={handleOrderCloseButton} />
+            isOrderModalOpen && <Modal children={<OrdersFeedDetails isSeparateTab={false} />} onClose={handleOrderCloseButton} />
           } />
         </Routes>
       )}
@@ -121,7 +121,7 @@ function App() {
       { background && (
         <Routes>
           <Route path={ORDERS_HISTORY_DETAILS_PAGE_ROUTE} element={
-            isOrderModalOpen && <Modal children={<OrdersFeedDetails />} onClose={handleOrderCloseButton} />
+            isOrderModalOpen && <Modal children={<OrdersFeedDetails isSeparateTab={false}/>} onClose={handleOrderCloseButton} />
           } />
         </Routes>
       )}
