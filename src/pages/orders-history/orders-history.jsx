@@ -17,6 +17,7 @@ export function OrdersHistoryPage () {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { orders } = useSelector(getWsOrders);
+  const fromOldToNewOrders = orders.toReversed();
 
   const accessToken = getCookie('accessToken').split('Bearer ')[1];
 
@@ -37,7 +38,7 @@ export function OrdersHistoryPage () {
         <section className={ordersHistoryPageStyles.profilePageWrapper}>
           <ProfileNavPanel />
 
-          <OrdersFeedList orders={orders} />
+          <OrdersFeedList orders={fromOldToNewOrders} />
         </section>
       </>
   )

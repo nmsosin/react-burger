@@ -21,7 +21,14 @@ export function OrderFeedDetailsLayout({orders}) {
         return item._id === ingredientId;
       })
     })
-  }, [ingredients])
+  }, [ingredients]);
+
+  const uniqueOrderIngredients = orderIngredients.reduce((acc, item) => {
+    if (acc.includes(item)) {
+      return acc;
+    }
+    return [...acc, item]
+  }, [])
 
   const orderPrice = useMemo(() => {
     let result = 0;
@@ -34,42 +41,69 @@ export function OrderFeedDetailsLayout({orders}) {
   const orderTime = useMemo(() => {
     const currentDate = new Date().getDate();
     return createdAt.slice(8, 10) == currentDate ? `Сегодня, ${createdAt.slice(11, 16)} i-GMT+3` : `${createdAt.slice(0, 10)}, ${createdAt.slice(11, 16)} i-GMT+3`;
-    //TODO: refactor with switch case
+    //TODO: refactor with switch case ?
   }, [orderIngredients])
-
-  //TODO: refactor counter f-n
-  const ingredientCounter = 2;
-
 
   return (
     <div className={ordersFeedDetailsLayout.orderItem}>
       <p className="text text_type_digits-default pb-10">#{number}</p>
       <h2 className="text text_type_main-medium pb-3">{name}</h2>
-      <p className={`text text_type_main-default pb-15 ${status === "done" ? "text_color_success" : ""}`}>{status === "done" ? "Выполнен" : "В работе"}</p>
+      <p
+        className={`text text_type_main-default pb-15 ${status === "done" ? "text_color_success" : ""}`}>{status === "done" ? "Выполнен" : "В работе"}</p>
       <p className="text text_type_main-medium pb-6">Состав:</p>
 
       <div className={ordersFeedDetailsLayout.orderDetails}>
 
         <ul className={ordersFeedDetailsLayout.ingredientsList}>
-          {orderIngredients.map((ingredient) => {
-            return (
-              <li key={uuidv4()} className={ordersFeedDetailsLayout.ingredientCard}>
-                <div className={ordersFeedDetailsLayout.imageWrapper}>
-                  <div className={ordersFeedDetailsLayout.imageBackground}>
-                    <img src={ingredient.image} alt={ingredient.name}
-                         className={ordersFeedDetailsLayout.image}
-                    />
-                  </div>
+          {
+            uniqueOrderIngredients.map((ingredient) => {
+             const counter = orderIngredients.reduce((acc, item) => {
+                acc[item._id] = (acc[item._id] || 0) + 1;
+                return acc;
+              }, {});
 
-                </div>
-                <p className="text text_type_main-default">{ingredient.name}</p>
-                <div className={ordersFeedDetailsLayout.priceWrapper}>
-                  <p className="text text_type_digits-default pr-2">{ingredientCounter} x {ingredient.price}</p>
-                  <CurrencyIcon/>
-                </div>
-              </li>
-            )
-          })
+              return (
+                <li key={uuidv4()} className={ordersFeedDetailsLayout.ingredientCard}>
+                  <div className={ordersFeedDetailsLayout.imageWrapper}>
+                    <div className={ordersFeedDetailsLayout.imageBackground}>
+                      <img src={ingredient.image} alt={ingredient.name}
+                           className={ordersFeedDetailsLayout.image}
+                      />
+                    </div>
+
+                  </div>
+                  <p className="text text_type_main-default">{ingredient.name}</p>
+                  <div className={ordersFeedDetailsLayout.priceWrapper}>
+                    <p className="text text_type_digits-default pr-2">
+                      {ingredient.type === 'bun' ? counter[ingredient._id] * 2 : counter[ingredient._id]} x {ingredient.price}
+                    </p>
+                    <CurrencyIcon/>
+                  </div>
+                </li>
+              )
+            })
+
+
+
+            //   orderIngredients.map((ingredient) => {
+            //   return (
+            //     <li key={uuidv4()} className={ordersFeedDetailsLayout.ingredientCard}>
+            //       <div className={ordersFeedDetailsLayout.imageWrapper}>
+            //         <div className={ordersFeedDetailsLayout.imageBackground}>
+            //           <img src={ingredient.image} alt={ingredient.name}
+            //                className={ordersFeedDetailsLayout.image}
+            //           />
+            //         </div>
+            //
+            //       </div>
+            //       <p className="text text_type_main-default">{ingredient.name}</p>
+            //       <div className={ordersFeedDetailsLayout.priceWrapper}>
+            //         <p className="text text_type_digits-default pr-2">{ingredientCounter} x {ingredient.price}</p>
+            //         <CurrencyIcon/>
+            //       </div>
+            //     </li>
+            //   )
+            // })
           }
 
         </ul>
