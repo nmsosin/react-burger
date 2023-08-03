@@ -1,0 +1,12 @@
+.navPanel {
+  display: flex;
+  flex-direction: column;
+  width: 320px;
+}
+
+.navLink {
+  text-decoration: none;
+  height: 64px;
+  display: flex;
+  align-items: center;
+}

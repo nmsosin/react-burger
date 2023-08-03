@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import {useEffect, useMemo} from 'react';
 import { ConstructorElement, Button, CurrencyIcon, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import burgerConstructorStyles from './burger-constructor.module.css';
 import PropTypes from "prop-types";
@@ -6,9 +6,6 @@ import checkPropTypes from "../../utils/prop-types";
 import {useDispatch, useSelector} from "react-redux";
 import {useDrag, useDrop} from "react-dnd";
 import {
-  ADD_INGREDIENT,
-  REMOVE_INGREDIENT,
-  SORT_INGREDIENT,
   RESET_INGREDIENT,
   addConstructorIngredient
 } from "../../services/actions/constructorIngredients";
@@ -18,13 +15,13 @@ import {createOrderId, RESET_ORDER} from "../../services/actions/order";
 import OptionalConstructorIngredients from "../optional-constructor-ingredients/optional-constructor-ingredients";
 import { v4 as uuidv4 } from 'uuid';
 import {useNavigate} from "react-router-dom";
-import {getConstructorIngredients, getOrderDetails, getUserInfo} from "../../utils/constants";
+import {getConstructorIngredients, getSentOrderDetails, getUserInfo} from "../../utils/constants";
 import {LOGIN_PAGE_ROUTE} from "../../utils/routes";
 
 const BurgerConstructor = () => {
   const { optionalIngredients, bun } = useSelector(getConstructorIngredients);
 
-  const { orderNumber, isOrderModalOpen } = useSelector(getOrderDetails);
+  const { orderNumber, isSentOrderModalOpen } = useSelector(getSentOrderDetails);
 
   const user = useSelector(getUserInfo)
 
@@ -43,24 +40,24 @@ const BurgerConstructor = () => {
 
   // accumulate chosen ingredients id for sending to API
   const chosenIngredientsId = () => {
-    return optionalIngredients.map(ingredient => ingredient._id)
+    const optionalIngredientsId = optionalIngredients.map(ingredient => ingredient._id);
+    return bun ? [bun._id, ...optionalIngredientsId] : optionalIngredientsId;
   }
 
   // send order to API
   const handleOrderButtonClick = () => {
     if (user && user.name) {
       dispatch(createOrderId('orders', chosenIngredientsId()))
+
     } else {
       navigate(LOGIN_PAGE_ROUTE);
     }
-
   }
 
   // Adding DnD feature
   function handleDrop (ingredient) {
     dispatch(addConstructorIngredient(ingredient, uuidv4()))
   }
-
 
   // ingredient drop
   const [{ isHover }, dropRef] = useDrop({
@@ -133,7 +130,7 @@ const BurgerConstructor = () => {
     </section>
 
     {
-      isOrderModalOpen &&
+      isSentOrderModalOpen &&
       <Modal children={<OrderDetails orderNumber={orderNumber} />} onClose={handleCloseButton}/>
     }
     </>

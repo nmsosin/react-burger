@@ -4,8 +4,8 @@ export const SideTab = ({ active, value, onClick}) => {
 
   return (
     <>
-      <div className={`SideTabStyles.sideNavButton ${active ? 'active' : null}`} onClick={onClick}>
-        <span>{value}</span>
+      <div className={SideTabStyles.sideNavButton} onClick={onClick}>
+        <span className={ active ? SideTabStyles.active : null}>{value}</span>
       </div>
     </>
   )

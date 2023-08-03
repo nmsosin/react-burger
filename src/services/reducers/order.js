@@ -1,29 +1,38 @@
-import { GET_ORDER_REQUEST, GET_ORDER_FAILED, GET_ORDER_SUCCESS, RESET_ORDER} from "../actions/order";
+import {
+  SEND_ORDER_REQUEST,
+  SEND_ORDER_FAILED,
+  SEND_ORDER_SUCCESS,
+  RESET_ORDER,
+} from "../actions/order";
 
-const orderInitialState = {
+const orderSentInitialState = {
   orderNumber: 0,
-  isOrderModalOpen: false,
+  isSentOrderModalOpen: false,
+
   orderRequest: false,
+  orderSuccess: false,
   orderFailed: false,
 }
 
-export const orderReducer = ( state = orderInitialState, action ) => {
+export const sendOrderReducer = (state = orderSentInitialState, action ) => {
   switch (action.type) {
-    case GET_ORDER_REQUEST: {
+    case SEND_ORDER_REQUEST: {
       return {
         ...state,
         orderRequest: true,
       }
     };
-    case GET_ORDER_SUCCESS: {
+    case SEND_ORDER_SUCCESS: {
+      console.log("SEND ORDER SUCCESS", action.payload)
       return {
         ...state,
         orderRequest: false,
+        orderSuccess: true,
         orderNumber: action.payload,
-        isOrderModalOpen: true,
+        isSentOrderModalOpen: true,
       }
     };
-    case GET_ORDER_FAILED: {
+    case SEND_ORDER_FAILED: {
       return {
         ...state,
         orderFailed: true,
@@ -31,7 +40,7 @@ export const orderReducer = ( state = orderInitialState, action ) => {
     };
     case RESET_ORDER: {
       return {
-        ...orderInitialState,
+        ...orderSentInitialState,
       }
     };
     default: {
@@ -39,3 +48,4 @@ export const orderReducer = ( state = orderInitialState, action ) => {
     }
   }
 };
+

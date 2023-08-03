@@ -5,3 +5,12 @@
   text-decoration: none;
   color: var(--text-inactive-color);
 }
+
+.sideNavButton:hover {
+  color: var(--text-primary-color);
+  transition: color .5s ease-in-out;
+}
+
+.active {
+  color: white;
+}
