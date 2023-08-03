@@ -22,3 +22,4 @@ export const sentOrders = (store) => store.order;
 export const getIngredientsList = (store) => store.ingredientsList.ingredients;
 
 export const getWsOrders = (store) => store.wsOrdersFeed;
+export const getWsAuthOrders = (store) => store.wsAuthOrdersFeed;

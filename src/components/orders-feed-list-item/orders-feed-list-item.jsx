@@ -4,9 +4,10 @@ import {useDispatch, useSelector} from "react-redux";
 import {getIngredientsList} from "../../utils/constants";
 import {useMemo} from "react";
 import {v4 as uuidv4} from 'uuid';
-import {GET_ORDER_REQUEST, getOrders, OPEN_CURRENT_ORDER} from "../../services/actions/orderInfo";
+import { OPEN_CURRENT_ORDER} from "../../services/actions/orderInfo";
 import ingredientItemStyles from "../ingredient-item/ingredient-item.module.css";
 import {NavLink, useLocation} from "react-router-dom";
+import PropTypes from "prop-types";
 
 export function OrdersFeedListItem({order}) {
   const dispatch = useDispatch();
@@ -116,4 +117,8 @@ export function OrdersFeedListItem({order}) {
      </div>
     </NavLink>
   )
+}
+
+OrdersFeedListItem.propTypes = {
+  order: PropTypes.object.isRequired,
 }

@@ -20,8 +20,8 @@ import {NotFound404} from "../../pages/not-found-404/not-found-404";
 import {CLOSE_CURRENT_INGREDIENT, OPEN_CURRENT_INGREDIENT} from "../../services/actions/currentIngredient";
 import {
   getCurrentIngredient,
-  getOrdersList,
-  getUserAuth, getCurrentOrderDetails,
+  getUserAuth,
+  getCurrentOrderDetails,
 } from "../../utils/constants";
 import {
   GENERAL_ROUTE,
@@ -33,10 +33,12 @@ import {
   ORDERS_FEED_PAGE_ROUTE,
   ORDERS_HISTORY_PAGE_ROUTE,
   FORGOT_PASSWORD_PAGE_ROUTE,
-  RESET_PASSWORD_PAGE_ROUTE, ORDERS_FEED_DETAILS_PAGE_ROUTE, ORDERS_HISTORY_DETAILS_PAGE_ROUTE
+  RESET_PASSWORD_PAGE_ROUTE,
+  ORDERS_FEED_DETAILS_PAGE_ROUTE,
+  ORDERS_HISTORY_DETAILS_PAGE_ROUTE
 } from "../../utils/routes";
 import {OrdersFeedDetails} from "../order-feed-details/orders-feed-details";
-import {RESET_CURRENT_ORDER, getOrders} from "../../services/actions/orderInfo";
+import {RESET_CURRENT_ORDER} from "../../services/actions/orderInfo";
 
 function App() {
   const location = useLocation();
@@ -44,7 +46,7 @@ function App() {
   const navigate = useNavigate();
   const isAuthChecked = useSelector(getUserAuth);
   const { currentIngredient, isIngredientModalOpen } = useSelector(getCurrentIngredient);
-  const {orders, isOrderModalOpen} = useSelector(getCurrentOrderDetails);
+  const {isOrderModalOpen} = useSelector(getCurrentOrderDetails);
   const accessToken = getCookie('accessToken');
   const dispatch = useDispatch();
 
@@ -90,7 +92,6 @@ function App() {
         <Route path={LOGIN_PAGE_ROUTE} element={<OnlyUnAuth component={<LoginPage />} />} />
         <Route path={PROFILE_PAGE_ROUTE} element={<OnlyAuth component={<ProfilePage />} />} />
         <Route path={ORDERS_HISTORY_PAGE_ROUTE} element={<OnlyAuth component={<OrdersHistoryPage />} />} />
-        {/*<Route path={ORDERS_HISTORY_DETAILS_PAGE_ROUTE} element={<OrdersFeedDetails order={currentOrder} />} />*/}
         <Route path={ORDERS_FEED_PAGE_ROUTE} element={<OrdersFeedPage />} />
         <Route path={ORDERS_FEED_DETAILS_PAGE_ROUTE} element={<OrdersFeedDetails isSeparateTab={true} />} />
         <Route path={ORDERS_HISTORY_DETAILS_PAGE_ROUTE} element={<OrdersFeedDetails isSeparateTab={true} />} />

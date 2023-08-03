@@ -1,3 +1,5 @@
+import {refreshUserToken} from "../actions/user";
+
 export const socketMiddleware = (wsActions) => {
   return store => {
     let socket = null;
@@ -21,6 +23,15 @@ export const socketMiddleware = (wsActions) => {
           const parsedData = JSON.parse(data);
           const { success, ...restParsedData } = parsedData;
           // console.log('middleware restParsedData onmessage', restParsedData);
+          if (data.message === "Invalid or missing token") {
+            socket.close();
+            return refreshUserToken().then(() => {
+              dispatch({type: wsInit});
+            })
+              .catch((err) => {
+                console.log("WS connection error:", err)
+              })
+          }
 
           dispatch({ type: onMessage, payload: restParsedData });
         };

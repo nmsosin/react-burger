@@ -21,12 +21,14 @@ export function OrderFeedDetailsLayout({orders, isSeparateTab}) {
     })
   }, [ingredients]);
 
-  const uniqueOrderIngredients = orderIngredients.reduce((acc, item) => {
-    if (acc.includes(item)) {
-      return acc;
-    }
-    return [...acc, item]
-  }, [])
+  const uniqueOrderIngredients = useMemo(() => {
+    return orderIngredients.reduce((acc, item) => {
+      if (acc.includes(item)) {
+        return acc;
+      }
+      return [...acc, item]
+    }, [])
+  }, [orderIngredients])
 
   const orderPrice = useMemo(() => {
     let result = 0;

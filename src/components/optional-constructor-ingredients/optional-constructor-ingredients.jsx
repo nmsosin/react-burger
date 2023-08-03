@@ -5,6 +5,7 @@ import burgerConstructorStyles from "../burger-constructor/burger-constructor.mo
 import { ConstructorElement, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import {REMOVE_INGREDIENT, SORT_INGREDIENT, sortIngredients} from "../../services/actions/constructorIngredients";
 import {getConstructorIngredients} from "../../utils/constants";
+import PropTypes from "prop-types";
 
 const OptionalConstructorIngredients = ({ ingredient, ingredientIndex }) => {
   const { optionalIngredients } = useSelector(getConstructorIngredients);
@@ -88,3 +89,8 @@ const OptionalConstructorIngredients = ({ ingredient, ingredientIndex }) => {
 }
 
 export default OptionalConstructorIngredients;
+
+OptionalConstructorIngredients.propTypes = {
+  ingredient: PropTypes.object.isRequired ,
+  ingredientIndex: PropTypes.number.isRequired
+}

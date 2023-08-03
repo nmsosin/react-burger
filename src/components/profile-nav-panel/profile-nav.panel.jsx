@@ -9,7 +9,7 @@ import {SideTab} from "../side-tab/side-tab";
 
 export function ProfileNavPanel () {
   const location = useLocation();
-  const [current, setCurrent] = useState('profile')
+  const [current, setCurrent] = useState(PROFILE_PAGE_ROUTE)
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -26,7 +26,7 @@ export function ProfileNavPanel () {
               className={`text text_type_main-medium text_color_inactive ${profileNavPanelStyles.navLink}`}
               to={PROFILE_PAGE_ROUTE}
             >
-              <SideTab value="Профиль" active={location.pathname === "/profile"} onClick={setCurrent}>
+              <SideTab value="Профиль" active={location.pathname === PROFILE_PAGE_ROUTE} onClick={setCurrent}>
                 Профиль
               </SideTab>
             </NavLink>
@@ -34,7 +34,7 @@ export function ProfileNavPanel () {
               className={`text text_type_main-medium text_color_inactive ${profileNavPanelStyles.navLink}`}
               to={ORDERS_HISTORY_PAGE_ROUTE}
             >
-              <SideTab value="История заказов" active={location.pathname === "/profile/orders"} onClick={setCurrent}>
+              <SideTab value="История заказов" active={location.pathname === ORDERS_HISTORY_PAGE_ROUTE} onClick={setCurrent}>
                 История заказов
               </SideTab>
             </NavLink>
