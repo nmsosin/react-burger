@@ -2,7 +2,7 @@ import {useEffect, useMemo} from 'react';
 import { ConstructorElement, Button, CurrencyIcon, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import burgerConstructorStyles from './burger-constructor.module.css';
 import PropTypes from "prop-types";
-import checkPropTypes from "../../utils/prop-types";
+import checkPropTypes from "../../utils/types";
 import {useDispatch, useSelector} from "react-redux";
 import {useDrag, useDrop} from "react-dnd";
 import {

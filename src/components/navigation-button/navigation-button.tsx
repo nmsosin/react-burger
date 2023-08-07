@@ -1,7 +1,12 @@
 import PropTypes from "prop-types";
 import navButtonStyles from './navigation-button.module.css';
-
-const NavigationButton = ({ type, text, icon, isActive }) => {
+import {FC, ReactNode} from "react";
+type TNavigationButtonProps = {
+  text: string;
+  icon: ReactNode;
+  isActive: boolean;
+}
+const NavigationButton: FC<TNavigationButtonProps> = ({ text, icon, isActive }) => {
     return (
     <div className={` p-5 ${navButtonStyles.navLink} `}>
       {icon}
@@ -11,9 +16,3 @@ const NavigationButton = ({ type, text, icon, isActive }) => {
 }
 
 export default NavigationButton;
-
-NavigationButton.propTypes = {
-  type: PropTypes.string.isRequired,
-  text: PropTypes.string,
-  icon: PropTypes.object
-}

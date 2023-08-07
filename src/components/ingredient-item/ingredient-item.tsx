@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {FC} from 'react';
 import PropTypes from "prop-types";
 import {Counter, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components';
 import ingredientItemStyles from './ingredient-item.module.css';
@@ -6,20 +6,26 @@ import { useSelector} from "react-redux";
 import {useDrag} from "react-dnd";
 import {NavLink, useLocation} from "react-router-dom";
 import {getConstructorIngredients} from "../../utils/constants";
+import {TIngredient} from "../../utils/types";
 
-const IngredientItem= ({ ingredient, openModalHandler }) => {
+
+type TIngredientItem = {
+  ingredient: TIngredient;
+  openModalHandler: () => void;
+}
+
+const IngredientItem: FC<TIngredientItem> = ({ ingredient, openModalHandler }) => {
   const { optionalIngredients, bun } = useSelector(getConstructorIngredients);
 
   const location = useLocation();
 
   const count = ingredient.type !== "bun"
-    ? optionalIngredients.reduce((accumulator, current) => {
+    ? optionalIngredients.reduce((accumulator: any, current: TIngredient) => {
     if (accumulator[current._id] !== undefined) {
       accumulator[current._id] += 1;
     } else {
       accumulator[current._id] = 1;
     }
-
     return accumulator;
   }, {})
 
@@ -56,8 +62,3 @@ const IngredientItem= ({ ingredient, openModalHandler }) => {
 }
 
 export default IngredientItem;
-
-IngredientItem.propTypes = {
-  openModalHandler: PropTypes.func.isRequired,
-  ingredient: PropTypes.object.isRequired,
-}
