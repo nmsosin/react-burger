@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import {FC, ReactNode, useEffect} from 'react';
 import modalStyles from './modal.module.css';
 import {CloseIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 
@@ -6,9 +6,14 @@ import PropTypes from "prop-types";
 import ModalOverlay from "../modal-overlay/modal-overlay";
 import ReactDOM from "react-dom";
 
-const modalRoot = document.getElementById("react-modals");
+const modalRoot: HTMLElement = document.getElementById("react-modals") as HTMLElement;
 
-const Modal = ({ onClose, children }) => {
+type TModalProps = {
+  onClose: () => void;
+  children: ReactNode
+}
+
+const Modal: FC<TModalProps> = ({ onClose, children }) => {
 
   useEffect(() => {
     document.addEventListener('keydown', handleEscButton)
@@ -18,7 +23,7 @@ const Modal = ({ onClose, children }) => {
     }
   }, [])
 
-  function handleEscButton (evt) {
+  function handleEscButton (evt: KeyboardEvent) {
     if (evt.key === 'Escape') {
       onClose();
     }
