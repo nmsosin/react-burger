@@ -2,22 +2,27 @@ import {CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import ordersFeedListItem from "../orders-feed-list-item/orders-feed-list-item.module.css"
 import {useDispatch, useSelector} from "react-redux";
 import {getIngredientsList} from "../../utils/constants";
-import {useMemo} from "react";
+import {FC, useMemo} from "react";
 import {v4 as uuidv4} from 'uuid';
 import { OPEN_CURRENT_ORDER} from "../../services/actions/orderInfo";
 import ingredientItemStyles from "../ingredient-item/ingredient-item.module.css";
 import {NavLink, useLocation} from "react-router-dom";
 import PropTypes from "prop-types";
+import {TIngredient, TOrder} from "../../utils/types";
 
-export function OrdersFeedListItem({order}) {
+type TOrdersFeedListItemProps = {
+  order: TOrder;
+}
+
+export const OrdersFeedListItem: FC<TOrdersFeedListItemProps> = ({order}) => {
   const dispatch = useDispatch();
   const location = useLocation();
 
-  const {createdAt, ingredients, name, number, status, updatedAt, _id} = order;
+  const {createdAt, ingredients, name, number} = order;
   const ingredientsList = useSelector(getIngredientsList);
 
   const orderIngredients = useMemo(() => {
-    const uniqueOrderIngredients = order.ingredients.reduce((acc, item) => {
+    const uniqueOrderIngredients = order.ingredients.reduce((acc: string[], item) => {
       if (acc.includes(item)) {
         return acc;
       }
@@ -25,7 +30,7 @@ export function OrdersFeedListItem({order}) {
     }, [])
 
     return uniqueOrderIngredients.map((ingredientId) => {
-      return ingredientsList.find((item) => {
+      return ingredientsList.find((item: TIngredient) => {
         return item._id === ingredientId;
       })
     })
@@ -41,7 +46,7 @@ export function OrdersFeedListItem({order}) {
 
   const orderTime = useMemo(() => {
     const currentDate = new Date().getDate();
-    return createdAt.slice(8, 10) == currentDate ? `Сегодня, ${createdAt.slice(11, 16)} i-GMT+3` : `${createdAt.slice(0, 10)}, ${createdAt.slice(11, 16)} i-GMT+3`;
+    return parseInt(createdAt.slice(8, 10)) === currentDate ? `Сегодня, ${createdAt.slice(11, 16)} i-GMT+3` : `${createdAt.slice(0, 10)}, ${createdAt.slice(11, 16)} i-GMT+3`;
     //TODO: refactor with switch case
   }, [orderIngredients])
 
@@ -117,8 +122,4 @@ export function OrdersFeedListItem({order}) {
      </div>
     </NavLink>
   )
-}
-
-OrdersFeedListItem.propTypes = {
-  order: PropTypes.object.isRequired,
 }

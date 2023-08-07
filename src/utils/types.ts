@@ -31,3 +31,11 @@ export type TIngredient = {
     image_large: string;
     __v: number;
 }
+
+export type TOrder = {
+    createdAt: string;
+    ingredients: string[];
+    name: string;
+    number: number;
+    _id: string;
+}
