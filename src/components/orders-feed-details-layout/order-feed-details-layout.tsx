@@ -3,26 +3,35 @@ import {v4 as uuidv4} from "uuid";
 import {CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import {useSelector} from "react-redux";
 import {getIngredientsList} from "../../utils/constants";
-import {useMemo} from "react";
+import {FC, useMemo} from "react";
 import {useParams} from "react-router-dom";
+import {TIngredient, TOrder} from "../../utils/types";
 
-export function OrderFeedDetailsLayout({orders, isSeparateTab}) {
+type TOrdersFeedDetailsLayoutProps = {
+  orders: TOrder[];
+  isSeparateTab: boolean;
+}
+
+export const OrderFeedDetailsLayout: FC<TOrdersFeedDetailsLayoutProps> = ({orders, isSeparateTab}) => {
   const {id} = useParams();
-  const order = orders.find((order) => order._id === id);
+  const order = useMemo(() => {
+    return orders.find((order) => order._id === id);
+      } , [orders]);
 
-  const {createdAt, ingredients, name, number, status, updatedAt, _id} = order;
+  const {createdAt, ingredients, name, number, status, _id} = order as TOrder;
+
   const ingredientsList = useSelector(getIngredientsList);
 
   const orderIngredients = useMemo(() => {
-    return ingredients.map((ingredientId) => {
-      return ingredientsList.find((item) => {
+    return ingredients.map((ingredientId: string) => {
+      return ingredientsList.find((item: TIngredient) => {
         return item._id === ingredientId;
       })
     })
   }, [ingredients]);
 
   const uniqueOrderIngredients = useMemo(() => {
-    return orderIngredients.reduce((acc, item) => {
+    return orderIngredients.reduce((acc: string[], item: string) => {
       if (acc.includes(item)) {
         return acc;
       }
@@ -32,7 +41,7 @@ export function OrderFeedDetailsLayout({orders, isSeparateTab}) {
 
   const orderPrice = useMemo(() => {
     let result = 0;
-    orderIngredients.map(item => {
+    orderIngredients.map((item: TIngredient) => {
       return item.type === 'bun' ? result += item.price * 2 : result += item.price;
     });
     return result;
@@ -40,12 +49,12 @@ export function OrderFeedDetailsLayout({orders, isSeparateTab}) {
 
   const orderTime = useMemo(() => {
     const currentDate = new Date().getDate();
-    return createdAt.slice(8, 10) == currentDate ? `Сегодня, ${createdAt.slice(11, 16)} i-GMT+3` : `${createdAt.slice(0, 10)}, ${createdAt.slice(11, 16)} i-GMT+3`;
+    return parseInt(createdAt.slice(8, 10)) === currentDate ? `Сегодня, ${createdAt.slice(11, 16)} i-GMT+3` : `${createdAt.slice(0, 10)}, ${createdAt.slice(11, 16)} i-GMT+3`;
     //TODO: refactor with switch case ?
   }, [orderIngredients])
 
   return (
-    <div className={isSeparateTab ? ordersFeedDetailsLayout.separateTabWrapper : null}>
+    <div className={isSeparateTab ? ordersFeedDetailsLayout.separateTabWrapper : ''}>
       <div className={ordersFeedDetailsLayout.orderItem}>
         <p className="text text_type_digits-default pb-10">#{number}</p>
         <h2 className="text text_type_main-medium pb-3">{name}</h2>
@@ -57,8 +66,11 @@ export function OrderFeedDetailsLayout({orders, isSeparateTab}) {
 
           <ul className={ordersFeedDetailsLayout.ingredientsList}>
             {
-              uniqueOrderIngredients.map((ingredient) => {
-                const counter = orderIngredients.reduce((acc, item) => {
+              uniqueOrderIngredients.map((ingredient: TIngredient) => {
+                type TAcc = {
+                  [key: string] : number;
+                }
+                const counter = orderIngredients.reduce((acc: TAcc, item: TIngredient) => {
                   acc[item._id] = (acc[item._id] || 0) + 1;
                   return acc;
                 }, {});
@@ -78,7 +90,7 @@ export function OrderFeedDetailsLayout({orders, isSeparateTab}) {
                       <p className="text text_type_digits-default pr-2">
                         {ingredient.type === 'bun' ? counter[ingredient._id] * 2 : counter[ingredient._id]} x {ingredient.price}
                       </p>
-                      <CurrencyIcon/>
+                      <CurrencyIcon type={'primary'}/>
                     </div>
                   </li>
                 )

@@ -38,4 +38,6 @@ export type TOrder = {
     name: string;
     number: number;
     _id: string;
+    status?: string;
+    updatedAt?: string;
 }

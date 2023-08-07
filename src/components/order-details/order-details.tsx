@@ -1,9 +1,13 @@
-import React from 'react';
+import React, {FC} from 'react';
 import { CheckMarkIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import orderDetailsStyles from './order-details.module.css';
 import PropTypes from "prop-types";
 
-const OrderDetails = ({orderNumber}) => {
+type TOrderDetailsProps = {
+  orderNumber: number
+}
+
+const OrderDetails: FC<TOrderDetailsProps> = ({orderNumber}) => {
 
   return(
     <div className={orderDetailsStyles.orderModalContainer}>

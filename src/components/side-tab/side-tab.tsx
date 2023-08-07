@@ -2,7 +2,7 @@ import SideTabStyles from './side-tab.module.css';
 import {FC} from "react";
 
 type TSideTabProps = {
-  active: true;
+  active: boolean;
   value: string;
   onClick: () => void;
 }

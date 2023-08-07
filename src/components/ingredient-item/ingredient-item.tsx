@@ -11,6 +11,7 @@ import {TIngredient} from "../../utils/types";
 
 type TIngredientItem = {
   ingredient: TIngredient;
+  iid?: string;
   openModalHandler: () => void;
 }
 
