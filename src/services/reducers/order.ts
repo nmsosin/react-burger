@@ -5,7 +5,7 @@ import {
   RESET_ORDER,
 } from "../actions/order";
 
-const orderSentInitialState = {
+export const orderSentInitialState = {
   orderNumber: 0,
   isSentOrderModalOpen: false,
 

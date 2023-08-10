@@ -3,7 +3,7 @@ import AppHeader from "../app-header/app-header";
 import Modal from "../modal/modal";
 import IngredientDetails from "../ingredient-details/ingredient-details";
 import { getIngredientsData } from "../../services/actions/ingredientsList";
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch, useSelector} from "../../services/hooks/hooks";
 import {Routes, Route, useLocation, useNavigate} from 'react-router-dom';
 import {MainPage} from "../../pages/main";
 import {LoginPage} from "../../pages/login/login";

@@ -1,10 +1,10 @@
 
-export const checkResponse = (res) => {
+export const checkResponse = <T>(res: Response):Promise<T> => {
   // console.log(res);
   return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
 };
 
-export default function request(urlEndpoint, options) {
+export default function request(urlEndpoint: string, options?: any) {
   const BASE_URL = "https://norma.nomoreparties.space/api";
   const url =`${BASE_URL}/${urlEndpoint}`;
   return fetch(url, options).then(checkResponse)
@@ -24,15 +24,15 @@ export const refreshToken = () => {
   }).then(checkResponse)
 }
 
-export const fetchWithRefresh = async (urlEndpoint, options) => {
+export const fetchWithRefresh = async (urlEndpoint: string, options?: any) => {
   const BASE_URL = "https://norma.nomoreparties.space/api";
   const url =`${BASE_URL}/${urlEndpoint}`;
   try {
     const res = await (fetch(url, options));
     return await checkResponse(res);
-  } catch (err) {
+  } catch (err: any) {
     if (err.message === "jwt expired") {
-      const refreshData = await refreshToken();
+      const refreshData: any = await refreshToken();
       if (!refreshData.success) {
         return Promise.reject(refreshData);
       }

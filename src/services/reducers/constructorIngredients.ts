@@ -1,11 +1,29 @@
-import { ADD_INGREDIENT, REMOVE_INGREDIENT, SORT_INGREDIENT, RESET_INGREDIENT } from "../actions/constructorIngredients";
+import {
+  ADD_INGREDIENT,
+  REMOVE_INGREDIENT,
+  SORT_INGREDIENT,
+  RESET_INGREDIENT,
+  IAddIngredientAction, IRemoveIngredientAction, ISortIngredientAction, IResetIngredientAction
+} from "../actions/constructorIngredients";
+import {TIngredient} from "../../utils/types";
 
-const initialConstructorState = {
+export type TInitialConstructorState = {
+  bun: TIngredient | null;
+  optionalIngredients: TIngredient[];
+}
+
+export type TInitialConstructorActions =
+  | IAddIngredientAction
+  | IRemoveIngredientAction
+  | ISortIngredientAction
+  | IResetIngredientAction
+
+export const initialConstructorState = {
   bun: null,
   optionalIngredients: []
 }
 
-export const constructorIngredientsReducer = (state = initialConstructorState, action) => {
+export const constructorIngredientsReducer = (state:TInitialConstructorState = initialConstructorState, action: TInitialConstructorActions): TInitialConstructorState => {
   switch (action.type) {
     case ADD_INGREDIENT:
       if (action.payload.type === 'bun') {

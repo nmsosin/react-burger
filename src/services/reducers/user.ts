@@ -24,7 +24,45 @@ import {
 
 } from "../actions/user";
 
-const userInitialState = {
+type TUserInitialState = {
+  user: {
+    email: string;
+    name: string;
+  },
+
+  isAuthChecked: boolean;
+  password: string;
+
+  registerRequest: boolean;
+  registerSuccess: boolean;
+  registerFailed: boolean;
+
+  loginRequest: boolean;
+  loginSuccess: boolean;
+  loginFailed: boolean;
+
+  logoutRequest: boolean;
+  logoutSuccess: boolean;
+  logoutFailed: boolean;
+
+  getUserRequest: boolean;
+  getUserSuccess: boolean;
+  getUserFailed: boolean;
+
+  updateUserRequest: boolean;
+  updateUserSuccess: boolean;
+  updateUserFailed: boolean;
+
+  forgotPasswordRequest: boolean;
+  forgotPasswordSuccess: boolean;
+  forgotPasswordFailed: boolean;
+
+  resetPasswordRequest: boolean;
+  resetPasswordSuccess: boolean;
+  resetPasswordFailed: boolean;
+}
+
+export const userInitialState: TUserInitialState = {
   user: {
     email: "",
     name: "",
@@ -62,7 +100,7 @@ const userInitialState = {
   resetPasswordFailed: false,
 }
 
-export const userReducer = ( state = userInitialState, action ) => {
+export const userReducer = ( state = userInitialState, action ): TUserInitialState => {
   switch (action.type) {
     //authorization check
     case SET_AUTH_CHECKED: {

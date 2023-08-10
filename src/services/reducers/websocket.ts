@@ -6,7 +6,7 @@ import {
   WS_GET_ORDERS,
 } from '../actions/websocket';
 
-const wsInitialState = {
+export const wsInitialState = {
   wsConnected: false,
   orders: [],
   ordersData: {},
@@ -15,7 +15,7 @@ const wsInitialState = {
   error: undefined,
 };
 
-const wsAuthInitialState = {
+export const wsAuthInitialState = {
   wsConnected: false,
   authOrders: [],
   ordersData: {},

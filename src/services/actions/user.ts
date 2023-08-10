@@ -1,43 +1,132 @@
 import request, {fetchWithRefresh} from "../../utils/api";
 import { getCookie, setCookie, deleteCookie } from "../../utils/cookie";
+import {AppDispatch} from "../../utils/types";
 
-export const REGISTER_REQUEST = "REGISTER_REQUEST";
-export const REGISTER_SUCCESS = "REGISTER_SUCCESS";
-export const REGISTER_FAILED = "REGISTER_FAILED";
+export const REGISTER_REQUEST: "REGISTER_REQUEST" = "REGISTER_REQUEST";
+export const REGISTER_SUCCESS: "REGISTER_SUCCESS" = "REGISTER_SUCCESS";
+export const REGISTER_FAILED: "REGISTER_FAILED" = "REGISTER_FAILED";
 
-export const FORGOT_PASSWORD_REQUEST = "FORGOT_PASSWORD_REQUEST";
-export const FORGOT_PASSWORD_SUCCESS = "FORGOT_PASSWORD_SUCCESS";
-export const FORGOT_PASSWORD_FAILED = "FORGOT_PASSWORD_FAILED";
+export const FORGOT_PASSWORD_REQUEST: "FORGOT_PASSWORD_REQUEST" = "FORGOT_PASSWORD_REQUEST";
+export const FORGOT_PASSWORD_SUCCESS: "FORGOT_PASSWORD_SUCCESS" = "FORGOT_PASSWORD_SUCCESS";
+export const FORGOT_PASSWORD_FAILED: "FORGOT_PASSWORD_FAILED" = "FORGOT_PASSWORD_FAILED";
 
-export const RESET_PASSWORD_REQUEST = "RESET_PASSWORD_REQUEST";
-export const RESET_PASSWORD_SUCCESS = "RESET_PASSWORD_SUCCESS";
-export const RESET_PASSWORD_FAILED = "RESET_PASSWORD_FAILED";
+export const RESET_PASSWORD_REQUEST: "RESET_PASSWORD_REQUEST" = "RESET_PASSWORD_REQUEST";
+export const RESET_PASSWORD_SUCCESS: "RESET_PASSWORD_SUCCESS" = "RESET_PASSWORD_SUCCESS";
+export const RESET_PASSWORD_FAILED: "RESET_PASSWORD_FAILED" = "RESET_PASSWORD_FAILED";
 
-export const LOGIN_REQUEST = "LOGIN_REQUEST";
-export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
-export const LOGIN_FAILED = "LOGIN_FAILED";
+export const LOGIN_REQUEST: "LOGIN_REQUEST" = "LOGIN_REQUEST";
+export const LOGIN_SUCCESS: "LOGIN_SUCCESS" = "LOGIN_SUCCESS";
+export const LOGIN_FAILED: "LOGIN_FAILED" = "LOGIN_FAILED";
 
-export const LOGOUT_REQUEST = "LOGOUT_REQUEST";
-export const LOGOUT_SUCCESS = "LOGOUT_SUCCESS";
-export const LOGOUT_FAILED = "LOGOUT_FAILED";
+export const LOGOUT_REQUEST: "LOGOUT_REQUEST" = "LOGOUT_REQUEST";
+export const LOGOUT_SUCCESS: "LOGOUT_SUCCESS" = "LOGOUT_SUCCESS";
+export const LOGOUT_FAILED: "LOGOUT_FAILED" = "LOGOUT_FAILED";
 
-export const GET_USER_REQUEST = "GET_USER_REQUEST";
-export const GET_USER_SUCCESS = "GET_USER_SUCCESS";
-export const GET_USER_FAILED = "GET_USER_FAILED";
+export const GET_USER_REQUEST: "GET_USER_REQUEST" = "GET_USER_REQUEST";
+export const GET_USER_SUCCESS: "GET_USER_SUCCESS" = "GET_USER_SUCCESS";
+export const GET_USER_FAILED: "GET_USER_FAILED" = "GET_USER_FAILED";
 
-export const UPDATE_USER_REQUEST = "UPDATE_USER_REQUEST";
-export const UPDATE_USER_SUCCESS = "UPDATE_USER_SUCCESS";
-export const UPDATE_USER_FAILED = "UPDATE_USER_FAILED";
+export const UPDATE_USER_REQUEST: "UPDATE_USER_REQUEST" = "UPDATE_USER_REQUEST";
+export const UPDATE_USER_SUCCESS: "UPDATE_USER_SUCCESS" = "UPDATE_USER_SUCCESS";
+export const UPDATE_USER_FAILED: "UPDATE_USER_FAILED" = "UPDATE_USER_FAILED";
 
-export const SET_AUTH_CHECKED = "SET_AUTH_CHECKED";
+export const SET_AUTH_CHECKED: "SET_AUTH_CHECKED" = "SET_AUTH_CHECKED";
 
-export const setAuthChecked = (value) => ({
+// action interfaces
+
+interface IUserData {
+  name?: string;
+  email?: string;
+  password?: string;
+  accessToken?: string;
+  refreshToken?: string;
+}
+
+interface IRegisterUserRequest {
+  readonly type: typeof REGISTER_REQUEST
+}
+
+interface IRegisterUserSuccess {
+  readonly type: typeof REGISTER_SUCCESS;
+  user: {
+    email: string;
+    name: string;
+  };
+  accessToken: string;
+  refreshToken: string;
+}
+
+interface IRegisterUserFailed {
+  readonly type: typeof REGISTER_FAILED;
+}
+
+interface ILoginUserRequest {
+  readonly type: typeof LOGIN_REQUEST;
+}
+
+interface ILoginUserSuccess {
+  readonly type: typeof LOGIN_SUCCESS;
+  user: {
+    email: string;
+    name: string;
+  };
+  accessToken: string;
+  refreshToken: string;
+}
+
+interface ILoginUserFailed {
+  readonly type: typeof LOGIN_FAILED;
+}
+
+interface IForgotPasswordRequest {
+  readonly type: typeof FORGOT_PASSWORD_REQUEST;
+}
+
+interface IForgotPasswordSuccess {
+  readonly type: typeof FORGOT_PASSWORD_SUCCESS;
+}
+
+interface IForgotPasswordFailed {
+  readonly type: typeof FORGOT_PASSWORD_FAILED;
+}
+
+interface IResetPasswordRequest {
+  readonly type: typeof RESET_PASSWORD_REQUEST;
+}
+
+interface IResetPasswordSuccess {
+  readonly type: typeof RESET_PASSWORD_SUCCESS;
+}
+
+interface IResetPasswordFailed {
+  readonly type: typeof RESET_PASSWORD_FAILED;
+}
+
+// Union type
+
+export type TUserActions =
+  | IRegisterUserRequest
+  | IRegisterUserSuccess
+  | IRegisterUserFailed
+  | ILoginUserRequest
+  | ILoginUserSuccess
+  | ILoginUserFailed
+  | IForgotPasswordRequest
+  | IForgotPasswordSuccess
+  | IForgotPasswordFailed
+  | IResetPasswordRequest
+  | IResetPasswordSuccess
+  | IResetPasswordFailed
+
+// action creators
+
+export const setAuthChecked = (value: boolean) => ({
   type: SET_AUTH_CHECKED,
   payload: value,
 });
 
-export const forgotPassword = (data) => {
-  return function (dispatch) {
+export const forgotPassword = (data: IUserData) => {
+  return function (dispatch: AppDispatch) {
     dispatch({
       type: FORGOT_PASSWORD_REQUEST
     });
@@ -69,8 +158,8 @@ export const forgotPassword = (data) => {
   }
 }
 
-export const resetPassword = (data) => {
-  return function (dispatch) {
+export const resetPassword = (data: IUserData) => {
+  return function (dispatch: AppDispatch) {
     dispatch({
       type: RESET_PASSWORD_REQUEST
     });
@@ -102,8 +191,8 @@ export const resetPassword = (data) => {
   }
 }
 
-export const register = (data) => {
-  return function (dispatch) {
+export const register = (data: IUserData) => {
+  return function (dispatch: AppDispatch) {
     dispatch({
       type: REGISTER_REQUEST
     });
@@ -141,8 +230,8 @@ export const register = (data) => {
   }
 }
 
-export const login = (data) => {
-  return function (dispatch) {
+export const login = (data: IUserData) => {
+  return function (dispatch: AppDispatch) {
     dispatch({
       type: LOGIN_REQUEST,
     });
@@ -179,7 +268,7 @@ export const login = (data) => {
   }
 }
 
-export const logout = (callback) => {
+export const logout = (callback: () => void) => {
   return function (dispatch) {
     dispatch({
       type: LOGOUT_REQUEST
@@ -218,7 +307,7 @@ export const logout = (callback) => {
 }
 
 export const getUserInfo = () => {
-  return (dispatch) => {
+  return (dispatch: AppDispatch) => {
     dispatch({
       type: GET_USER_REQUEST,
     })
@@ -256,8 +345,8 @@ export const getUserInfo = () => {
   }
 }
 
-export const updateUserInfo = (data) => {
-  return (dispatch) => {
+export const updateUserInfo = (data: IUserData) => {
+  return (dispatch: AppDispatch) => {
     dispatch({
       type: UPDATE_USER_REQUEST,
     })

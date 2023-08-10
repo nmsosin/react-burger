@@ -5,7 +5,7 @@ export function getCookie(name: string): string | undefined {
   return matches ? decodeURIComponent(matches[1]) : undefined;
 }
 
-export function setCookie(name: string, value: string, props: any) {
+export function setCookie(name: string, value?: any, props?: any) {
   props = {
     path: '/',
     ...props

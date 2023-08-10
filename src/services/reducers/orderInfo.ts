@@ -1,7 +1,7 @@
 import {GET_ORDER_FAILED, GET_ORDER_REQUEST, GET_ORDER_SUCCESS} from "../actions/orderInfo";
 import {RESET_CURRENT_ORDER, OPEN_CURRENT_ORDER} from "../actions/orderInfo";
 
-const orderInitialState = {
+export const orderInfoInitialState = {
   orders: [],
   currentOrder: null,
   isOrderModalOpen: false,
@@ -11,7 +11,7 @@ const orderInitialState = {
   getOrderFailed: false,
 }
 
-export const getOrdersReducer = ( state = orderInitialState, action ) => {
+export const getOrdersReducer = ( state = orderInfoInitialState, action ) => {
   switch (action.type) {
     case GET_ORDER_REQUEST: {
       return {
@@ -49,7 +49,7 @@ export const getOrdersReducer = ( state = orderInitialState, action ) => {
     };
     case RESET_CURRENT_ORDER: {
       return {
-        ...orderInitialState,
+        ...orderInfoInitialState,
       }
     };
 
