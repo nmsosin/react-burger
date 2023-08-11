@@ -10,7 +10,7 @@ export const RESET_INGREDIENT: 'RESET_INGREDIENT' = 'RESET_INGREDIENT';
 
 export interface IAddIngredientAction {
   readonly type: typeof ADD_INGREDIENT;
-  readonly constructorIngredientId?: string;
+  readonly constructorIngredientId: string;
   readonly payload: TIngredient;
 }
 
@@ -22,13 +22,19 @@ export interface IRemoveIngredientAction {
 
 export interface ISortIngredientAction {
   readonly type: typeof SORT_INGREDIENT;
-  readonly optionalIngredients?: TIngredient[];
-  payload?: TIngredient[]
+  readonly optionalIngredients: TIngredient[];
+  payload: TIngredient[]
 }
 
 export interface IResetIngredientAction {
   readonly type: typeof RESET_INGREDIENT;
 }
+
+export type TInitialConstructorActions =
+  | IAddIngredientAction
+  | IRemoveIngredientAction
+  | ISortIngredientAction
+  | IResetIngredientAction
 
 export const addConstructorIngredient = (ingredient: TIngredient, uniqueId: string): IAddIngredientAction => {
   return {

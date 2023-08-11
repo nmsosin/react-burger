@@ -1,6 +1,6 @@
 import request from "../../utils/api";
 import {getCookie} from "../../utils/cookie";
-import {GET_ORDER_FAILED, GET_ORDER_REQUEST, GET_ORDER_SUCCESS} from "./orderInfo";
+import {AppDispatch, TOrder} from "../../utils/types";
 
 export const SEND_ORDER_REQUEST: "SEND_ORDER_REQUEST" = "SEND_ORDER_REQUEST";
 export const SEND_ORDER_SUCCESS: "SEND_ORDER_SUCCESS" = "SEND_ORDER_SUCCESS";
@@ -14,6 +14,7 @@ interface ISendOrderRequest {
 
 interface ISendOrderSuccess {
   readonly type: typeof SEND_ORDER_SUCCESS;
+  payload: number;
 }
 
 interface ISendOrderFailed {
@@ -30,11 +31,29 @@ export type TOrderActions =
   | ISendOrderFailed
   | IResetOrder
 
+const sendOrderRequest = (): ISendOrderRequest => {
+  return {
+    type: SEND_ORDER_REQUEST,
+  }
+}
+
+const sendOrderSuccess = (orderNumber: number): ISendOrderSuccess => {
+  return {
+    type: SEND_ORDER_SUCCESS,
+    payload: orderNumber
+  }
+}
+
+const sendOrderFailed = (): ISendOrderFailed => {
+  return {
+    type: SEND_ORDER_FAILED
+  }
+}
+
+
 export const createOrderId = (orderUrlEndpoint: string, options: string[]) => {
-  return function (dispatch) {
-    dispatch({
-      type: SEND_ORDER_REQUEST,
-    });
+  return function (dispatch: AppDispatch) {
+    dispatch(sendOrderRequest());
     request(orderUrlEndpoint, {
       method: 'POST',
       headers: {
@@ -45,23 +64,15 @@ export const createOrderId = (orderUrlEndpoint: string, options: string[]) => {
         'ingredients': options,
       })
     }).then( res  => {
-      console.log('create order id res payload', res.order.number)
         if (res) {
-          dispatch({
-            type: SEND_ORDER_SUCCESS,
-            payload: res.order.number
-          })
+          dispatch(sendOrderSuccess(res.order.number))
         } else {
-          dispatch({
-            type: SEND_ORDER_FAILED
-          })
+          dispatch(sendOrderFailed())
         }
         // console.log(res)
       })
       .catch( err => {
-        dispatch({
-          type: SEND_ORDER_FAILED
-        })
+        dispatch(sendOrderFailed())
         // console.log(err);
       })
   }

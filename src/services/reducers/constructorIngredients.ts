@@ -3,7 +3,11 @@ import {
   REMOVE_INGREDIENT,
   SORT_INGREDIENT,
   RESET_INGREDIENT,
-  IAddIngredientAction, IRemoveIngredientAction, ISortIngredientAction, IResetIngredientAction
+  IAddIngredientAction,
+  IRemoveIngredientAction,
+  ISortIngredientAction,
+  IResetIngredientAction,
+  TInitialConstructorActions
 } from "../actions/constructorIngredients";
 import {TIngredient} from "../../utils/types";
 
@@ -12,18 +16,12 @@ export type TInitialConstructorState = {
   optionalIngredients: TIngredient[];
 }
 
-export type TInitialConstructorActions =
-  | IAddIngredientAction
-  | IRemoveIngredientAction
-  | ISortIngredientAction
-  | IResetIngredientAction
-
-export const initialConstructorState = {
+export const initialConstructorState: TInitialConstructorState = {
   bun: null,
   optionalIngredients: []
 }
 
-export const constructorIngredientsReducer = (state:TInitialConstructorState = initialConstructorState, action: TInitialConstructorActions): TInitialConstructorState => {
+export const constructorIngredientsReducer = (state = initialConstructorState, action: TInitialConstructorActions): TInitialConstructorState => {
   switch (action.type) {
     case ADD_INGREDIENT:
       if (action.payload.type === 'bun') {
@@ -47,9 +45,9 @@ export const constructorIngredientsReducer = (state:TInitialConstructorState = i
     case REMOVE_INGREDIENT:
       return {
         ...state,
-        optionalIngredients: state.optionalIngredients.filter(
+        optionalIngredients: state.optionalIngredients?.filter(
           (ingredient) => {
-            return state.optionalIngredients.indexOf(ingredient) !== action.payload
+            return state.optionalIngredients?.indexOf(ingredient) !== action.payload
           }
         )
       };

@@ -3,9 +3,19 @@ import {
   SEND_ORDER_FAILED,
   SEND_ORDER_SUCCESS,
   RESET_ORDER,
+  TOrderActions,
 } from "../actions/order";
 
-export const orderSentInitialState = {
+export type TOrderInitialState = {
+  orderNumber: number;
+  isSentOrderModalOpen: boolean;
+
+  orderRequest: boolean;
+  orderSuccess: boolean;
+  orderFailed: boolean;
+}
+
+export const orderSentInitialState: TOrderInitialState = {
   orderNumber: 0,
   isSentOrderModalOpen: false,
 
@@ -14,7 +24,7 @@ export const orderSentInitialState = {
   orderFailed: false,
 }
 
-export const sendOrderReducer = (state = orderSentInitialState, action ) => {
+export const sendOrderReducer = (state = orderSentInitialState, action: TOrderActions ) => {
   switch (action.type) {
     case SEND_ORDER_REQUEST: {
       return {

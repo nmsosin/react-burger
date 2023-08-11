@@ -11,3 +11,7 @@ export interface IOpenCurrentIngredient {
 export interface ICloseCurrentIngredient {
   readonly type: typeof CLOSE_CURRENT_INGREDIENT;
 }
+
+export type TCurrentIngredientActions =
+  | IOpenCurrentIngredient
+  | ICloseCurrentIngredient

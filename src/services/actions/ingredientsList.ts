@@ -11,7 +11,7 @@ interface IGetIngredientsRequest {
 
 interface IGetIngredientsSuccess {
   readonly type: typeof GET_INGREDIENTS_SUCCESS
-  data?: TIngredient[]
+  payload?: TIngredient[]
 }
 
 interface IGetIngredientsFailed {
@@ -23,29 +23,39 @@ export type TIngredientsListActions =
   | IGetIngredientsSuccess
   | IGetIngredientsFailed
 
+const getIngredientsRequest = (): IGetIngredientsRequest => {
+  return {
+    type: GET_INGREDIENTS_REQUEST,
+  }
+}
+
+const getIngredientsSuccess = (ingredients: TIngredient[]): IGetIngredientsSuccess => {
+  return {
+    type: GET_INGREDIENTS_SUCCESS,
+    payload: ingredients
+  }
+}
+
+const getIngredientsFailed = (): IGetIngredientsFailed => {
+  return {
+    type: GET_INGREDIENTS_FAILED,
+  }
+}
+
 export const getIngredientsData = () => {
   return function(dispatch: AppDispatch) {
-    dispatch({
-      type: GET_INGREDIENTS_REQUEST,
-    });
+    dispatch(getIngredientsRequest());
     request('ingredients')
-      .then( res  => {
+      .then( (res)  => {
         if (res) {
-          dispatch({
-            type: GET_INGREDIENTS_SUCCESS,
-            ingredients: res.data
-          })
+          dispatch(getIngredientsSuccess(res.data))
         } else {
-          dispatch({
-            type: GET_INGREDIENTS_FAILED
-          })
+          dispatch(getIngredientsFailed())
         }
         // console.log(res)
       })
       .catch( err => {
-      dispatch({
-        type: GET_INGREDIENTS_FAILED
-      })
+      dispatch(getIngredientsFailed())
       // console.log(err);
     })
   }

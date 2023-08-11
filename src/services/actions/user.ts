@@ -34,12 +34,18 @@ export const SET_AUTH_CHECKED: "SET_AUTH_CHECKED" = "SET_AUTH_CHECKED";
 
 // action interfaces
 
-interface IUserData {
+export interface IUserData {
+  user: {
+    name: string;
+    email: string;
+  }
+
   name?: string;
   email?: string;
   password?: string;
-  accessToken?: string;
-  refreshToken?: string;
+  token?: string;
+  accessToken: string;
+  refreshToken: string;
 }
 
 interface IRegisterUserRequest {
@@ -48,12 +54,13 @@ interface IRegisterUserRequest {
 
 interface IRegisterUserSuccess {
   readonly type: typeof REGISTER_SUCCESS;
+  payload?: IUserData
   user: {
     email: string;
     name: string;
   };
-  accessToken: string;
-  refreshToken: string;
+  accessToken?: string;
+  refreshToken?: string;
 }
 
 interface IRegisterUserFailed {
@@ -78,8 +85,23 @@ interface ILoginUserFailed {
   readonly type: typeof LOGIN_FAILED;
 }
 
+interface ILogoutUserRequest {
+  readonly type: typeof LOGOUT_REQUEST;
+}
+
+interface ILogoutUserSuccess {
+  readonly type: typeof LOGOUT_SUCCESS;
+  user: {};
+  isAuthChecked: boolean;
+}
+
+interface ILogoutUserFailed {
+  readonly type: typeof LOGOUT_FAILED;
+}
+
 interface IForgotPasswordRequest {
   readonly type: typeof FORGOT_PASSWORD_REQUEST;
+  resetPasswordDone: boolean;
 }
 
 interface IForgotPasswordSuccess {
@@ -102,6 +124,37 @@ interface IResetPasswordFailed {
   readonly type: typeof RESET_PASSWORD_FAILED;
 }
 
+interface IGetUserRequest {
+  readonly type: typeof GET_USER_REQUEST
+}
+
+interface IGetUserSuccess {
+  readonly type: typeof GET_USER_SUCCESS;
+  payload: IUserData;
+}
+
+interface IGetUserFailed {
+  readonly type: typeof GET_USER_FAILED
+}
+
+interface IUpdateUserRequest {
+  readonly type: typeof UPDATE_USER_REQUEST
+}
+
+interface IUpdateUserSuccess {
+  readonly type: typeof UPDATE_USER_SUCCESS
+  payload: IUserData;
+}
+
+interface IUpdateUserFailed {
+  readonly type: typeof UPDATE_USER_FAILED
+}
+
+interface ISetAuthChecked {
+  readonly type: typeof SET_AUTH_CHECKED;
+  payload: boolean;
+}
+
 // Union type
 
 export type TUserActions =
@@ -111,25 +164,49 @@ export type TUserActions =
   | ILoginUserRequest
   | ILoginUserSuccess
   | ILoginUserFailed
+  | ILogoutUserRequest
+  | ILogoutUserSuccess
+  | ILogoutUserFailed
   | IForgotPasswordRequest
   | IForgotPasswordSuccess
   | IForgotPasswordFailed
   | IResetPasswordRequest
   | IResetPasswordSuccess
   | IResetPasswordFailed
+  | IGetUserRequest
+  | IGetUserSuccess
+  | IGetUserFailed
+  | IUpdateUserRequest
+  | IUpdateUserSuccess
+  | IUpdateUserFailed
+  | ISetAuthChecked
 
 // action creators
 
-export const setAuthChecked = (value: boolean) => ({
+export const setAuthChecked = (value: boolean): ISetAuthChecked => ({
   type: SET_AUTH_CHECKED,
   payload: value,
 });
 
+const forgotPasswordRequest = (): IForgotPasswordRequest => {
+  return {
+    type: FORGOT_PASSWORD_REQUEST,
+    resetPasswordDone: false
+  }
+}
+const forgotPasswordSuccess = (): IForgotPasswordSuccess => {
+  return {
+    type: FORGOT_PASSWORD_SUCCESS
+  }
+}
+const forgotPasswordFailed = (): IForgotPasswordFailed => {
+  return {
+    type: FORGOT_PASSWORD_FAILED
+  }
+}
 export const forgotPassword = (data: IUserData) => {
   return function (dispatch: AppDispatch) {
-    dispatch({
-      type: FORGOT_PASSWORD_REQUEST
-    });
+    dispatch(forgotPasswordRequest());
     request("password-reset", {
       method: "POST",
       headers: {
@@ -139,30 +216,36 @@ export const forgotPassword = (data: IUserData) => {
     })
       .then( res  => {
         if (res) {
-          console.log('data', data)
-          dispatch({
-            type: FORGOT_PASSWORD_SUCCESS,
-          })
+          dispatch(forgotPasswordSuccess())
         } else {
-          dispatch({
-            type: FORGOT_PASSWORD_FAILED
-          })
+          dispatch(forgotPasswordFailed())
         }
       })
       .catch( err => {
-        dispatch({
-          type: FORGOT_PASSWORD_FAILED
-        })
+        dispatch(forgotPasswordFailed())
         console.log('Ошибка запроса на восстановление пароля:', err);
       })
   }
 }
 
+const resetPasswordRequest = (): IResetPasswordRequest => {
+  return {
+    type: RESET_PASSWORD_REQUEST
+  }
+}
+const resetPasswordSuccess = (): IResetPasswordSuccess => {
+  return {
+    type: RESET_PASSWORD_SUCCESS
+  }
+}
+const resetPasswordFailed = (): IResetPasswordFailed => {
+  return {
+    type: RESET_PASSWORD_FAILED
+  }
+}
 export const resetPassword = (data: IUserData) => {
   return function (dispatch: AppDispatch) {
-    dispatch({
-      type: RESET_PASSWORD_REQUEST
-    });
+    dispatch(resetPasswordRequest());
     request("password-reset/reset", {
       method: "POST",
       headers: {
@@ -172,30 +255,40 @@ export const resetPassword = (data: IUserData) => {
     })
       .then( res  => {
         if (res) {
-          dispatch({
-            type: RESET_PASSWORD_SUCCESS
-          })
+          dispatch(resetPasswordSuccess())
         } else {
-          dispatch({
-            type: RESET_PASSWORD_FAILED
-          })
+          dispatch(resetPasswordFailed())
         }
         console.log('res', res)
       })
       .catch( err => {
-        dispatch({
-          type: RESET_PASSWORD_FAILED
-        })
+        dispatch(resetPasswordFailed())
         console.log('Ошибка восстановления пароля:', err);
       })
   }
 }
 
+const registerRequest = (): IRegisterUserRequest => {
+  return {
+    type: REGISTER_REQUEST
+  }
+}
+const registerSuccess = (res: IUserData): IRegisterUserSuccess => {
+  return {
+    type: REGISTER_SUCCESS,
+    user: res.user,
+    accessToken: res.accessToken,
+    refreshToken: res.refreshToken,
+  }
+}
+const registerFailed = (): IRegisterUserFailed => {
+  return {
+    type: REGISTER_FAILED
+  }
+}
 export const register = (data: IUserData) => {
   return function (dispatch: AppDispatch) {
-    dispatch({
-      type: REGISTER_REQUEST
-    });
+    dispatch(registerRequest());
     fetchWithRefresh("auth/register", {
       method: "POST",
       headers: {
@@ -205,36 +298,43 @@ export const register = (data: IUserData) => {
     })
       .then( res  => {
         if (res) {
-          dispatch({
-            type: REGISTER_SUCCESS,
-            user: res.user,
-            accessToken: res.accessToken,
-            refreshToken: res.refreshToken,
-          })
+          dispatch(registerSuccess(res))
           setCookie('accessToken', res.accessToken)
           localStorage.setItem('refreshToken', res.refreshToken)
           dispatch(setAuthChecked(true));
         } else {
-          dispatch({
-            type: REGISTER_FAILED
-          })
+          dispatch(registerFailed())
         }
         console.log(res)
       })
       .catch( err => {
-        dispatch({
-          type: REGISTER_FAILED
-        })
+        dispatch(registerFailed())
         console.log('Ошибка регистрации:', err);
       })
   }
 }
 
+const loginRequest = (): ILoginUserRequest => {
+  return {
+    type: LOGIN_REQUEST,
+  }
+}
+const loginSuccess = (data: IUserData): ILoginUserSuccess => {
+  return {
+    type: LOGIN_SUCCESS,
+    user: data.user,
+    accessToken: data.accessToken,
+    refreshToken: data.refreshToken,
+  }
+}
+const loginFailed = (): ILoginUserFailed => {
+  return {
+    type: LOGIN_FAILED
+  }
+}
 export const login = (data: IUserData) => {
   return function (dispatch: AppDispatch) {
-    dispatch({
-      type: LOGIN_REQUEST,
-    });
+    dispatch(loginRequest());
     fetchWithRefresh("auth/login", {
       method: "POST",
       headers: {
@@ -244,35 +344,41 @@ export const login = (data: IUserData) => {
     })
       .then( res => {
         if (res) {
-          dispatch({
-            type: LOGIN_SUCCESS,
-            user: res.user,
-            accessToken: res.accessToken,
-            refreshToken: res.refreshToken,
-          });
+          dispatch(loginSuccess(res));
           setCookie('accessToken', res.accessToken);
           localStorage.setItem('refreshToken', res.refreshToken);
         } else {
-          dispatch({
-            type: LOGIN_FAILED
-          })
+          dispatch(loginFailed());
         }
         // console.log(res)
       })
       .catch( err => {
-        dispatch({
-          type: LOGIN_FAILED
-        })
+        dispatch(loginFailed());
         console.log('Ошибка авторизации:', err);
       })
   }
-}
+};
 
+const logoutRequest = (): ILogoutUserRequest => {
+  return {
+    type: LOGOUT_REQUEST
+  }
+};
+const logoutSuccess = (): ILogoutUserSuccess => {
+  return {
+    type: LOGOUT_SUCCESS,
+    user: {},
+    isAuthChecked: false,
+  }
+};
+const logoutFailed = (): ILogoutUserFailed => {
+  return {
+    type: LOGOUT_FAILED
+  }
+};
 export const logout = (callback: () => void) => {
-  return function (dispatch) {
-    dispatch({
-      type: LOGOUT_REQUEST
-    });
+  return function (dispatch: AppDispatch) {
+    dispatch(logoutRequest());
     request("auth/logout", {
       method: "POST",
       headers: {
@@ -282,35 +388,41 @@ export const logout = (callback: () => void) => {
     })
       .then( res => {
         if (res) {
-          dispatch({
-            type: LOGOUT_SUCCESS,
-            user: {},
-            isAuthChecked: false,
-          })
+          dispatch(logoutSuccess())
           deleteCookie('accessToken');
           localStorage.removeItem('refreshToken')
           callback();
         } else {
-          dispatch({
-            type: LOGOUT_FAILED
-          })
+          dispatch(logoutFailed())
         }
         // console.log(res)
       })
       .catch( err => {
-        dispatch({
-          type: LOGOUT_FAILED
-        })
+        dispatch(logoutFailed())
         console.log('Ошибка выхода из профиля:', err);
       })
   }
 }
 
+const getUserRequest = (): IGetUserRequest => {
+  return {
+    type: GET_USER_REQUEST,
+  }
+};
+const getUserSuccess = (user: IUserData): IGetUserSuccess => {
+  return {
+    type: GET_USER_SUCCESS,
+    payload: user
+  }
+};
+const getUserFailed = (): IGetUserFailed => {
+  return {
+    type: GET_USER_FAILED
+  }
+};
 export const getUserInfo = () => {
   return (dispatch: AppDispatch) => {
-    dispatch({
-      type: GET_USER_REQUEST,
-    })
+    dispatch(getUserRequest())
     request("auth/user", {
       method: "GET",
       headers: {
@@ -320,14 +432,9 @@ export const getUserInfo = () => {
     })
       .then( res => {
         if (res) {
-          dispatch({
-            type: GET_USER_SUCCESS,
-            user: res.user
-          })
+          dispatch(getUserSuccess(res.user))
         } else {
-          dispatch({
-            type: GET_USER_FAILED
-          })
+          dispatch(getUserFailed())
         }
       })
       .catch( err => {
@@ -335,9 +442,7 @@ export const getUserInfo = () => {
           refreshUserToken();
           // console.log(err)
         } else {
-          dispatch({
-            type: GET_USER_FAILED
-          })
+          dispatch(getUserFailed())
           console.log('Ошибка получения данных пользователя:', err);
         }
 
@@ -345,11 +450,25 @@ export const getUserInfo = () => {
   }
 }
 
+const updateUserRequest = (): IUpdateUserRequest => {
+  return {
+    type: UPDATE_USER_REQUEST,
+  }
+};
+const updateUserSuccess = (user: IUserData): IUpdateUserSuccess => {
+  return {
+    type: UPDATE_USER_SUCCESS,
+    payload: user
+  }
+};
+const updateUserFailed = (): IUpdateUserFailed => {
+  return {
+    type: UPDATE_USER_FAILED
+  }
+};
 export const updateUserInfo = (data: IUserData) => {
   return (dispatch: AppDispatch) => {
-    dispatch({
-      type: UPDATE_USER_REQUEST,
-    })
+    dispatch(updateUserRequest())
     request("auth/user", {
       method: "PATCH",
       headers: {
@@ -360,21 +479,14 @@ export const updateUserInfo = (data: IUserData) => {
     })
       .then( res => {
         if (res) {
-          dispatch({
-            type: UPDATE_USER_SUCCESS,
-            user: res.user
-          })
+          dispatch(updateUserSuccess(res.user))
         } else {
-          dispatch({
-            type: UPDATE_USER_FAILED
-          })
+          dispatch(updateUserFailed())
         }
         console.log(res)
       })
       .catch( err => {
-        dispatch({
-          type: UPDATE_USER_FAILED
-        })
+        dispatch(updateUserFailed())
         console.log('Ошибка обновления данных пользователя:', err);
       })
   }

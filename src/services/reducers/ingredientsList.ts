@@ -1,12 +1,24 @@
-import { GET_INGREDIENTS_REQUEST, GET_INGREDIENTS_FAILED, GET_INGREDIENTS_SUCCESS} from "../actions/ingredientsList";
+import {
+  GET_INGREDIENTS_REQUEST,
+  GET_INGREDIENTS_FAILED,
+  GET_INGREDIENTS_SUCCESS,
+  TIngredientsListActions
+} from "../actions/ingredientsList";
+import {TIngredient} from "../../utils/types";
 
-export const ingredientsListInitialState = {
+export type TIngredientsListInitialState = {
+  ingredientsRequest: boolean;
+  ingredientsFailed: boolean;
+  ingredients: TIngredient[];
+}
+
+export const ingredientsListInitialState: TIngredientsListInitialState = {
   ingredientsRequest: false,
   ingredientsFailed: false,
   ingredients: [],
 }
 
-export const ingredientsListReducer = (state = ingredientsListInitialState, action) => {
+export const ingredientsListReducer = (state = ingredientsListInitialState, action: TIngredientsListActions) => {
   switch (action.type) {
     case GET_INGREDIENTS_REQUEST: {
       return {
@@ -18,7 +30,7 @@ export const ingredientsListReducer = (state = ingredientsListInitialState, acti
     case GET_INGREDIENTS_SUCCESS: {
       return {
         ...state,
-        ingredients: action.ingredients,
+        ingredients: action.payload,
         ingredientsRequest: false,
       };
     }

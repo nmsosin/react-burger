@@ -3,10 +3,19 @@ import {
   WS_CONNECTION_SUCCESS,
   WS_CONNECTION_FAILED,
   WS_CONNECTION_CLOSED,
-  WS_GET_ORDERS,
+  WS_GET_ORDERS, TWsActions,
 } from '../actions/websocket';
+import {TOrder} from "../../utils/types";
 
-export const wsInitialState = {
+export type TWsInitialState = {
+  wsConnected: boolean;
+  orders: string[];
+  ordersData: TOrder | {};
+  ordersDoneTotal: number;
+  ordersDoneToday: number;
+  error?: string;
+}
+export const wsInitialState: TWsInitialState = {
   wsConnected: false,
   orders: [],
   ordersData: {},
@@ -15,14 +24,20 @@ export const wsInitialState = {
   error: undefined,
 };
 
-export const wsAuthInitialState = {
+export type TWsAuthInitialState = {
+  wsConnected: boolean;
+  authOrders: string[];
+  ordersData: TOrder | {};
+  error?: string;
+}
+export const wsAuthInitialState: TWsAuthInitialState = {
   wsConnected: false,
   authOrders: [],
   ordersData: {},
   error: undefined,
 };
 
-export const wsReducer = (state = wsInitialState, action) => {
+export const wsReducer = (state = wsInitialState, action: TWsActions) => {
   switch (action.type) {
     case WS_CONNECTION_SUCCESS:
       // console.log("WS CONNECTION SUCCESS")
@@ -65,7 +80,7 @@ export const wsReducer = (state = wsInitialState, action) => {
   }
 }
 
-export const wsAuthReducer = (state = wsAuthInitialState, action) => {
+export const wsAuthReducer = (state = wsAuthInitialState, action: TWsActions) => {
   switch (action.type) {
     case WS_CONNECTION_SUCCESS:
       // console.log("WS CONNECTION SUCCESS")

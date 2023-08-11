@@ -2,7 +2,7 @@ import {
   OPEN_CURRENT_INGREDIENT,
   CLOSE_CURRENT_INGREDIENT,
   IOpenCurrentIngredient,
-  ICloseCurrentIngredient
+  ICloseCurrentIngredient, TCurrentIngredientActions
 } from "../actions/currentIngredient";
 import {TIngredient} from "../../utils/types";
 
@@ -10,10 +10,6 @@ export type TCurrentIngredientInitialState = {
   currentIngredient: TIngredient | null;
   isIngredientModalOpen: boolean;
 }
-
-export type TCurrentIngredientActions =
-  | IOpenCurrentIngredient
-  | ICloseCurrentIngredient
 
 export const currentIngredientInitialState: TCurrentIngredientInitialState = {
   currentIngredient: null,

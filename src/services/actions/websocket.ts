@@ -34,7 +34,11 @@ interface IWsConnectionClosed {
 
 interface IWsGetOrders {
   readonly type: typeof WS_GET_ORDERS;
-  payload: string[]
+  payload: {
+    orders: string[];
+    total: number;
+    totalToday: number;
+  }
 }
 
 interface IWsSendOrders {

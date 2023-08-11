@@ -20,11 +20,11 @@ import {
   RESET_PASSWORD_FAILED,
   RESET_PASSWORD_REQUEST,
   RESET_PASSWORD_SUCCESS,
-  SET_AUTH_CHECKED,
+  SET_AUTH_CHECKED, TUserActions, IUserData,
 
 } from "../actions/user";
 
-type TUserInitialState = {
+export type TUserInitialState = {
   user: {
     email: string;
     name: string;
@@ -60,6 +60,8 @@ type TUserInitialState = {
   resetPasswordRequest: boolean;
   resetPasswordSuccess: boolean;
   resetPasswordFailed: boolean;
+
+  resetPasswordDone?: boolean;
 }
 
 export const userInitialState: TUserInitialState = {
@@ -100,7 +102,7 @@ export const userInitialState: TUserInitialState = {
   resetPasswordFailed: false,
 }
 
-export const userReducer = ( state = userInitialState, action ): TUserInitialState => {
+export const userReducer = ( state = userInitialState, action: TUserActions ): TUserInitialState => {
   switch (action.type) {
     //authorization check
     case SET_AUTH_CHECKED: {
@@ -199,7 +201,7 @@ export const userReducer = ( state = userInitialState, action ): TUserInitialSta
         getUserRequest: false,
         getUserSuccess: true,
         getUserFailed: false,
-        user: action.user,
+        user: action.payload,
         isAuthChecked: true
       };
     };
@@ -226,7 +228,7 @@ export const userReducer = ( state = userInitialState, action ): TUserInitialSta
         updateUserRequest: false,
         updateUserSuccess: true,
         updateUserFailed: false,
-        user: action.user
+        user: action.payload
       };
     };
     case UPDATE_USER_FAILED: {

@@ -1,7 +1,18 @@
-import {GET_ORDER_FAILED, GET_ORDER_REQUEST, GET_ORDER_SUCCESS} from "../actions/orderInfo";
+import {GET_ORDER_FAILED, GET_ORDER_REQUEST, GET_ORDER_SUCCESS, TOrderInfoActions} from "../actions/orderInfo";
 import {RESET_CURRENT_ORDER, OPEN_CURRENT_ORDER} from "../actions/orderInfo";
+import {TOrder} from "../../utils/types";
 
-export const orderInfoInitialState = {
+export type TOrderInfoInitialState = {
+  orders: TOrder[];
+  currentOrder: TOrder | null;
+  isOrderModalOpen: boolean;
+
+  getOrderRequest: boolean;
+  getOrderSuccess: boolean;
+  getOrderFailed: boolean;
+}
+
+export const orderInfoInitialState: TOrderInfoInitialState = {
   orders: [],
   currentOrder: null,
   isOrderModalOpen: false,
@@ -11,7 +22,7 @@ export const orderInfoInitialState = {
   getOrderFailed: false,
 }
 
-export const getOrdersReducer = ( state = orderInfoInitialState, action ) => {
+export const getOrdersReducer = ( state = orderInfoInitialState, action: TOrderInfoActions ) => {
   switch (action.type) {
     case GET_ORDER_REQUEST: {
       return {
