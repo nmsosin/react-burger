@@ -33,12 +33,13 @@ export const UPDATE_USER_FAILED: "UPDATE_USER_FAILED" = "UPDATE_USER_FAILED";
 export const SET_AUTH_CHECKED: "SET_AUTH_CHECKED" = "SET_AUTH_CHECKED";
 
 // action interfaces
+export interface IUser {
+  name: string;
+  email: string;
+}
 
 export interface IUserData {
-  user: {
-    name: string;
-    email: string;
-  }
+  user: IUser;
 
   name?: string;
   email?: string;
@@ -130,7 +131,7 @@ interface IGetUserRequest {
 
 interface IGetUserSuccess {
   readonly type: typeof GET_USER_SUCCESS;
-  payload: IUserData;
+  payload: IUser;
 }
 
 interface IGetUserFailed {
@@ -143,7 +144,7 @@ interface IUpdateUserRequest {
 
 interface IUpdateUserSuccess {
   readonly type: typeof UPDATE_USER_SUCCESS
-  payload: IUserData;
+  payload: IUser;
 }
 
 interface IUpdateUserFailed {
@@ -409,7 +410,7 @@ const getUserRequest = (): IGetUserRequest => {
     type: GET_USER_REQUEST,
   }
 };
-const getUserSuccess = (user: IUserData): IGetUserSuccess => {
+const getUserSuccess = (user: IUser): IGetUserSuccess => {
   return {
     type: GET_USER_SUCCESS,
     payload: user
@@ -455,7 +456,7 @@ const updateUserRequest = (): IUpdateUserRequest => {
     type: UPDATE_USER_REQUEST,
   }
 };
-const updateUserSuccess = (user: IUserData): IUpdateUserSuccess => {
+const updateUserSuccess = (user: IUser): IUpdateUserSuccess => {
   return {
     type: UPDATE_USER_SUCCESS,
     payload: user

@@ -20,15 +20,12 @@ import {
   RESET_PASSWORD_FAILED,
   RESET_PASSWORD_REQUEST,
   RESET_PASSWORD_SUCCESS,
-  SET_AUTH_CHECKED, TUserActions, IUserData,
+  SET_AUTH_CHECKED, TUserActions, IUserData, IUser,
 
 } from "../actions/user";
 
 export type TUserInitialState = {
-  user: {
-    email: string;
-    name: string;
-  },
+  user: IUser;
 
   isAuthChecked: boolean;
   password: string;
@@ -124,7 +121,7 @@ export const userReducer = ( state = userInitialState, action: TUserActions ): T
         ...state,
         registerRequest: false,
         registerSuccess: true,
-        user: action.payload
+        user: action.user
       };
     };
     case REGISTER_FAILED: {
@@ -176,7 +173,7 @@ export const userReducer = ( state = userInitialState, action: TUserActions ): T
         logoutRequest: true,
         logoutSuccess: true,
         logoutFailed: false,
-        user: {},
+        user: {email: "", name: ""},
       };
     };
     case LOGOUT_FAILED: {

@@ -33,7 +33,7 @@ export const sendOrderReducer = (state = orderSentInitialState, action: TOrderAc
       }
     };
     case SEND_ORDER_SUCCESS: {
-      console.log("SEND ORDER SUCCESS", action.payload)
+      // console.log("SEND ORDER SUCCESS", action.payload)
       return {
         ...state,
         orderRequest: false,

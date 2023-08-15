@@ -5,12 +5,12 @@ import {
   WS_CONNECTION_CLOSED,
   WS_GET_ORDERS, TWsActions,
 } from '../actions/websocket';
-import {TOrder} from "../../utils/types";
+import {TOrder, TOrdersData} from "../../utils/types";
 
 export type TWsInitialState = {
   wsConnected: boolean;
-  orders: string[];
-  ordersData: TOrder | {};
+  orders: TOrder[];
+  ordersData: TOrdersData;
   ordersDoneTotal: number;
   ordersDoneToday: number;
   error?: string;
@@ -26,8 +26,8 @@ export const wsInitialState: TWsInitialState = {
 
 export type TWsAuthInitialState = {
   wsConnected: boolean;
-  authOrders: string[];
-  ordersData: TOrder | {};
+  authOrders: TOrder[];
+  ordersData: TOrdersData;
   error?: string;
 }
 export const wsAuthInitialState: TWsAuthInitialState = {

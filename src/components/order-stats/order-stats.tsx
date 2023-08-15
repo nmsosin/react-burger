@@ -40,12 +40,12 @@ export const OrderStats: FC = () => {
       </div>
       <div>
         <h2 className="text text_type_main-medium">Выполнено за все время:</h2>
-        <p className="text text_type_digits-large">{ordersData.ordersDoneTotal}</p>
+        <p className="text text_type_digits-large">{ordersData?.ordersDoneTotal}</p>
       </div>
 
       <div>
         <h2 className="text text_type_main-medium">Выполнено за сегодня:</h2>
-        <p className="text text_type_digits-large">{ordersData.ordersDoneToday}</p>
+        <p className="text text_type_digits-large">{ordersData?.ordersDoneToday}</p>
       </div>
     </section>
   )

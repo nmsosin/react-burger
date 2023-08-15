@@ -16,7 +16,7 @@ export const OrderFeedDetailsLayout: FC<TOrdersFeedDetailsLayoutProps> = ({order
   const {id} = useParams();
   const order = useMemo(() => {
     return orders.find((order) => order._id === id);
-      } , [orders]);
+  }, [orders]);
 
   const {createdAt, ingredients, name, number, status, _id} = order as TOrder;
 
@@ -31,8 +31,8 @@ export const OrderFeedDetailsLayout: FC<TOrdersFeedDetailsLayoutProps> = ({order
   }, [ingredients]);
 
   const uniqueOrderIngredients = useMemo(() => {
-    return orderIngredients.reduce((acc: string[], item: string) => {
-      if (acc.includes(item)) {
+    return orderIngredients.reduce((acc: (TIngredient | undefined)[], item: TIngredient | undefined) => {
+      if (item && acc.includes(item)) {
         return acc;
       }
       return [...acc, item]
@@ -41,8 +41,10 @@ export const OrderFeedDetailsLayout: FC<TOrdersFeedDetailsLayoutProps> = ({order
 
   const orderPrice = useMemo(() => {
     let result = 0;
-    orderIngredients.map((item: TIngredient) => {
-      return item.type === 'bun' ? result += item.price * 2 : result += item.price;
+    orderIngredients.map((item: TIngredient | undefined) => {
+      if (item) {
+        return item.type === 'bun' ? result += item.price * 2 : result += item.price;
+      }
     });
     return result;
   }, [orderIngredients])
@@ -66,34 +68,40 @@ export const OrderFeedDetailsLayout: FC<TOrdersFeedDetailsLayoutProps> = ({order
 
           <ul className={ordersFeedDetailsLayout.ingredientsList}>
             {
-              uniqueOrderIngredients.map((ingredient: TIngredient) => {
-                type TAcc = {
-                  [key: string] : number;
-                }
-                const counter = orderIngredients.reduce((acc: TAcc, item: TIngredient) => {
-                  acc[item._id] = (acc[item._id] || 0) + 1;
-                  return acc;
-                }, {});
+              uniqueOrderIngredients?.map((ingredient) => {
+                if (ingredient) {
+                  type TAcc = {
+                    [key: string]: number;
+                  }
+                  const counter = orderIngredients.reduce<TAcc>((acc: TAcc, item) => {
+                    if (item) {
+                      acc[item._id] = (acc[item._id] || 0) + 1;
+                    }
 
-                return (
-                  <li key={uuidv4()} className={ordersFeedDetailsLayout.ingredientCard}>
-                    <div className={ordersFeedDetailsLayout.imageWrapper}>
-                      <div className={ordersFeedDetailsLayout.imageBackground}>
-                        <img src={ingredient.image} alt={ingredient.name}
-                             className={ordersFeedDetailsLayout.image}
-                        />
+                    return acc;
+                  }, {});
+
+                  return (
+                    <li key={uuidv4()} className={ordersFeedDetailsLayout.ingredientCard}>
+                      <div className={ordersFeedDetailsLayout.imageWrapper}>
+                        <div className={ordersFeedDetailsLayout.imageBackground}>
+                          <img src={ingredient.image} alt={ingredient.name}
+                               className={ordersFeedDetailsLayout.image}
+                          />
+                        </div>
+
                       </div>
+                      <p className="text text_type_main-default">{ingredient.name}</p>
+                      <div className={ordersFeedDetailsLayout.priceWrapper}>
+                        <p className="text text_type_digits-default pr-2">
+                          {ingredient.type === 'bun' ? counter[ingredient._id] * 2 : counter[ingredient._id]} x {ingredient.price}
+                        </p>
+                        <CurrencyIcon type={'primary'}/>
+                      </div>
+                    </li>
+                  )
+                }
 
-                    </div>
-                    <p className="text text_type_main-default">{ingredient.name}</p>
-                    <div className={ordersFeedDetailsLayout.priceWrapper}>
-                      <p className="text text_type_digits-default pr-2">
-                        {ingredient.type === 'bun' ? counter[ingredient._id] * 2 : counter[ingredient._id]} x {ingredient.price}
-                      </p>
-                      <CurrencyIcon type={'primary'}/>
-                    </div>
-                  </li>
-                )
               })
             }
 

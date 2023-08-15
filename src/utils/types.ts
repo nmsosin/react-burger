@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import {Action, ActionCreator, Dispatch} from "redux";
-import {TInitialConstructorActions} from "../services/reducers/constructorIngredients";
-import {TCurrentIngredientActions} from "../services/reducers/currentIngredient";
+import {TInitialConstructorActions} from "../services/actions/constructorIngredients";
+import {TCurrentIngredientActions} from "../services/actions/currentIngredient";
 import {TUserActions} from "../services/actions/user";
 import {store} from "../index";
 import {ThunkAction} from "redux-thunk";
@@ -41,6 +41,11 @@ export type TIngredient = {
   image_large: string;
   __v: number;
   constructorIngredientId?: string;
+}
+
+export type TOrdersData = {
+  ordersDoneTotal?: number;
+  ordersDoneToday?: number;
 }
 
 export type TOrder = {

@@ -38,8 +38,8 @@ export const OrdersFeedListItem: FC<TOrdersFeedListItemProps> = ({order}) => {
 
   const orderPrice = useMemo(() => {
     let result = 0;
-    orderIngredients.map(item => {
-      return item.type === 'bun' ? result += item.price * 2 : result += item.price;
+    orderIngredients.map((item) => {
+      return item?.type === 'bun' ? result += item.price * 2 : result += item!.price;
     });
     return result;
   }, [orderIngredients])
@@ -75,7 +75,7 @@ export const OrdersFeedListItem: FC<TOrdersFeedListItemProps> = ({order}) => {
                 return (
                   <li className={ordersFeedListItem.imageWrapper} key={uuidv4()}>
                     <div className={ordersFeedListItem.imageBackground}>
-                      <img src={ingredient.image} alt={ingredient.name}
+                      <img src={ingredient?.image} alt={ingredient?.name}
                            className={ordersFeedListItem.image}
                       />
                     </div>
@@ -86,7 +86,7 @@ export const OrdersFeedListItem: FC<TOrdersFeedListItemProps> = ({order}) => {
                   return (
                     <li className={ordersFeedListItem.imageWrapper} key={uuidv4()}>
                       <div className={ordersFeedListItem.imageBackground}>
-                        <img src={ingredient.image} alt={ingredient.name}
+                        <img src={ingredient?.image} alt={ingredient?.name}
                              className={ordersFeedListItem.image}
                         />
                       </div>
@@ -103,7 +103,7 @@ export const OrdersFeedListItem: FC<TOrdersFeedListItemProps> = ({order}) => {
                         className={`text text_type_digits-default ${ordersFeedListItem.lastIngredientCounter}`}>+{orderIngredients.length - 5}</p>
                     </div>
                     <div className={ordersFeedListItem.imageBackground}>
-                      <img src={ingredient.image} alt={ingredient.name}
+                      <img src={ingredient?.image} alt={ingredient?.name}
                            className={ordersFeedListItem.image}
                       />
                     </div>
