@@ -1,6 +1,6 @@
 import request from "../../utils/api";
 import {getCookie} from "../../utils/cookie";
-import {AppDispatch, TOrder} from "../../utils/types";
+import {AppDispatch, AppThunk, TOrder} from "../../utils/types";
 
 export const SEND_ORDER_REQUEST: "SEND_ORDER_REQUEST" = "SEND_ORDER_REQUEST";
 export const SEND_ORDER_SUCCESS: "SEND_ORDER_SUCCESS" = "SEND_ORDER_SUCCESS";
@@ -50,8 +50,7 @@ const sendOrderFailed = (): ISendOrderFailed => {
   }
 }
 
-
-export const createOrderId = (orderUrlEndpoint: string, options: string[]) => {
+export const createOrderId: AppThunk = (orderUrlEndpoint: string, options: string[]) => {
   return function (dispatch: AppDispatch) {
     dispatch(sendOrderRequest());
     request(orderUrlEndpoint, {

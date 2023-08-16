@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react';
+import React, {FC, useEffect} from 'react';
 import AppHeader from "../app-header/app-header";
 import Modal from "../modal/modal";
 import IngredientDetails from "../ingredient-details/ingredient-details";
 import { getIngredientsData } from "../../services/actions/ingredientsList";
-import {useDispatch, useSelector} from "../../services/hooks/hooks";
+import {useSelector} from "../../services/hooks/hooks";
 import {Routes, Route, useLocation, useNavigate} from 'react-router-dom';
 import {MainPage} from "../../pages/main";
 import {LoginPage} from "../../pages/login/login";
@@ -39,8 +39,9 @@ import {
 } from "../../utils/routes";
 import {OrdersFeedDetails} from "../order-feed-details/orders-feed-details";
 import {RESET_CURRENT_ORDER} from "../../services/actions/orderInfo";
+import {useAppDispatch} from "../../services/hooks/hooks";
 
-function App() {
+const App: FC = () => {
   const location = useLocation();
   const background = location.state?.background;
   const navigate = useNavigate();
@@ -48,7 +49,7 @@ function App() {
   const { currentIngredient, isIngredientModalOpen } = useSelector(getCurrentIngredient);
   const {isOrderModalOpen} = useSelector(getCurrentOrderDetails);
   const accessToken = getCookie('accessToken');
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     dispatch(getIngredientsData())
@@ -69,7 +70,9 @@ function App() {
   }, [isAuthChecked, accessToken]);
 
   useEffect(() => {
-    dispatch({ type: OPEN_CURRENT_INGREDIENT, payload: currentIngredient })
+    if (currentIngredient) {
+      dispatch({type: OPEN_CURRENT_INGREDIENT, payload: currentIngredient})
+    }
   }, [])
 
   const handleIngredientCloseButton = () => {

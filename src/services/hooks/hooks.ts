@@ -7,5 +7,5 @@ import {AppDispatch, AppThunk, RootState} from "../../utils/types";
 
 export const useSelector: TypedUseSelectorHook<RootState> = selectorHook;
 
-// export const useDispatch = () => dispatchHook<AppDispatch | AppThunk>();
-export const useDispatch = () => dispatchHook<AppDispatch>();
+export const useAppDispatch: () => AppDispatch | AppThunk = dispatchHook;
+// export const useDispatch = () => dispatchHook<AppDispatch>();

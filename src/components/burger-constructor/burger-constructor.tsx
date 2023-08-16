@@ -1,10 +1,8 @@
-import {useEffect, useMemo} from 'react';
-import { ConstructorElement, Button, CurrencyIcon, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import {FC, useEffect, useMemo} from 'react';
+import { ConstructorElement, Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import burgerConstructorStyles from './burger-constructor.module.css';
-import PropTypes from "prop-types";
-import checkPropTypes from "../../utils/types";
-import {useDispatch, useSelector} from "react-redux";
-import {useDrag, useDrop} from "react-dnd";
+import {useSelector} from "react-redux";
+import {useDrop} from "react-dnd";
 import {
   RESET_INGREDIENT,
   addConstructorIngredient
@@ -17,15 +15,17 @@ import { v4 as uuidv4 } from 'uuid';
 import {useNavigate} from "react-router-dom";
 import {getConstructorIngredients, getSentOrderDetails, getUserInfo} from "../../utils/constants";
 import {LOGIN_PAGE_ROUTE} from "../../utils/routes";
+import {TIngredient} from "../../utils/types";
+import {useAppDispatch} from "../../services/hooks/hooks";
 
-const BurgerConstructor = () => {
+const BurgerConstructor: FC = () => {
   const { optionalIngredients, bun } = useSelector(getConstructorIngredients);
 
   const { orderNumber, isSentOrderModalOpen } = useSelector(getSentOrderDetails);
 
   const user = useSelector(getUserInfo)
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   // calculate order sum
@@ -55,7 +55,7 @@ const BurgerConstructor = () => {
   }
 
   // Adding DnD feature
-  function handleDrop (ingredient) {
+  function handleDrop (ingredient: TIngredient) {
     dispatch(addConstructorIngredient(ingredient, uuidv4()))
   }
 
@@ -66,7 +66,7 @@ const BurgerConstructor = () => {
       isHover: monitor.isOver()
     }),
     drop(ingredient) {
-      handleDrop(ingredient);
+      handleDrop(ingredient as TIngredient);
     }
   });
 
@@ -138,9 +138,3 @@ const BurgerConstructor = () => {
 }
 
 export default BurgerConstructor;
-//
-// BurgerConstructor.propTypes = {
-//   content: PropTypes.arrayOf(checkPropTypes),
-//   openModal: PropTypes.func.isRequired,
-//   setOrder: PropTypes.func.isRequired,
-// }
