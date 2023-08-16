@@ -1,10 +1,11 @@
 import SideTabStyles from './side-tab.module.css';
-import {FC} from "react";
+import {FC, ReactNode} from "react";
 
 type TSideTabProps = {
   active: boolean;
   value: string;
   onClick: () => void;
+  children?: ReactNode;
 }
 
 export const SideTab: FC<TSideTabProps> = ({ active, value, onClick}) => {
