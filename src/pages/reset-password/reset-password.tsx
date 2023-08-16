@@ -1,18 +1,19 @@
-import {Button, EmailInput, Input, PasswordInput} from "@ya.praktikum/react-developer-burger-ui-components";
+import {Button, Input, PasswordInput} from "@ya.praktikum/react-developer-burger-ui-components";
 import {NavLink, useNavigate} from "react-router-dom";
 import resetPasswordPageStyles from "../reset-password/reset-password.module.css";
-import {useDispatch} from "react-redux";
 import {resetPassword} from "../../services/actions/user";
 import {LOGIN_PAGE_ROUTE} from "../../utils/routes";
 import {useForm} from "../../services/hooks/useForm";
+import {FC, FormEvent} from "react";
+import {useAppDispatch} from "../../services/hooks/hooks";
 
-export function ResetPasswordPage () {
+export const ResetPasswordPage: FC = () => {
   const {values, handleChange} = useForm({ password: '', token: ''});
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const handleResetFormSubmit = (evt) => {
+  const handleResetFormSubmit = (evt: FormEvent) => {
     evt.preventDefault();
     dispatch(resetPassword(values))
     navigate(LOGIN_PAGE_ROUTE);

@@ -1,13 +1,14 @@
 import {OrderStats} from "../../components/order-stats/order-stats";
 import {OrdersFeedList} from "../../components/orders-feed-list/orders-feed-list";
 import ordersFeedStyles from  "../orders-feed/orders-feed.module.css"
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import {getWsOrders} from "../../utils/constants";
-import {useEffect} from "react";
+import {FC, useEffect} from "react";
 import {WS_CONNECTION_END, WS_CONNECTION_START} from "../../services/actions/websocket";
+import {useAppDispatch} from "../../services/hooks/hooks";
 
-export function OrdersFeedPage () {
-  const dispatch = useDispatch();
+export const OrdersFeedPage: FC = () => {
+  const dispatch = useAppDispatch();
   const { orders } = useSelector(getWsOrders);
 
   useEffect(() => {

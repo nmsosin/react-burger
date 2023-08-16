@@ -1,20 +1,19 @@
-import {Button, EmailInput, Input, PasswordInput, Tab} from "@ya.praktikum/react-developer-burger-ui-components";
-import {NavLink, useNavigate} from "react-router-dom";
-import {useEffect, useRef, useState} from "react";
-import {useDispatch, useSelector} from "react-redux";
-import {logout, updateUserInfo} from "../../services/actions/user";
+import {Button, EmailInput, Input, PasswordInput} from "@ya.praktikum/react-developer-burger-ui-components";
+import {FC, FormEvent, useEffect, useRef} from "react";
+import {useSelector} from "react-redux";
+import {updateUserInfo} from "../../services/actions/user";
 import profilePageStyles from './profile.module.css'
-import {SideTab} from "../../components/side-tab/side-tab";
-import {LOGIN_PAGE_ROUTE, MAIN_PAGE_ROUTE, ORDERS_HISTORY_PAGE_ROUTE, PROFILE_PAGE_ROUTE} from "../../utils/routes";
 import {useForm} from "../../services/hooks/useForm";
 import {ProfileNavPanel} from "../../components/profile-nav-panel/profile-nav.panel";
+import {getUserInfo} from "../../utils/constants";
+import {useAppDispatch} from "../../services/hooks/hooks";
 
-export function ProfilePage () {
-  const user = useSelector((store) => store.user.user);
+export const ProfilePage: FC = () => {
+  const user = useSelector(getUserInfo);
 
-  const inputRef = useRef(null)
+  const inputRef = useRef<HTMLInputElement>(null)
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const {values, handleChange, setValues} = useForm({email: user.email, name: user.name, password: ''});
 
@@ -25,15 +24,17 @@ export function ProfilePage () {
   }, [])
 
   const onIconClick = () => {
-     inputRef.current.focus();
+     if (inputRef && inputRef.current) {
+       inputRef.current.focus();
+     }
   }
 
-  const handleUpdateUserInfo = (evt) => {
+  const handleUpdateUserInfo = (evt: FormEvent) => {
     evt.preventDefault();
     dispatch(updateUserInfo(values))
   }
 
-  const handleCancelChangeUserInfo = (evt) => {
+  const handleCancelChangeUserInfo = (evt: FormEvent) => {
     evt.preventDefault();
     setValues({email: user.email, name: user.name, password: ''});
   }

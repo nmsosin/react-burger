@@ -1,21 +1,23 @@
-import { useState, useRef } from 'react';
+import {useState, useRef, FC, FormEvent} from 'react';
 import {Button, EmailInput, Input} from '@ya.praktikum/react-developer-burger-ui-components';
 import {NavLink} from "react-router-dom";
-import {useDispatch} from "react-redux";
 import {login} from "../../services/actions/user";
 import loginPageStyles from './login.module.css';
 import {useForm} from "../../services/hooks/useForm";
+import {useAppDispatch} from "../../services/hooks/hooks";
 
-export function LoginPage () {
+export const LoginPage: FC = () => {
   const {values, handleChange} = useForm({email: '', password: ''});
-  const formRef = useRef(null);
-  const dispatch = useDispatch();
+  const formRef = useRef<HTMLFormElement>(null);
+  const dispatch = useAppDispatch();
 
   const onIconClick = () => {
-    formRef.current.focus()
+    if (formRef && formRef.current) {
+      formRef.current.focus();
+    }
   }
 
-  const handleLoginSubmit = (evt) => {
+  const handleLoginSubmit = (evt: FormEvent) => {
     evt.preventDefault();
     dispatch(login(values))
   }

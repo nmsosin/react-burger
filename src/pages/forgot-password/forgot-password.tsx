@@ -1,17 +1,18 @@
 import {Button, EmailInput} from "@ya.praktikum/react-developer-burger-ui-components";
 import {NavLink, useNavigate} from "react-router-dom";
 import forgotPasswordPageStyles from "../forgot-password/forgot-password.module.css";
-import {useDispatch} from "react-redux";
 import {forgotPassword} from "../../services/actions/user";
 import {RESET_PASSWORD_PAGE_ROUTE} from "../../utils/routes";
 import {useForm} from "../../services/hooks/useForm";
+import {FC, FormEvent} from "react";
+import {useAppDispatch} from "../../services/hooks/hooks";
 
-export function ForgotPasswordPage () {
+export const ForgotPasswordPage: FC = () => {
   const {values, handleChange} = useForm({ email: ''});
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const handleResetPassword = (evt) => {
+  const handleResetPassword = (evt: FormEvent) => {
     evt.preventDefault();
     dispatch(forgotPassword(values));
     navigate(RESET_PASSWORD_PAGE_ROUTE);

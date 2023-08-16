@@ -1,26 +1,28 @@
 import {Button, EmailInput, Input} from "@ya.praktikum/react-developer-burger-ui-components";
-import {useRef, useState} from "react";
+import {FC, FormEvent, useRef} from "react";
 import {NavLink, useNavigate} from "react-router-dom";
-import {useDispatch, useSelector} from "react-redux";
 import {register} from '../../services/actions/user'
 import registerPageStyles from './register.module.css';
 import {LOGIN_PAGE_ROUTE} from "../../utils/routes";
 import {useForm} from "../../services/hooks/useForm";
+import {useAppDispatch} from "../../services/hooks/hooks";
 
-export function RegisterPage () {
-  const formRef = useRef(null);
+export const RegisterPage: FC = () => {
+  const formRef = useRef<HTMLFormElement>(null);
   const onIconClick = () => {
-    formRef.current.focus()
+    if (formRef && formRef.current) {
+      formRef.current.focus()
+    }
   }
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const {values, handleChange} = useForm({name: '', email: '', password: ''});
 
   const navigate = useNavigate();
 
 
-  const handleRegisterSubmit = (evt) => {
+  const handleRegisterSubmit = (evt: FormEvent) => {
     evt.preventDefault();
     // console.log(Object.fromEntries(new FormData(evt.target)))
     dispatch(register( values));
