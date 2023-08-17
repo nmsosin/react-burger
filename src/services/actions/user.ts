@@ -493,7 +493,7 @@ export const updateUserInfo = (data: IUserData) => {
   }
 }
 
-export const refreshUserToken = () => {
+export const refreshUserToken = (): void | Promise<any> => {
   request('auth/token', {
     method: "POST",
     headers: {

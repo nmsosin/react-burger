@@ -1,3 +1,4 @@
+import {BASE_URL} from "./constants";
 
 export const checkResponse = <T>(res: Response):Promise<T> => {
   // console.log(res);
@@ -5,14 +6,12 @@ export const checkResponse = <T>(res: Response):Promise<T> => {
 };
 
 export default function request(urlEndpoint: string, options?: any) {
-  const BASE_URL = "https://norma.nomoreparties.space/api";
   const url =`${BASE_URL}/${urlEndpoint}`;
   return fetch(url, options).then(checkResponse<any>)
 }
 
 // token processing
 export const refreshToken = () => {
-  const BASE_URL = "https://norma.nomoreparties.space/api";
   return fetch(`${BASE_URL}/auth/token`, {
     method: "POST",
     headers: {
@@ -25,7 +24,6 @@ export const refreshToken = () => {
 }
 
 export const fetchWithRefresh = async (urlEndpoint: string, options?: any) => {
-  const BASE_URL = "https://norma.nomoreparties.space/api";
   const url =`${BASE_URL}/${urlEndpoint}`;
   try {
     const res = await (fetch(url, options));

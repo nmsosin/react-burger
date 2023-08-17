@@ -7,10 +7,7 @@ import {DndProvider} from "react-dnd";
 import {HTML5Backend} from "react-dnd-html5-backend";
 import generalStyles from "../components/app/app.module.css";
 import {useAppDispatch} from "../services/hooks/hooks";
-import {getIngredientsList} from "../utils/constants";
-
-
-const dataUrl = 'https://norma.nomoreparties.space/api/ingredients';
+import {BASE_URL, getIngredientsList} from "../utils/constants";
 
 export const MainPage: FC = () => {
   const ingredientsList = useSelector(getIngredientsList);
@@ -18,7 +15,7 @@ export const MainPage: FC = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(getIngredientsData(dataUrl))
+    dispatch(getIngredientsData(`${BASE_URL}/ingredients`))
   }, [dispatch]);
 
   return (

@@ -1,5 +1,5 @@
 import {useDispatch, useSelector} from "react-redux";
-import {getWsOrders} from "../../utils/constants";
+import {getWsOrders, SOCKET_URL} from "../../utils/constants";
 import {FC, useEffect} from "react";
 import {useLocation} from "react-router-dom";
 import {WS_CONNECTION_END, WS_CONNECTION_START} from "../../services/actions/websocket";
@@ -16,7 +16,7 @@ export const OrdersFeedDetails: FC<TOrdersFeedDetailsProps> = ({isSeparateTab}) 
 
   useEffect(() => {
     const accessToken = getCookie('accessToken')?.split('Bearer ')[1]
-    const socketUrl = location.pathname.includes('feed') ? 'wss://norma.nomoreparties.space/orders/all' : `wss://norma.nomoreparties.space/orders?token=${accessToken}`;
+    const socketUrl = location.pathname.includes('feed') ? `${SOCKET_URL}/orders/all` : `${SOCKET_URL}/orders?token=${accessToken}`;
 
     dispatch({
       type: WS_CONNECTION_START,

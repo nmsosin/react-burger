@@ -1,13 +1,11 @@
 import ordersHistoryPageStyles from "../orders-history/orders-history.module.css";
 import {OrdersFeedList} from "../../components/orders-feed-list/orders-feed-list";
 import {useDispatch, useSelector} from "react-redux";
-import {getWsAuthOrders} from "../../utils/constants";
+import {getWsAuthOrders, SOCKET_URL} from "../../utils/constants";
 import {FC, useEffect, useMemo} from "react";
 import {WS_CONNECTION_END, WS_CONNECTION_START} from "../../services/actions/websocket";
 import {getCookie} from "../../utils/cookie";
 import {ProfileNavPanel} from "../../components/profile-nav-panel/profile-nav.panel";
-
-const socketUrl = 'wss://norma.nomoreparties.space/orders';
 
 export const OrdersHistoryPage: FC = () => {
   const dispatch = useDispatch();
@@ -22,7 +20,7 @@ export const OrdersHistoryPage: FC = () => {
   useEffect(() => {
     dispatch({
       type: WS_CONNECTION_START,
-      payload: `${socketUrl}?token=${accessToken}`
+      payload: `${SOCKET_URL}/orders?token=${accessToken}`
     });
     return () => {
       dispatch({

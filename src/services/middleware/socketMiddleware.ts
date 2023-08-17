@@ -1,13 +1,15 @@
 import {refreshUserToken} from "../actions/user";
+import {TWebSocketActions} from "../actions/websocket";
+import {Middleware} from "redux";
 
-export const socketMiddleware = (wsActions) => {
+export const socketMiddleware = (wsActions: TWebSocketActions): Middleware => {
   return store => {
-    let socket = null;
+    let socket: WebSocket | null = null;
 
-    return next => action => {
+    return (next: any) => (action: any) => {
       const { dispatch } = store;
       const { type, payload } = action;
-      const { wsInit, wsEnd, onOpen, onClose, onError, onMessage, wsSendMessage } = wsActions;
+      const { wsInit, wsEnd, onOpen, onClose, onError, onMessage, sendMessage } = wsActions;
 
       if (type === wsInit) {
         socket = new WebSocket(payload);
@@ -24,11 +26,11 @@ export const socketMiddleware = (wsActions) => {
           const { success, ...restParsedData } = parsedData;
           // console.log('middleware restParsedData onmessage', restParsedData);
           if (data.message === "Invalid or missing token") {
-            socket.close();
-            return refreshUserToken().then(() => {
+            socket?.close();
+            return refreshUserToken()?.then(() => {
               dispatch({type: wsInit});
             })
-              .catch((err) => {
+              .catch((err: Error) => {
                 console.log("WS connection error:", err)
               })
           }
@@ -45,7 +47,7 @@ export const socketMiddleware = (wsActions) => {
           dispatch({ type: onClose, payload: event });
         };
 
-        if (type === wsSendMessage) {
+        if (type === sendMessage) {
           socket.send(JSON.stringify({...payload}))
         }
 

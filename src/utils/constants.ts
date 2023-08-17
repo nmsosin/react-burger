@@ -25,3 +25,7 @@ export const getIngredientsList = (store: TStore) => store.ingredientsList.ingre
 
 export const getWsOrders = (store: TStore) => store.wsOrdersFeed;
 export const getWsAuthOrders = (store: TStore) => store.wsAuthOrdersFeed;
+
+
+export const BASE_URL: 'https://norma.nomoreparties.space/api' = 'https://norma.nomoreparties.space/api';
+export const SOCKET_URL: 'wss://norma.nomoreparties.space' = 'wss://norma.nomoreparties.space';
