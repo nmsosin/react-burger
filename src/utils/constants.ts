@@ -4,7 +4,8 @@ export const getCurrentIngredient = (store: TStore) => store.currentIngredient;
 export const getOrdersList = (store: TStore) => store.orderInfo.orders;
 export const getCurrentOrderDetails = (store: TStore) => ({
   orders: store.orderInfo.orders,
-  isOrderModalOpen: store.orderInfo.isOrderModalOpen
+  isOrderModalOpen: store.orderInfo.isOrderModalOpen,
+  currentOrder: store.orderInfo.currentOrder
 });
 
 export const getUserAuth = (store: TStore) => store.user.isAuthChecked;

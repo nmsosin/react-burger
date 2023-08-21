@@ -1,10 +1,11 @@
-import {getWsOrders, SOCKET_URL} from "../../utils/constants";
+import {getOrdersList, getWsOrders, SOCKET_URL} from "../../utils/constants";
 import {FC, useEffect} from "react";
 import {useLocation} from "react-router-dom";
 import {WS_CONNECTION_END, WS_CONNECTION_START} from "../../services/actions/websocket";
 import {OrderFeedDetailsLayout} from "../orders-feed-details-layout/order-feed-details-layout";
 import {getCookie} from "../../utils/cookie";
 import {useAppDispatch, useAppSelector} from "../../services/hooks/hooks";
+import {getOrders} from "../../services/actions/orderInfo";
 
 type TOrdersFeedDetailsProps = {
   isSeparateTab: boolean;
@@ -32,8 +33,9 @@ export const OrdersFeedDetails: FC<TOrdersFeedDetailsProps> = ({isSeparateTab}) 
   // useEffect(() => {
   //   dispatch(getOrders());
   // }, [dispatch])
-
+  //
   // const orders = useAppSelector(getOrdersList)
+  // console.log('orders', orders)
   const {orders} = useAppSelector(getWsOrders)
 
 

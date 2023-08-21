@@ -33,7 +33,7 @@ export const getOrdersReducer = ( state = orderInfoInitialState, action: TOrderI
       }
     };
     case GET_ORDER_SUCCESS: {
-      console.log("get orders success", action.payload, state)
+      // console.log("get orders success", action.payload, state)
       return {
         ...state,
         getOrderRequest: false,
@@ -51,7 +51,6 @@ export const getOrdersReducer = ( state = orderInfoInitialState, action: TOrderI
       }
     };
     case OPEN_CURRENT_ORDER: {
-      // console.log('action.payload', action.payload);
       return {
         ...state,
         currentOrder: action.payload,

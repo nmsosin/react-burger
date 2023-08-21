@@ -1,6 +1,6 @@
 import {FC, useState} from "react";
 import {NavLink, useLocation, useNavigate} from "react-router-dom";
-import {logout} from "../../services/actions/user";
+import {logout, setAuthChecked} from "../../services/actions/user";
 import {LOGIN_PAGE_ROUTE, MAIN_PAGE_ROUTE, ORDERS_HISTORY_PAGE_ROUTE, PROFILE_PAGE_ROUTE} from "../../utils/routes";
 import profileNavPanelStyles from "../profile-nav-panel/profile-nav-panel.module.css";
 import {SideTab} from "../side-tab/side-tab";
@@ -15,6 +15,7 @@ export const ProfileNavPanel: FC = () => {
 
   const onLogout = () => {
     dispatch(logout(() => navigate(LOGIN_PAGE_ROUTE)));
+    setAuthChecked(false);
   }
 
   return(

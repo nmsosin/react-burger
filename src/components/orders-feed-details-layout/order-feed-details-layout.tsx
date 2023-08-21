@@ -1,10 +1,11 @@
 import ordersFeedDetailsLayout from "../orders-feed-details-layout/orders-feed-details-layout.module.css";
 import {CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import {getIngredientsList} from "../../utils/constants";
-import {FC, useMemo} from "react";
+import {FC, useEffect, useMemo} from "react";
 import {useParams} from "react-router-dom";
 import {TIngredient, TOrder} from "../../utils/types";
-import {useAppSelector} from "../../services/hooks/hooks";
+import {useAppDispatch, useAppSelector} from "../../services/hooks/hooks";
+import {OPEN_CURRENT_ORDER} from "../../services/actions/orderInfo";
 
 type TOrdersFeedDetailsLayoutProps = {
   orders: TOrder[];
@@ -12,6 +13,7 @@ type TOrdersFeedDetailsLayoutProps = {
 }
 
 export const OrderFeedDetailsLayout: FC<TOrdersFeedDetailsLayoutProps> = ({orders, isSeparateTab}) => {
+  const dispatch = useAppDispatch();
   const {id} = useParams();
   const order = useMemo(() => {
     return orders.find((order) => order._id === id);

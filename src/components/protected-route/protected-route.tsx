@@ -1,5 +1,5 @@
 import {Navigate, useLocation} from "react-router-dom";
-import {getUserInfo} from "../../utils/constants";
+import {getUserAuth, getUserInfo} from "../../utils/constants";
 import React, {FC, ReactElement} from "react";
 import {useAppSelector} from "../../services/hooks/hooks";
 
@@ -10,18 +10,15 @@ type TProtectedRouteElementProps = {
 
 export const ProtectedRouteElement: FC<TProtectedRouteElementProps> = ({onlyUnAuth = false, component}) => {
   const user = useAppSelector(getUserInfo)
+  const isAuthChecked = useAppSelector(getUserAuth);
   const location = useLocation();
-
-  // if (!isAuthChecked) {
-  //   return <p>Ждем данные мультипаспорта с орбитальной станции. Пожалуйста, ожидайте за поясом астероидов.</p>;
-  // }
 
   if (onlyUnAuth && user && user.name) {
     const { from } = location.state || { from: { pathname: "/" } };
     return <Navigate to={from}/>
   }
 
-  if (!onlyUnAuth && !user.name) {
+  if (isAuthChecked && !onlyUnAuth && !user.name) {
     return <Navigate to="/login" state={{ from: location } } />;
   }
 

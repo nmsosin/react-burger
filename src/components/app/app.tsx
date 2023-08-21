@@ -13,7 +13,7 @@ import {RegisterPage} from "../../pages/register/register";
 import {ResetPasswordPage} from "../../pages/reset-password/reset-password";
 import {OrdersHistoryPage} from "../../pages/orders-history/orders-history";
 import {OnlyAuth, OnlyUnAuth} from "../protected-route/protected-route";
-import {getUserInfo, refreshUserToken} from "../../services/actions/user";
+import {getUserInfo, refreshUserToken, setAuthChecked} from "../../services/actions/user";
 import {getCookie} from "../../utils/cookie";
 import {OrdersFeedPage} from "../../pages/orders-feed/orders-feed";
 import {NotFound404} from "../../pages/not-found-404/not-found-404";
@@ -38,7 +38,7 @@ import {
   ORDERS_HISTORY_DETAILS_PAGE_ROUTE
 } from "../../utils/routes";
 import {OrdersFeedDetails} from "../order-feed-details/orders-feed-details";
-import {RESET_CURRENT_ORDER} from "../../services/actions/orderInfo";
+import {OPEN_CURRENT_ORDER, RESET_CURRENT_ORDER} from "../../services/actions/orderInfo";
 import {useAppDispatch} from "../../services/hooks/hooks";
 
 const App: FC = () => {
@@ -47,8 +47,9 @@ const App: FC = () => {
   const navigate = useNavigate();
   const isAuthChecked = useAppSelector(getUserAuth);
   const { currentIngredient, isIngredientModalOpen } = useAppSelector(getCurrentIngredient);
-  const {isOrderModalOpen} = useAppSelector(getCurrentOrderDetails);
+  const { currentOrder, isOrderModalOpen} = useAppSelector(getCurrentOrderDetails);
   const accessToken = getCookie('accessToken');
+  const refreshToken = localStorage.getItem('refreshToken')
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -63,16 +64,20 @@ const App: FC = () => {
 
   useEffect(() => {
     if (accessToken) {
+      setAuthChecked(true);
       dispatch(getUserInfo())
-    } else {
+    } else if(refreshToken) {
       refreshUserToken();
     }
   }, [isAuthChecked, accessToken]);
 
   useEffect(() => {
-    if (currentIngredient) {
-      dispatch({type: OPEN_CURRENT_INGREDIENT, payload: currentIngredient})
-    }
+    dispatch({type: OPEN_CURRENT_INGREDIENT, payload: currentIngredient})
+  }, [])
+
+  useEffect(() => {
+    console.log('currentOrder', currentOrder)
+    dispatch({type: OPEN_CURRENT_ORDER, payload: currentOrder})
   }, [])
 
   const handleIngredientCloseButton = () => {
