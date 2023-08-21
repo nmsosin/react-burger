@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import {Action, ActionCreator, Dispatch} from "redux";
 import {TInitialConstructorActions} from "../services/actions/constructorIngredients";
 import {TCurrentIngredientActions} from "../services/actions/currentIngredient";
@@ -9,23 +8,6 @@ import {TIngredientsListActions} from "../services/actions/ingredientsList";
 import {TOrderInfoActions} from "../services/actions/orderInfo";
 import {TOrderActions} from "../services/actions/order";
 import {TWsActions} from "../services/actions/websocket";
-
-const checkPropTypes = PropTypes.shape({
-  _id: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-  type: PropTypes.string.isRequired,
-  proteins: PropTypes.number.isRequired,
-  fat: PropTypes.number.isRequired,
-  carbohydrates: PropTypes.number.isRequired,
-  calories: PropTypes.number.isRequired,
-  price: PropTypes.number.isRequired,
-  image: PropTypes.string.isRequired,
-  image_mobile: PropTypes.string.isRequired,
-  image_large: PropTypes.string.isRequired,
-  __v: PropTypes.number.isRequired
-});
-
-export default checkPropTypes;
 
 export type TIngredient = {
   _id: string;

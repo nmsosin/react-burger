@@ -1,12 +1,11 @@
-import {useDispatch, useSelector} from "react-redux";
 import {FC, useRef} from "react";
 import {useDrag, useDrop, XYCoord} from "react-dnd";
 import burgerConstructorStyles from "../burger-constructor/burger-constructor.module.css";
 import { ConstructorElement, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import {REMOVE_INGREDIENT, SORT_INGREDIENT} from "../../services/actions/constructorIngredients";
 import {getConstructorIngredients} from "../../utils/constants";
-import PropTypes from "prop-types";
 import {TIngredient} from "../../utils/types";
+import {useAppDispatch, useAppSelector} from "../../services/hooks/hooks";
 
 type TOptionalConstructorIngredients = {
   ingredient: TIngredient;
@@ -20,8 +19,8 @@ type TDropCard = {
 }
 
 const OptionalConstructorIngredients: FC<TOptionalConstructorIngredients> = ({ ingredient, ingredientIndex }) => {
-  const { optionalIngredients } = useSelector(getConstructorIngredients);
-  const dispatch = useDispatch();
+  const { optionalIngredients } = useAppSelector(getConstructorIngredients);
+  const dispatch = useAppDispatch();
 
   const ref = useRef<HTMLLIElement>(null);
 

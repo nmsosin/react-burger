@@ -1,11 +1,10 @@
 import ordersFeedDetailsLayout from "../orders-feed-details-layout/orders-feed-details-layout.module.css";
-import {v4 as uuidv4} from "uuid";
 import {CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
-import {useSelector} from "react-redux";
 import {getIngredientsList} from "../../utils/constants";
 import {FC, useMemo} from "react";
 import {useParams} from "react-router-dom";
 import {TIngredient, TOrder} from "../../utils/types";
+import {useAppSelector} from "../../services/hooks/hooks";
 
 type TOrdersFeedDetailsLayoutProps = {
   orders: TOrder[];
@@ -20,18 +19,18 @@ export const OrderFeedDetailsLayout: FC<TOrdersFeedDetailsLayoutProps> = ({order
 
   const {createdAt, ingredients, name, number, status, _id} = order as TOrder;
 
-  const ingredientsList = useSelector(getIngredientsList);
+  const ingredientsList = useAppSelector(getIngredientsList);
 
   const orderIngredients = useMemo(() => {
-    return ingredients.map((ingredientId: string) => {
-      return ingredientsList.find((item: TIngredient) => {
+    return ingredients.map((ingredientId) => {
+      return ingredientsList.find((item) => {
         return item._id === ingredientId;
       })
     })
   }, [ingredients]);
 
   const uniqueOrderIngredients = useMemo(() => {
-    return orderIngredients.reduce((acc: (TIngredient | undefined)[], item: TIngredient | undefined) => {
+    return orderIngredients.reduce((acc: (TIngredient | undefined)[], item) => {
       if (item && acc.includes(item)) {
         return acc;
       }
@@ -41,7 +40,7 @@ export const OrderFeedDetailsLayout: FC<TOrdersFeedDetailsLayoutProps> = ({order
 
   const orderPrice = useMemo(() => {
     let result = 0;
-    orderIngredients.map((item: TIngredient | undefined) => {
+    orderIngredients.map((item) => {
       if (item) {
         return item.type === 'bun' ? result += item.price * 2 : result += item.price;
       }
@@ -82,7 +81,7 @@ export const OrderFeedDetailsLayout: FC<TOrdersFeedDetailsLayoutProps> = ({order
                   }, {});
 
                   return (
-                    <li key={uuidv4()} className={ordersFeedDetailsLayout.ingredientCard}>
+                    <li key={ingredient._id} className={ordersFeedDetailsLayout.ingredientCard}>
                       <div className={ordersFeedDetailsLayout.imageWrapper}>
                         <div className={ordersFeedDetailsLayout.imageBackground}>
                           <img src={ingredient.image} alt={ingredient.name}

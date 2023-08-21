@@ -1,7 +1,6 @@
-import {FC, useEffect, useMemo} from 'react';
+import {FC, useMemo} from 'react';
 import { ConstructorElement, Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import burgerConstructorStyles from './burger-constructor.module.css';
-import {useSelector} from "react-redux";
 import {useDrop} from "react-dnd";
 import {
   RESET_INGREDIENT,
@@ -16,14 +15,14 @@ import {useNavigate} from "react-router-dom";
 import {getConstructorIngredients, getSentOrderDetails, getUserInfo} from "../../utils/constants";
 import {LOGIN_PAGE_ROUTE} from "../../utils/routes";
 import {TIngredient} from "../../utils/types";
-import {useAppDispatch} from "../../services/hooks/hooks";
+import {useAppDispatch, useAppSelector} from "../../services/hooks/hooks";
 
 const BurgerConstructor: FC = () => {
-  const { optionalIngredients, bun } = useSelector(getConstructorIngredients);
+  const { optionalIngredients, bun } = useAppSelector(getConstructorIngredients);
 
-  const { orderNumber, isSentOrderModalOpen } = useSelector(getSentOrderDetails);
+  const { orderNumber, isSentOrderModalOpen } = useAppSelector(getSentOrderDetails);
 
-  const user = useSelector(getUserInfo)
+  const user = useAppSelector(getUserInfo)
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();

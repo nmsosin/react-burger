@@ -1,12 +1,11 @@
 import React, {FC} from 'react';
-import PropTypes from "prop-types";
 import {Counter, CurrencyIcon} from '@ya.praktikum/react-developer-burger-ui-components';
 import ingredientItemStyles from './ingredient-item.module.css';
-import { useSelector} from "react-redux";
 import {useDrag} from "react-dnd";
 import {NavLink, useLocation} from "react-router-dom";
 import {getConstructorIngredients} from "../../utils/constants";
 import {TIngredient} from "../../utils/types";
+import {useAppSelector} from "../../services/hooks/hooks";
 
 
 type TIngredientItem = {
@@ -16,12 +15,12 @@ type TIngredientItem = {
 }
 
 const IngredientItem: FC<TIngredientItem> = ({ ingredient, openModalHandler }) => {
-  const { optionalIngredients, bun } = useSelector(getConstructorIngredients);
+  const { optionalIngredients, bun } = useAppSelector(getConstructorIngredients);
 
   const location = useLocation();
 
   const count = ingredient.type !== "bun"
-    ? optionalIngredients.reduce((accumulator: any, current: TIngredient) => {
+    ? optionalIngredients.reduce((accumulator: { [key: string]: number }, current) => {
     if (accumulator[current._id] !== undefined) {
       accumulator[current._id] += 1;
     } else {

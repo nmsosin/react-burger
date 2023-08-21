@@ -1,4 +1,3 @@
-import PropTypes from "prop-types";
 import navButtonStyles from './navigation-button.module.css';
 import {FC, ReactNode} from "react";
 type TNavigationButtonProps = {

@@ -3,8 +3,7 @@ import NavigationButton from "../navigation-button/navigation-button";
 import {BurgerIcon, ListIcon, ProfileIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import appHeaderStyles from './app-header.module.css';
 import {NavLink, useLocation} from "react-router-dom";
-import {useSelector} from "react-redux";
-import {FC, useEffect, useState} from "react";
+import {FC, MouseEventHandler, useEffect, useState} from "react";
 import {getUserAuth, getUserInfo} from "../../utils/constants";
 import {
   MAIN_PAGE_ROUTE,
@@ -12,10 +11,11 @@ import {
   ORDERS_HISTORY_PAGE_ROUTE,
   PROFILE_PAGE_ROUTE
 } from "../../utils/routes";
+import {useAppSelector} from "../../services/hooks/hooks";
 
 const AppHeader:FC = () => {
-  const user = useSelector(getUserInfo);
-  const isAuthChecked = useSelector(getUserAuth);
+  const user = useAppSelector(getUserInfo);
+  const isAuthChecked = useAppSelector(getUserAuth);
   const [activeTab, setActiveTab] = useState<string>(MAIN_PAGE_ROUTE);
   const location = useLocation();
   const currentUrlEndpoint = location.pathname;
@@ -23,7 +23,6 @@ const AppHeader:FC = () => {
   useEffect(() => {
     setActiveTab(currentUrlEndpoint)
   }, [currentUrlEndpoint])
-
 
   return (
     <header className={`pt-4 pb-4 ${appHeaderStyles.header}`}>
@@ -53,7 +52,14 @@ const AppHeader:FC = () => {
             />
           </NavLink>
         </div>
-        <Logo />
+
+        <NavLink
+          to={MAIN_PAGE_ROUTE}
+          onClick={() => setActiveTab(MAIN_PAGE_ROUTE)}
+          className={appHeaderStyles.navLink}
+        >
+          <Logo />
+        </NavLink>
 
         <NavLink
           to={PROFILE_PAGE_ROUTE}

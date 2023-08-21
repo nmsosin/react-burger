@@ -1,7 +1,6 @@
 import React, {FC} from 'react';
 import { CheckMarkIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import orderDetailsStyles from './order-details.module.css';
-import PropTypes from "prop-types";
 
 type TOrderDetailsProps = {
   orderNumber: number
@@ -23,7 +22,3 @@ const OrderDetails: FC<TOrderDetailsProps> = ({orderNumber}) => {
 }
 
 export default OrderDetails;
-
-OrderDetails.propTypes = {
-  orderNumber: PropTypes.number.isRequired,
-}

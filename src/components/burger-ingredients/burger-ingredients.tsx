@@ -1,31 +1,30 @@
-import {FC, MutableRefObject, ReactNode, useCallback, useEffect, useMemo, useRef, useState} from 'react';
+import {FC, useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import IngredientItem from "../ingredient-item/ingredient-item";
-import {useDispatch, useSelector} from "react-redux";
 import { useInView } from 'react-intersection-observer';
-
 import BurgerIngredientsStyles from './burger-ingredients.module.css';
 import { OPEN_CURRENT_INGREDIENT} from "../../services/actions/currentIngredient";
 import {getIngredientsList} from "../../utils/constants";
 import {TIngredient} from "../../utils/types";
+import {useAppDispatch, useAppSelector} from "../../services/hooks/hooks";
 
 const BurgerIngredients: FC = () => {
   const [current, setCurrent] = useState<string>('buns');
 
-  const ingredients = useSelector(getIngredientsList);
+  const ingredients = useAppSelector(getIngredientsList);
 
   const buns = useMemo(
-    () => ingredients.filter((item: TIngredient) => item['type'] === 'bun'),
+    () => ingredients.filter((item) => item['type'] === 'bun'),
     [ingredients]
   );
 
   const sauces = useMemo(
-    () => ingredients.filter((item: TIngredient) => item['type'] === 'sauce'),
+    () => ingredients.filter((item) => item['type'] === 'sauce'),
     [ingredients]
   );
 
   const fillings = useMemo(
-    () => ingredients.filter((item: TIngredient) => item['type'] === 'main'),
+    () => ingredients.filter((item) => item['type'] === 'main'),
     [ingredients]
   );
 
@@ -98,7 +97,7 @@ const BurgerIngredients: FC = () => {
     }
   }
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const handleIngredientCardClick = (ingredient: TIngredient) => {
     dispatch({ type: OPEN_CURRENT_INGREDIENT, payload: ingredient })
@@ -123,21 +122,21 @@ const BurgerIngredients: FC = () => {
           <li>
             <h2 id={"buns"} ref={setBunRefs} className={"text text_type_main-medium pt-10 pb-6"}>Булки</h2>
             <ul className={BurgerIngredientsStyles.ingredientItemsList}>
-              {buns.map((el: TIngredient) => <IngredientItem ingredient={el} key={el._id} iid={el._id} openModalHandler={() => handleIngredientCardClick(el)}  />)}
+              {buns.map((el) => <IngredientItem ingredient={el} key={el._id} iid={el._id} openModalHandler={() => handleIngredientCardClick(el)}  />)}
             </ul>
           </li>
 
           <li>
             <h2 id={"sauces"} ref={setSauceRefs} className={"text text_type_main-medium pt-10 pb-6"}>Соусы</h2>
             <ul className={BurgerIngredientsStyles.ingredientItemsList}>
-              {sauces.map((el: TIngredient) => <IngredientItem ingredient={el} key={el._id} iid={el._id} openModalHandler={() => handleIngredientCardClick(el)} />)}
+              {sauces.map((el) => <IngredientItem ingredient={el} key={el._id} iid={el._id} openModalHandler={() => handleIngredientCardClick(el)} />)}
             </ul>
           </li>
 
           <li>
             <h2 id={"fillings"} ref={setFillingRefs} className={"text text_type_main-medium pt-10 pb-6"}>Начинки</h2>
             <ul className={BurgerIngredientsStyles.ingredientItemsList}>
-              {fillings.map((el: TIngredient) => <IngredientItem ingredient={el} key={el._id} iid={el._id} openModalHandler={() => handleIngredientCardClick(el)} />)}
+              {fillings.map((el) => <IngredientItem ingredient={el} key={el._id} iid={el._id} openModalHandler={() => handleIngredientCardClick(el)} />)}
             </ul>
           </li>
         </ul>

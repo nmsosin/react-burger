@@ -1,10 +1,10 @@
-import {useDispatch, useSelector} from "react-redux";
 import {getWsOrders, SOCKET_URL} from "../../utils/constants";
 import {FC, useEffect} from "react";
 import {useLocation} from "react-router-dom";
 import {WS_CONNECTION_END, WS_CONNECTION_START} from "../../services/actions/websocket";
 import {OrderFeedDetailsLayout} from "../orders-feed-details-layout/order-feed-details-layout";
 import {getCookie} from "../../utils/cookie";
+import {useAppDispatch, useAppSelector} from "../../services/hooks/hooks";
 
 type TOrdersFeedDetailsProps = {
   isSeparateTab: boolean;
@@ -12,7 +12,7 @@ type TOrdersFeedDetailsProps = {
 
 export const OrdersFeedDetails: FC<TOrdersFeedDetailsProps> = ({isSeparateTab}) => {
   const location = useLocation();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     const accessToken = getCookie('accessToken')?.split('Bearer ')[1]
@@ -33,8 +33,8 @@ export const OrdersFeedDetails: FC<TOrdersFeedDetailsProps> = ({isSeparateTab}) 
   //   dispatch(getOrders());
   // }, [dispatch])
 
-  // const orders = useSelector(getOrdersList)
-  const {orders} = useSelector(getWsOrders)
+  // const orders = useAppSelector(getOrdersList)
+  const {orders} = useAppSelector(getWsOrders)
 
 
   return (

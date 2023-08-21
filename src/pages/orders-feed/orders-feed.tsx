@@ -1,15 +1,14 @@
 import {OrderStats} from "../../components/order-stats/order-stats";
 import {OrdersFeedList} from "../../components/orders-feed-list/orders-feed-list";
 import ordersFeedStyles from  "../orders-feed/orders-feed.module.css"
-import {useSelector} from "react-redux";
 import {getWsOrders, SOCKET_URL} from "../../utils/constants";
 import {FC, useEffect} from "react";
 import {WS_CONNECTION_END, WS_CONNECTION_START} from "../../services/actions/websocket";
-import {useAppDispatch} from "../../services/hooks/hooks";
+import {useAppDispatch, useAppSelector} from "../../services/hooks/hooks";
 
 export const OrdersFeedPage: FC = () => {
   const dispatch = useAppDispatch();
-  const { orders } = useSelector(getWsOrders);
+  const { orders } = useAppSelector(getWsOrders);
 
   useEffect(() => {
     const socketUrl = `${SOCKET_URL}/orders/all`;

@@ -1,25 +1,24 @@
 import {CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import ordersFeedListItem from "../orders-feed-list-item/orders-feed-list-item.module.css"
-import {useDispatch, useSelector} from "react-redux";
 import {getIngredientsList} from "../../utils/constants";
 import {FC, useMemo} from "react";
 import {v4 as uuidv4} from 'uuid';
 import { OPEN_CURRENT_ORDER} from "../../services/actions/orderInfo";
 import ingredientItemStyles from "../ingredient-item/ingredient-item.module.css";
 import {NavLink, useLocation} from "react-router-dom";
-import PropTypes from "prop-types";
 import {TIngredient, TOrder} from "../../utils/types";
+import {useAppDispatch, useAppSelector} from "../../services/hooks/hooks";
 
 type TOrdersFeedListItemProps = {
   order: TOrder;
 }
 
 export const OrdersFeedListItem: FC<TOrdersFeedListItemProps> = ({order}) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const location = useLocation();
 
   const {createdAt, ingredients, name, number} = order;
-  const ingredientsList = useSelector(getIngredientsList);
+  const ingredientsList = useAppSelector(getIngredientsList);
 
   const orderIngredients = useMemo(() => {
     const uniqueOrderIngredients = order.ingredients.reduce((acc: string[], item) => {
@@ -73,7 +72,7 @@ export const OrdersFeedListItem: FC<TOrdersFeedListItemProps> = ({order}) => {
             {orderIngredients && orderIngredients.length < 6
               ? orderIngredients.slice(0, 6).map((ingredient) => {
                 return (
-                  <li className={ordersFeedListItem.imageWrapper} key={uuidv4()}>
+                  <li className={ordersFeedListItem.imageWrapper} key={ingredient?._id}>
                     <div className={ordersFeedListItem.imageBackground}>
                       <img src={ingredient?.image} alt={ingredient?.name}
                            className={ordersFeedListItem.image}
@@ -84,7 +83,7 @@ export const OrdersFeedListItem: FC<TOrdersFeedListItemProps> = ({order}) => {
               })
               : orderIngredients.slice(0, 5).map((ingredient) => {
                   return (
-                    <li className={ordersFeedListItem.imageWrapper} key={uuidv4()}>
+                    <li className={ordersFeedListItem.imageWrapper} key={ingredient?._id}>
                       <div className={ordersFeedListItem.imageBackground}>
                         <img src={ingredient?.image} alt={ingredient?.name}
                              className={ordersFeedListItem.image}

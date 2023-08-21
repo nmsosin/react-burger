@@ -1,15 +1,14 @@
 import {Button, EmailInput, Input, PasswordInput} from "@ya.praktikum/react-developer-burger-ui-components";
 import {FC, FormEvent, useEffect, useRef} from "react";
-import {useSelector} from "react-redux";
 import {updateUserInfo} from "../../services/actions/user";
 import profilePageStyles from './profile.module.css'
 import {useForm} from "../../services/hooks/useForm";
 import {ProfileNavPanel} from "../../components/profile-nav-panel/profile-nav.panel";
 import {getUserInfo} from "../../utils/constants";
-import {useAppDispatch} from "../../services/hooks/hooks";
+import {useAppDispatch, useAppSelector} from "../../services/hooks/hooks";
 
 export const ProfilePage: FC = () => {
-  const user = useSelector(getUserInfo);
+  const user = useAppSelector(getUserInfo);
 
   const inputRef = useRef<HTMLInputElement>(null)
 

@@ -12,7 +12,7 @@ export const OrdersFeedList: FC<TOrdersFeedListProps> = ({orders}) => {
   return(
     <section>
       <div className={ordersFeedListStyles.ordersList} >
-        {orders && orders.map((order: TOrder) => {
+        {orders && orders.map((order) => {
           return <OrdersFeedListItem order={order} key={order._id} />
         })}
       </div>

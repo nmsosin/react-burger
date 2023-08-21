@@ -1,10 +1,9 @@
-import React, {FC, useEffect, useMemo} from 'react';
+import React, {FC, useMemo} from 'react';
 import ingredientDetailsStyles from "../ingredient-details/ingredient-details.module.css";
-import PropTypes from "prop-types";
-import {useDispatch, useSelector} from "react-redux";
 import {useParams} from "react-router-dom";
 import {getIngredientsList} from "../../utils/constants";
 import {TIngredient} from "../../utils/types";
+import {useAppSelector} from "../../services/hooks/hooks";
 
 type TIngredientDetails = {
   isSeparateTab: boolean;
@@ -12,7 +11,7 @@ type TIngredientDetails = {
 
 const IngredientDetails: FC<TIngredientDetails> = ({isSeparateTab}) => {
   const { id } = useParams<{ id: string }>()
-  const ingredients = useSelector(getIngredientsList);
+  const ingredients = useAppSelector(getIngredientsList);
   const currentIngredient = useMemo(() => ingredients?.find((ingredient: TIngredient ) => ingredient._id === id), [ingredients]);
 
   return  (
