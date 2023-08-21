@@ -57,7 +57,7 @@ export const createOrderId: AppThunk = (orderUrlEndpoint: string, options: strin
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        authorization: getCookie('accessToken'),
+        Authorization: getCookie('accessToken'),
       },
       body: JSON.stringify({
         'ingredients': options,

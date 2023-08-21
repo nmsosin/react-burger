@@ -76,7 +76,6 @@ const App: FC = () => {
   }, [])
 
   useEffect(() => {
-    console.log('currentOrder', currentOrder)
     dispatch({type: OPEN_CURRENT_ORDER, payload: currentOrder})
   }, [])
 

@@ -1,4 +1,4 @@
-import {FC, useMemo} from 'react';
+import {FC, useMemo, useState} from 'react';
 import { ConstructorElement, Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import burgerConstructorStyles from './burger-constructor.module.css';
 import {useDrop} from "react-dnd";
@@ -16,11 +16,13 @@ import {getConstructorIngredients, getSentOrderDetails, getUserInfo} from "../..
 import {LOGIN_PAGE_ROUTE} from "../../utils/routes";
 import {TIngredient} from "../../utils/types";
 import {useAppDispatch, useAppSelector} from "../../services/hooks/hooks";
+import {OrderPreloader} from "../order-preloader/order-preloader";
 
 const BurgerConstructor: FC = () => {
   const { optionalIngredients, bun } = useAppSelector(getConstructorIngredients);
 
   const { orderNumber, isSentOrderModalOpen } = useAppSelector(getSentOrderDetails);
+  const [isOrderPending, setIsOrderPending] = useState<boolean>(false);
 
   const user = useAppSelector(getUserInfo)
 
@@ -47,7 +49,8 @@ const BurgerConstructor: FC = () => {
   const handleOrderButtonClick = () => {
     if (user && user.name) {
       dispatch(createOrderId('orders', chosenIngredientsId()))
-
+      setIsOrderPending(true);
+      setTimeout(() => setIsOrderPending(false), 15000);
     } else {
       navigate(LOGIN_PAGE_ROUTE);
     }
@@ -72,6 +75,7 @@ const BurgerConstructor: FC = () => {
   const handleCloseButton = () => {
     dispatch({type: RESET_ORDER})
     dispatch({type: RESET_INGREDIENT})
+    setIsOrderPending(false);
   }
 
   return (<>
@@ -129,7 +133,16 @@ const BurgerConstructor: FC = () => {
     </section>
 
     {
-      isSentOrderModalOpen &&
+      isOrderPending &&
+      <Modal
+        children={ <OrderPreloader text={"Заказ обрабатывается"} description={"Пожалуйста, ожидайте за поясом астероидов"}/>}
+        onClose={handleCloseButton}
+      />
+
+    }
+
+    {
+      isSentOrderModalOpen && orderNumber &&
       <Modal children={<OrderDetails orderNumber={orderNumber} />} onClose={handleCloseButton}/>
     }
     </>
