@@ -12,7 +12,9 @@ export const OrdersHistoryPage: FC = () => {
   const { authOrders } = useAppSelector(getWsAuthOrders);
 
   const fromOldToNewOrders = useMemo(() => {
-    return [...authOrders].reverse();
+    if (authOrders) {
+      return [...authOrders].reverse();
+    }
   }, [authOrders])
 
   const accessToken = getCookie('accessToken')?.split('Bearer ')[1];

@@ -63,13 +63,13 @@ const App: FC = () => {
   // console.log('orders', orders);
 
   useEffect(() => {
-    if (accessToken) {
-      setAuthChecked(true);
-      dispatch(getUserInfo())
-    } else if(refreshToken) {
+    if (!accessToken && refreshToken) {
       refreshUserToken();
+    } else if (accessToken && refreshToken) {
+      dispatch(getUserInfo())
+      setAuthChecked(true);
     }
-  }, [isAuthChecked, accessToken]);
+  }, [dispatch, isAuthChecked, accessToken, refreshToken]);
 
   useEffect(() => {
     dispatch({type: OPEN_CURRENT_INGREDIENT, payload: currentIngredient})

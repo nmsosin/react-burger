@@ -17,7 +17,9 @@ export const getConstructorIngredients = (store: TStore) => ({
 
 export const getSentOrderDetails = (store: TStore) => ({
   orderNumber: store.order.orderNumber,
-  isSentOrderModalOpen: store.order.isSentOrderModalOpen
+  isSentOrderModalOpen: store.order.isSentOrderModalOpen,
+  orderRequest: store.order.orderRequest,
+  orderSent: store.order.orderSuccess
 })
 
 export const sentOrders = (store: TStore) => store.order;

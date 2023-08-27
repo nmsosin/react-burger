@@ -157,6 +157,7 @@ export const userReducer = ( state = userInitialState, action: TUserActions ): T
         loginRequest: false,
         loginSuccess: false,
         loginFailed: true,
+        isAuthChecked: false
       };
     };
 
@@ -164,7 +165,8 @@ export const userReducer = ( state = userInitialState, action: TUserActions ): T
       case LOGOUT_REQUEST: {
         return {
           ...state,
-          logoutRequest: true
+          logoutRequest: true,
+          isAuthChecked: true
         };
       };
     case LOGOUT_SUCCESS: {
@@ -173,6 +175,7 @@ export const userReducer = ( state = userInitialState, action: TUserActions ): T
         logoutRequest: true,
         logoutSuccess: true,
         logoutFailed: false,
+        isAuthChecked: true,
         user: {email: "", name: ""},
       };
     };

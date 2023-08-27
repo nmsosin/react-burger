@@ -4,7 +4,7 @@ import {TOrder} from "../../utils/types";
 import {FC} from "react";
 
 type TOrdersFeedListProps = {
-  orders: TOrder[];
+  orders: TOrder[] | undefined;
 }
 
 export const OrdersFeedList: FC<TOrdersFeedListProps> = ({orders}) => {

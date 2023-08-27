@@ -30,6 +30,7 @@ export const sendOrderReducer = (state = orderSentInitialState, action: TOrderAc
       return {
         ...state,
         orderRequest: true,
+        isSentOrderModalOpen: true
       }
     };
     case SEND_ORDER_SUCCESS: {
