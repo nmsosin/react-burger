@@ -4,7 +4,7 @@ import reportWebVitals from './reportWebVitals';
 import App from './components/app/app';
 import { legacy_createStore as createStore, compose, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
-import {BrowserRouter as Router} from "react-router-dom";
+import {HashRouter as Router} from "react-router-dom";
 import thunk from 'redux-thunk';
 import { rootReducer } from './services/reducers'
 import {socketMiddleware} from "./services/middleware/socketMiddleware";

@@ -53,7 +53,7 @@
       "last 1 safari version"
     ]
   },
-  "homepage": "./",
+  "homepage": "https://nmsosin.github.io/react-burger/",
   "devDependencies": {
     "gh-pages": "^5.0.0"
   }
